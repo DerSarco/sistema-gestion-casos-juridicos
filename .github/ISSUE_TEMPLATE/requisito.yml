@@ -1,0 +1,39 @@
+name: Requisito
+description: Proponer, aclarar o modificar un requisito del SRS.
+title: "[SRS] "
+labels:
+  - documentation
+body:
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto y fuente
+      description: Indique el origen, necesidad o evidencia del requisito.
+    validations:
+      required: true
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Requisito propuesto
+      description: Redacte el comportamiento o atributo esperado de forma verificable.
+    validations:
+      required: true
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      description: Enumere condiciones observables para verificar el requisito.
+    validations:
+      required: true
+  - type: textarea
+    id: trazabilidad
+    attributes:
+      label: Trazabilidad y dependencias
+      description: Indique requisitos, casos de uso, diagramas, pruebas o issues relacionados.
+  - type: textarea
+    id: privacidad
+    attributes:
+      label: Impacto en privacidad y seguridad
+      description: Declare datos involucrados, riesgos y controles aplicables.
+    validations:
+      required: true

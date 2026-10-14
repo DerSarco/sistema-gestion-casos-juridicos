@@ -1,0 +1,43 @@
+name: Diagrama
+description: Crear o actualizar un diagrama del sistema.
+title: "[Diagrama] "
+labels:
+  - documentation
+body:
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo de diagrama
+      options:
+        - Casos de uso
+        - Clases
+        - Secuencia
+        - Despliegue
+    validations:
+      required: true
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo y alcance
+      description: Explique qué debe comunicar el diagrama y qué queda fuera.
+    validations:
+      required: true
+  - type: textarea
+    id: requisitos
+    attributes:
+      label: Requisitos relacionados
+      description: Enumere los identificadores RF, RNF y RN aplicables.
+    validations:
+      required: true
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      value: |
+        - [ ] Usa la terminología del SRS.
+        - [ ] La fuente editable está en `docs/diagrams/src/`.
+        - [ ] La exportación está en `docs/diagrams/rendered/`.
+        - [ ] La versión para el informe incluye título y fuente.
+        - [ ] Fue revisado contra los requisitos relacionados.
+    validations:
+      required: true

@@ -1,0 +1,43 @@
+name: Desarrollo
+description: Implementar, corregir o probar una unidad funcional del sistema.
+title: "[Desarrollo] "
+body:
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+      description: Describa el resultado observable que debe producir el issue.
+    validations:
+      required: true
+  - type: textarea
+    id: alcance
+    attributes:
+      label: Alcance incluido y excluido
+    validations:
+      required: true
+  - type: textarea
+    id: requisitos
+    attributes:
+      label: Requisitos relacionados
+      description: Enumere los identificadores RF, RNF y RN aplicables.
+    validations:
+      required: true
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      description: Incluya verificaciones funcionales y técnicas.
+    validations:
+      required: true
+  - type: textarea
+    id: pruebas
+    attributes:
+      label: Evidencia y pruebas esperadas
+    validations:
+      required: true
+  - type: textarea
+    id: riesgos
+    attributes:
+      label: Dependencias, riesgos y privacidad
+    validations:
+      required: true
