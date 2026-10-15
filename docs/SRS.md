@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.1
+**Versión del documento:** 0.2
 
 **Estado:** En elaboración
 
@@ -13,6 +13,7 @@
 | Versión | Fecha | Descripción | Responsable |
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Creación de la estructura inicial | Equipo del proyecto |
+| 0.2 | 2026-10-14 | Definición inicial de actores, servicios externos y responsabilidades | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -68,10 +69,142 @@ almacenamiento documental.
 - Mantener historial y trazabilidad de cambios críticos.
 - Consultar carga de trabajo y reportes autorizados.
 
-### 2.3 Características de los usuarios
+### 2.3 Características de los usuarios y actores externos
 
-Los perfiles, responsabilidades, conocimientos esperados y necesidades de
-accesibilidad se definirán durante el análisis de requisitos.
+La versión 1 considera tres perfiles humanos internos y servicios externos
+acotados. Los permisos descritos en esta sección constituyen una base funcional
+para elaborar los requisitos y casos de uso; su detalle deberá validarse con los
+socios propietarios antes de cerrar la especificación.
+
+#### 2.3.1 Actores humanos internos
+
+##### ACT-01: Socio propietario o administrador
+
+Usuario interno con responsabilidad de supervisión global y administración
+operativa. Uno de los socios propietarios actúa como usuario clave principal
+durante el levantamiento y la aceptación.
+
+Responsabilidades previstas:
+
+- consultar la situación general y la carga de trabajo del estudio;
+- administrar usuarios, roles y catálogos autorizados;
+- consultar, registrar y actualizar clientes y casos según sus permisos;
+- asignar o reasignar responsables, conservando el historial;
+- revisar reportes, alertas e historial de cambios;
+- aprobar las reglas operativas y validar los flujos prioritarios;
+- aprobar el contenido de la plantilla de información y autorización antes de
+  utilizarla.
+
+Este perfil no puede eliminar o alterar silenciosamente el historial de acciones
+críticas. Las operaciones administrativas también deben quedar trazadas.
+
+##### ACT-02: Abogado
+
+Usuario interno responsable de consultar y gestionar los casos que le hayan sido
+asignados o para los cuales posea autorización.
+
+Responsabilidades previstas:
+
+- consultar sus casos, responsables, estados, fechas y pendientes;
+- actualizar información operativa dentro de los permisos definidos;
+- registrar observaciones y avances autorizados;
+- consultar el historial y las referencias documentales permitidas;
+- solicitar o participar en una reasignación, sin reemplazar el registro
+  histórico;
+- revisar y aceptar o rechazar sugerencias del asistente de registro cuando
+  participe en la prueba de concepto.
+
+El abogado no obtiene por este rol facultades para administrar usuarios o
+consultar información ajena a su autorización.
+
+##### ACT-03: Secretaria o asistente
+
+Usuario interno que apoya el ingreso y mantenimiento de información operativa
+bajo las reglas y permisos definidos por el estudio.
+
+Responsabilidades previstas:
+
+- registrar clientes y casos con los datos mínimos autorizados;
+- actualizar datos de contacto y antecedentes administrativos permitidos;
+- registrar estados, fechas o tareas operativas dentro de sus atribuciones;
+- preparar el anexo imprimible de información y autorización desde la plantilla
+  aprobada;
+- registrar folio, versión, entrega, firma manuscrita, estado y referencia al
+  respaldo archivado;
+- consultar los casos y reportes necesarios para sus funciones.
+
+Este perfil no aprueba el contenido jurídico de documentos ni adquiere acceso
+general por el solo hecho de registrar información.
+
+#### 2.3.2 Sistemas y servicios externos
+
+##### EXT-01: Google Calendar
+
+Servicio externo previsto para crear eventos autorizados a partir de una fecha
+registrada, evitando una redigitación innecesaria. La integración será acotada y
+una falla del servicio no podrá provocar la pérdida de los datos internos del
+caso.
+
+##### EXT-02: OneDrive
+
+Repositorio documental externo. La plataforma conservará solamente una
+referencia autorizada al recurso o carpeta correspondiente y deberá respetar los
+permisos definidos en OneDrive. La versión 1 no reemplaza este repositorio.
+
+##### EXT-03: Gemini API
+
+Servicio externo utilizado exclusivamente en una prueba de concepto para resumir
+y sugerir una clasificación de antecedentes anonimizados. Toda respuesta requiere
+revisión humana y no puede modificar fichas ni tomar decisiones automáticamente.
+Su indisponibilidad no debe impedir el registro manual.
+
+##### EXT-04: Oficina Judicial Virtual
+
+Plataforma externa de tramitación y consulta judicial. Se incluye como elemento
+del contexto operativo, pero no como integración de software de la versión 1. El
+sistema no ingresará demandas, no efectuará scraping permanente y no almacenará
+credenciales judiciales.
+
+#### 2.3.3 Personas relacionadas que no operan la plataforma
+
+El cliente del estudio es la persona a quien se refiere parte de la información
+registrada, pero no es usuario ni actor operativo de la versión 1. Revisa y firma
+fuera de la plataforma el anexo de información y autorización cuando corresponda.
+El personal autorizado registra posteriormente los datos de control del
+documento. La versión 1 no incorpora un portal de clientes.
+
+#### 2.3.4 Matriz inicial de responsabilidades
+
+| Capacidad | ACT-01 Administrador | ACT-02 Abogado | ACT-03 Asistente |
+|---|---|---|---|
+| Consultar visión global del estudio | Previsto | Según autorización | Según autorización |
+| Administrar usuarios, roles y catálogos | Previsto | No previsto | No previsto |
+| Registrar clientes y casos | Previsto | Según autorización | Previsto |
+| Actualizar información operativa | Previsto | Casos autorizados | Campos autorizados |
+| Asignar o reasignar responsables | Previsto | Participación por definir | Participación por definir |
+| Consultar historial de cambios | Previsto | Casos autorizados | Según autorización |
+| Eliminar o alterar historial crítico | No permitido | No permitido | No permitido |
+| Preparar anexo imprimible | Previsto | Según autorización | Previsto |
+| Aprobar contenido de la plantilla | Previsto | No previsto | No previsto |
+| Revisar sugerencias de Gemini | Previsto | Según autorización | Según autorización |
+
+La matriz expresa responsabilidades previstas y no sustituye la futura matriz
+detallada de permisos. Las celdas marcadas como `Según autorización` o
+`Participación por definir` deben resolverse antes de implementar el control de
+acceso.
+
+#### 2.3.5 Características y necesidades comunes
+
+- Los usuarios poseen conocimientos del proceso jurídico u operativo, pero no se
+  presume formación técnica en sistemas.
+- La interfaz debe utilizar terminología validada con el estudio y evitar que el
+  usuario dependa de códigos técnicos.
+- El sistema debe funcionar en una interfaz web responsiva y ofrecer mensajes de
+  validación comprensibles.
+- Las acciones disponibles deben corresponder al rol y a la autorización sobre
+  la información, aplicando mínimo privilegio.
+- Las necesidades específicas de accesibilidad deben levantarse y transformarse
+  en requisitos no funcionales medibles.
 
 ### 2.4 Restricciones
 
@@ -154,6 +287,7 @@ como declaraciones generales de calidad o cumplimiento.
 
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
+| Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | Pendiente | Diagrama de casos de uso pendiente | Revisión con socios | Propuesto |
 | Por completar | Por completar | Por completar | Por completar | Por completar | Por completar | Propuesto |
 
 ## Anexos
