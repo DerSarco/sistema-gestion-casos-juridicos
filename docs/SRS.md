@@ -161,8 +161,9 @@ Su indisponibilidad no debe impedir el registro manual.
 ##### EXT-04: Oficina Judicial Virtual
 
 Plataforma externa de tramitación y consulta judicial. Se incluye como elemento
-del contexto operativo, pero no como integración de software de la versión 1. El
-sistema no ingresará demandas, no efectuará scraping permanente y no almacenará
+del contexto operativo porque los profesionales la utilizan de forma manual e
+independiente. La versión 1 no tendrá ninguna comunicación técnica con la OJV: no
+consultará, obtendrá, enviará ni sincronizará información con ella y no almacenará
 credenciales judiciales.
 
 #### 2.3.3 Personas relacionadas que no operan la plataforma
@@ -209,7 +210,8 @@ acceso.
 ### 2.4 Restricciones
 
 - El sistema no almacenará credenciales judiciales.
-- El sistema no realizará ingreso automático de demandas a la OJV.
+- El sistema no se conectará con la OJV para consultar, obtener, enviar o
+  sincronizar información.
 - Las pruebas utilizarán datos ficticios o anonimizados.
 - El tratamiento de datos reales requerirá una aprobación previa jurídica,
   técnica y organizacional.

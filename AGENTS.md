@@ -79,9 +79,9 @@ historial, trazabilidad, consultas y reportes autorizados.
 
 Quedan fuera del alcance inicial:
 
-- ingreso automático de demandas al Poder Judicial;
+- cualquier integración, consulta automatizada, obtención o envío de datos con
+  la Oficina Judicial Virtual;
 - almacenamiento de credenciales judiciales;
-- scraping permanente de la Oficina Judicial Virtual;
 - cálculo automático definitivo de plazos judiciales;
 - automatización integral de materias judiciales;
 - inteligencia artificial como núcleo obligatorio de la solución.
