@@ -41,9 +41,9 @@ anonimizados. No se deben incorporar nombres de clientes, RUT, RIT reales,
 antecedentes jurídicos identificables, credenciales, secretos ni documentos
 originales del caso de estudio.
 
-La versión 1 centraliza la gestión interna. No automatiza el ingreso de demandas
-a la Oficina Judicial Virtual, no almacena credenciales judiciales y no calcula
-plazos jurídicos de forma definitiva.
+La versión 1 centraliza la gestión interna. No se conecta con la Oficina Judicial
+Virtual para consultar, obtener, enviar o sincronizar información; tampoco
+almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiva.
 
 ## Estado
 
