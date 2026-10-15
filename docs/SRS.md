@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.3
+**Versión del documento:** 0.4
 
 **Estado:** En elaboración
 
@@ -15,6 +15,7 @@
 | 0.1 | 2026-10-14 | Creación de la estructura inicial | Equipo del proyecto |
 | 0.2 | 2026-10-14 | Definición inicial de actores, servicios externos y responsabilidades | Equipo del proyecto |
 | 0.3 | 2026-10-14 | Consolidación del alcance, exclusiones, supuestos y dependencias | Equipo del proyecto |
+| 0.4 | 2026-10-14 | Definición inicial de reglas del negocio y asuntos abiertos | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -342,8 +343,88 @@ verificación.
 
 ### 3.4 Reglas del negocio
 
-Las reglas del negocio tendrán identificadores `RN-###` y se vincularán con los
-requisitos funcionales que las implementen.
+Las reglas del negocio expresan restricciones y decisiones del dominio sin
+depender de una tecnología específica. Se utilizan los siguientes estados:
+
+- **Vigente:** deriva de una decisión estable de alcance o control del proyecto.
+- **Propuesta:** es necesaria para completar la especificación, pero requiere
+  validación detallada con los socios.
+
+Una regla propuesta no debe implementarse como decisión irreversible antes de
+resolver su validación. Los requisitos funcionales indicarán qué reglas aplican
+a cada comportamiento.
+
+#### 3.4.1 Estudio, usuarios y autorización
+
+| ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
+|---|---|---|---|---|---|
+| RN-001 | Pertenencia al estudio | Todo usuario, cliente, caso y registro operativo debe pertenecer al estudio que lo administra. | ALC-01, ALC-02, ALC-03 | Vigente | La versión 1 se valida con un estudio; cualquier aislamiento entre varios estudios debe verificarse técnicamente antes de habilitarse. |
+| RN-002 | Usuario identificable | Toda acción autenticada debe asociarse con un usuario interno identificable y un rol vigente. | ACT-01, ACT-02, ACT-03 | Vigente | Las acciones automatizadas, si existen, deben identificarse como servicio y no atribuirse a una persona. |
+| RN-003 | Mínimo privilegio | Un usuario solo puede consultar o modificar información autorizada por su rol y por el alcance asignado. | Restricciones generales; matriz inicial de responsabilidades | Vigente | La matriz detallada de permisos permanece pendiente de validación. |
+| RN-004 | Administración restringida | Solo el perfil autorizado de socio propietario o administrador puede administrar usuarios, roles y catálogos. | ACT-01; matriz inicial de responsabilidades | Propuesta | Debe validarse si existirá más de un administrador y cómo se recuperará el acceso. |
+
+#### 3.4.2 Clientes y datos de contacto
+
+| ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
+|---|---|---|---|---|---|
+| RN-005 | Identificador interno del cliente | Cada cliente debe poseer un identificador interno único dentro del estudio. | ALC-02; necesidad de trazabilidad cliente–caso | Vigente | El identificador interno no sustituye documentos oficiales ni debe exponer datos sensibles innecesarios. |
+| RN-006 | Relación cliente–caso | Cada caso debe vincularse con un cliente y un cliente puede relacionarse con uno o más casos. | ALC-02, ALC-03 | Vigente | Los casos con múltiples personas relacionadas requieren una regla adicional antes de implementarse. |
+| RN-007 | Datos mínimos de contacto | Un cliente solo puede considerarse habilitado para el flujo operativo cuando posee los datos mínimos definidos por el estudio. | Hallazgo sobre campos incompletos y pérdida histórica de contactos | Propuesta | Los campos obligatorios y las excepciones deben validarse con los socios y documentarse en #6. |
+| RN-008 | Actualización trazable de contacto | Los cambios en datos de contacto deben conservar fecha y usuario responsable. | ALC-02, ALC-07 | Propuesta | Debe definirse qué valores anteriores se conservan y durante cuánto tiempo. |
+
+#### 3.4.3 Casos, estados y asignaciones
+
+| ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
+|---|---|---|---|---|---|
+| RN-009 | Identificador interno del caso | Cada caso debe poseer un identificador interno único dentro del estudio. | ALC-03 | Vigente | El identificador interno es independiente de un eventual RIT o ROL. |
+| RN-010 | Datos obligatorios del caso activo | Todo caso activo debe tener al menos cliente, estado, etapa y responsable vigente. | ALC-03; métrica del proyecto | Vigente | Los campos adicionales y las condiciones para estados no activos deben definirse en #4 y #6. |
+| RN-011 | Catálogos controlados | Los estados, etapas y tipos de causa deben seleccionarse desde catálogos autorizados. | ALC-05; hallazgo de estados de texto libre | Vigente | Los valores, transiciones permitidas y responsables de mantenerlos requieren validación. |
+| RN-012 | Identificadores judiciales no inventados | El RIT, ROL, tribunal u otro antecedente judicial se registra solo cuando está disponible; su ausencia inicial no autoriza completar valores ficticios. | Flujo observado; separación respecto de la OJV | Vigente | La obligatoriedad dependerá de la etapa y debe precisarse en los requisitos funcionales. |
+| RN-013 | Responsable principal vigente | Cada caso activo debe tener un responsable principal vigente. | ALC-04; problema de asignación y trazabilidad | Vigente | La participación de responsables secundarios queda pendiente de validación. |
+| RN-014 | Reasignación histórica | Una reasignación debe cerrar la asignación anterior y crear una nueva, sin sobrescribir la responsabilidad histórica. | ALC-04, ALC-07 | Vigente | Debe definirse si la reasignación exige motivo y quiénes pueden ejecutarla. |
+
+#### 3.4.4 Fechas, seguimiento e historial
+
+| ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
+|---|---|---|---|---|---|
+| RN-015 | Tipo de fecha | Toda fecha de seguimiento debe indicar si corresponde a una referencia judicial o a un control interno. | ALC-06; exclusión EXC-03 | Vigente | Los tipos exactos y campos obligatorios deben validarse. |
+| RN-016 | Responsabilidad sobre la fecha | Toda fecha que requiera seguimiento debe asociarse con un responsable o mecanismo de control definido. | ALC-06, ALC-09 | Propuesta | Debe acordarse si el responsable corresponde al caso, a la fecha o a ambos. |
+| RN-017 | Sin determinación jurídica automática | El sistema puede registrar y mostrar fechas, pero no determina de forma definitiva plazos judiciales ni reemplaza la revisión profesional. | EXC-03 | Vigente | No admite excepciones dentro de la versión 1. |
+| RN-018 | Registro de cambios críticos | Toda acción definida como crítica debe conservar usuario, fecha, tipo de acción y valores relevantes del cambio. | ALC-07 | Vigente | El catálogo de acciones críticas debe completarse en #4. |
+| RN-019 | Protección del historial | Los usuarios comunes no pueden eliminar ni alterar silenciosamente las entradas del historial. | ACT-01, ACT-02, ACT-03; restricciones generales | Vigente | Las correcciones administrativas deben generar una nueva evidencia trazable. |
+
+#### 3.4.5 Anexo de información y autorización
+
+| ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
+|---|---|---|---|---|---|
+| RN-020 | Plantilla aprobada | El anexo imprimible se genera únicamente desde una plantilla vigente y aprobada por los socios. | ALC-10; estrategia documental del proyecto | Vigente | La aprobación de contenido no constituye por sí sola validación legal integral. |
+| RN-021 | Folio y versión | Todo anexo generado debe poseer folio y versión de plantilla identificables. | ALC-10 | Vigente | El formato del folio y la regla de unicidad deben definirse en #4. |
+| RN-022 | Firma fuera de la plataforma | El cliente revisa y firma el anexo fuera de la plataforma; el sistema no incorpora un portal de clientes ni firma electrónica. | EXC-08, EXC-09 | Vigente | No admite excepciones dentro de la versión 1. |
+| RN-023 | Control del respaldo | El personal autorizado registra entrega, firma manuscrita, estado y referencia al respaldo archivado. | ALC-10 | Vigente | El sistema conserva la referencia; la ubicación y conservación del respaldo deben validarse en #6. |
+| RN-024 | Separación de finalidades | La plantilla debe distinguir tratamientos necesarios de autorizaciones opcionales y no asumir que el consentimiento es la única base aplicable. | Estrategia de privacidad del proyecto | Vigente | Requiere revisión jurídica antes de utilizar datos reales. |
+
+#### 3.4.6 Servicios externos, exportaciones y OJV
+
+| ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
+|---|---|---|---|---|---|
+| RN-025 | Creación autorizada en Calendar | Un evento de Google Calendar solo se crea por una acción autorizada del usuario y a partir de datos ya registrados. | ALC-11, DEP-02 | Vigente | Una falla externa no modifica ni elimina la fecha interna. |
+| RN-026 | Referencia a OneDrive | La plataforma conserva una referencia autorizada al recurso de OneDrive y no duplica el documento jurídico. | ALC-12, DEP-03 | Vigente | El acceso efectivo depende de los permisos externos y su falla no debe alterar el caso. |
+| RN-027 | Datos anonimizados para Gemini | La prueba de Gemini solo puede recibir antecedentes ficticios o anonimizados aprobados para la prueba. | ALC-13, SUP-05 | Vigente | Si no se puede garantizar esta condición, la prueba no se ejecuta. |
+| RN-028 | Revisión humana de Gemini | Toda sugerencia de Gemini debe ser revisada, aceptada o rechazada por una persona autorizada y nunca modifica fichas automáticamente. | ALC-13, EXT-03 | Vigente | La indisponibilidad o rechazo mantiene disponible el registro manual completo. |
+| RN-029 | Exportación autorizada | Una exportación solo puede incluir información permitida para el perfil y el propósito autorizado. | ALC-14; restricciones de acceso | Vigente | Formatos, campos, justificación y trazabilidad de la exportación deben definirse en #4 y #6. |
+| RN-030 | Independencia absoluta de la OJV | La plataforma no consulta, obtiene, envía ni sincroniza información con la OJV y no almacena credenciales judiciales. | EXC-01, EXC-02 | Vigente | No admite excepciones dentro de la versión 1. |
+
+#### 3.4.7 Asuntos abiertos de las reglas
+
+| ID | Asunto | Acción requerida | Issue relacionado |
+|---|---|---|---|
+| AR-01 | Campos mínimos de clientes y casos. | Validar obligatoriedad, formato y excepciones con los socios. | #4, #6 |
+| AR-02 | Matriz detallada de permisos. | Definir acciones por rol, alcance de registros y operaciones administrativas. | #4, #5 |
+| AR-03 | Catálogos y transiciones. | Validar estados, etapas, tipos y cambios permitidos. | #4 |
+| AR-04 | Acciones críticas. | Acordar el catálogo de eventos que requieren historial detallado. | #4, #5 |
+| AR-05 | Conservación y eliminación. | Establecer periodos, responsables, bloqueo y eliminación autorizada. | #6 |
+| AR-06 | Exportaciones. | Definir formatos, campos, propósitos y evidencia de autorización. | #4, #6 |
+| AR-07 | Responsables secundarios y reasignaciones. | Validar participación, motivo obligatorio y permisos para reasignar. | #4 |
 
 ### 3.5 Requisitos de datos
 
@@ -361,6 +442,7 @@ como declaraciones generales de calidad o cumplimiento.
 |---|---|---|---|---|---|---|
 | Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | Pendiente | Diagrama de casos de uso pendiente | Revisión con socios | Propuesto |
 | Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Propuesto |
+| RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Vigentes y propuestas según cada regla |
 | Por completar | Por completar | Por completar | Por completar | Por completar | Por completar | Propuesto |
 
 ## Anexos
