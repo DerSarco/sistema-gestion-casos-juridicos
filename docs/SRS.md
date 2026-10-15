@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.2
+**Versión del documento:** 0.3
 
 **Estado:** En elaboración
 
@@ -14,6 +14,7 @@
 |---|---|---|---|
 | 0.1 | 2026-10-14 | Creación de la estructura inicial | Equipo del proyecto |
 | 0.2 | 2026-10-14 | Definición inicial de actores, servicios externos y responsabilidades | Equipo del proyecto |
+| 0.3 | 2026-10-14 | Consolidación del alcance, exclusiones, supuestos y dependencias | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -60,14 +61,49 @@ La solución será un sistema interno de gestión. Complementará, sin sustituir
 las plataformas externas utilizadas para la tramitación judicial y el
 almacenamiento documental.
 
-### 2.2 Funciones del producto
+### 2.2 Alcance funcional del producto
 
-- Registrar clientes y casos.
-- Asignar responsables y conservar las reasignaciones.
-- Administrar estados y etapas estandarizadas.
-- Registrar fechas relevantes y responsables.
-- Mantener historial y trazabilidad de cambios críticos.
-- Consultar carga de trabajo y reportes autorizados.
+#### 2.2.1 Capacidades incluidas en la versión 1
+
+| ID | Capacidad incluida | Resultado esperado |
+|---|---|---|
+| ALC-01 | Administrar usuarios internos y roles autorizados. | Cada usuario opera con un perfil identificable y permisos acordes con sus funciones. |
+| ALC-02 | Registrar y mantener clientes con sus datos de contacto autorizados. | La información mínima del cliente se encuentra vinculada de forma trazable con sus casos. |
+| ALC-03 | Registrar y mantener casos con un identificador interno, estado, etapa y responsable. | Cada caso activo posee los datos obligatorios definidos por las reglas del negocio. |
+| ALC-04 | Asignar y reasignar responsables. | El sistema conserva la responsabilidad actual y el historial de reasignaciones. |
+| ALC-05 | Administrar catálogos de estados, etapas y tipos autorizados. | Los usuarios seleccionan valores normalizados en lugar de crear variantes de texto libre. |
+| ALC-06 | Registrar fechas relevantes, responsables y observaciones operativas. | La información queda disponible para consulta y control interno sin calcular plazos jurídicos definitivos. |
+| ALC-07 | Mantener historial de cambios críticos. | Las acciones definidas como críticas conservan usuario, fecha y cambio realizado. |
+| ALC-08 | Buscar y consultar información autorizada. | El usuario localiza clientes o casos sin acceder a registros fuera de sus permisos. |
+| ALC-09 | Consultar carga de trabajo, pendientes y reportes autorizados. | Cada perfil obtiene una vista coherente con su responsabilidad y nivel de acceso. |
+| ALC-10 | Generar el anexo imprimible de información y autorización desde una plantilla aprobada. | El personal registra folio, versión, entrega, firma manuscrita, estado y referencia al respaldo archivado. |
+| ALC-11 | Crear de forma controlada eventos autorizados en Google Calendar. | Una falla externa no elimina ni modifica los datos internos del caso. |
+| ALC-12 | Mantener una referencia autorizada a recursos conservados en OneDrive. | La plataforma no duplica documentos ni reemplaza los permisos del repositorio externo. |
+| ALC-13 | Ejecutar una prueba de concepto de asistencia con Gemini sobre antecedentes anonimizados. | El servicio propone un resumen o clasificación que requiere revisión humana y nunca modifica registros automáticamente. |
+| ALC-14 | Exportar información cuando el perfil y el propósito lo permitan. | La exportación respeta los permisos y controles que se definan en los requisitos específicos. |
+
+Estas capacidades describen el límite funcional general. Los requisitos
+`RF-###`, las reglas `RN-###` y sus criterios de aceptación precisarán el
+comportamiento verificable de cada una.
+
+#### 2.2.2 Exclusiones de la versión 1
+
+| ID | Exclusión | Tratamiento |
+|---|---|---|
+| EXC-01 | Cualquier comunicación técnica con la OJV. | La plataforma no consulta, obtiene, envía ni sincroniza información con la OJV. |
+| EXC-02 | Almacenamiento de credenciales judiciales. | Las credenciales permanecen completamente fuera del sistema. |
+| EXC-03 | Cálculo automático definitivo de plazos judiciales. | Las fechas se registran para control interno y requieren interpretación profesional. |
+| EXC-04 | Automatización de la estrategia jurídica o toma autónoma de decisiones. | Las decisiones permanecen bajo responsabilidad humana. |
+| EXC-05 | Inteligencia artificial como núcleo o requisito para operar. | La prueba de concepto es opcional y posee un flujo manual alternativo. |
+| EXC-06 | Reemplazo de OneDrive como repositorio documental. | La plataforma conserva referencias autorizadas, no los documentos jurídicos. |
+| EXC-07 | Sincronización bidireccional completa con Google Calendar. | La integración se limita a la creación controlada de eventos autorizados. |
+| EXC-08 | Portal para clientes y aplicación móvil nativa. | Los clientes no operan la plataforma y la interfaz prevista es web responsiva. |
+| EXC-09 | Facturación, contabilidad y firma electrónica. | Estas funciones no forman parte del problema ni de los objetivos de la versión 1. |
+| EXC-10 | Migración histórica completa o uso cotidiano con casos reales durante el proyecto académico. | La construcción y aceptación utilizan datos ficticios o anonimizados. |
+
+Una exclusión solo puede pasar al alcance mediante una decisión registrada,
+análisis de impacto y actualización del SRS, backlog, riesgos y plan del
+proyecto.
 
 ### 2.3 Características de los usuarios y actores externos
 
@@ -207,24 +243,58 @@ acceso.
 - Las necesidades específicas de accesibilidad deben levantarse y transformarse
   en requisitos no funcionales medibles.
 
-### 2.4 Restricciones
+### 2.4 Restricciones generales
 
+- La OJV queda fuera de todas las interfaces del sistema.
 - El sistema no almacenará credenciales judiciales.
-- El sistema no se conectará con la OJV para consultar, obtener, enviar o
-  sincronizar información.
-- Las pruebas utilizarán datos ficticios o anonimizados.
+- La construcción, las pruebas y la aceptación académica utilizarán datos
+  ficticios o anonimizados.
 - El tratamiento de datos reales requerirá una aprobación previa jurídica,
-  técnica y organizacional.
+  técnica y organizacional. Sin ella, el sistema permanecerá en preproducción.
+- Los permisos se aplicarán por rol y autorización, siguiendo el principio de
+  mínimo privilegio.
+- Las acciones críticas definidas en los requisitos conservarán trazabilidad y no
+  podrán alterarse silenciosamente por usuarios comunes.
+- Las integraciones externas no podrán provocar pérdida de datos internos ni
+  impedir la continuidad de los flujos manuales esenciales.
+- La versión 1 terminará con pruebas y aceptación con los socios; esta aceptación
+  no equivale a una autorización automática para uso productivo con datos reales.
 
-### 2.5 Supuestos y dependencias
+### 2.5 Supuestos
 
-Los supuestos y dependencias se registrarán como elementos verificables, con un
-responsable y una acción asociada cuando puedan afectar el alcance.
+| ID | Supuesto | Estado | Condición de validación | Efecto si no se cumple |
+|---|---|---|---|---|
+| SUP-01 | Los perfiles iniciales administrador, abogado y asistente cubren las funciones internas prioritarias. | Pendiente de validación detallada | Revisión de la matriz de permisos con los socios. | Ajustar actores, permisos, requisitos y casos de uso antes de implementar autorización. |
+| SUP-02 | Los usuarios de prueba dispondrán de navegador actualizado y conexión a internet durante la aceptación. | Supuesto de trabajo | Confirmación previa a la sesión de prueba. | Preparar alternativa local o reprogramar las pruebas dependientes de servicios remotos. |
+| SUP-03 | Los socios podrán validar catálogos, campos mínimos, permisos y flujos prioritarios. | Confirmado como compromiso del proceso, fechas por coordinar | Registro de revisiones y decisiones en issues o minutas anonimizadas. | Mantener los elementos afectados en estado propuesto y no tratarlos como aceptados. |
+| SUP-04 | Existirán cuentas de prueba y autorizaciones suficientes para evaluar Calendar y OneDrive. | Pendiente | Prueba técnica con cuentas sin información real. | Aplicar el flujo manual y conservar la integración como no verificada. |
+| SUP-05 | La prueba de Gemini podrá realizarse con antecedentes ficticios o anonimizados. | Pendiente de validación técnica | Verificación del conjunto de prueba y revisión de privacidad antes del envío. | No ejecutar la prueba externa y mantener el registro manual. |
+| SUP-06 | El volumen y concurrencia requeridos serán compatibles con un estudio pequeño. | No medido | Levantamiento de usuarios simultáneos, volumen de casos y crecimiento esperado. | Ajustar requisitos de rendimiento, arquitectura y pruebas de carga. |
 
-### 2.6 Distribución futura de requisitos
+Los supuestos pendientes no pueden presentarse como hechos confirmados. Cada uno
+debe resolverse o transformarse en una restricción, requisito o riesgo antes de
+que afecte una decisión irreversible.
 
-Las funciones excluidas se conservarán en el backlog como posibilidades para
-versiones futuras y no se implementarán de manera implícita.
+### 2.6 Dependencias externas
+
+| ID | Dependencia | Uso previsto | Comportamiento ante indisponibilidad |
+|---|---|---|---|
+| DEP-01 | Participación de los socios propietarios | Validar requisitos, reglas operativas, prototipos y aceptación. | Registrar la validación como pendiente y no asumir aprobación. |
+| DEP-02 | Google Calendar | Crear eventos autorizados desde una fecha registrada. | Conservar los datos internos, informar el error y permitir continuar sin crear el evento. |
+| DEP-03 | OneDrive | Acceder mediante una referencia autorizada al recurso externo. | Conservar la referencia, informar la indisponibilidad y no modificar permisos externos. |
+| DEP-04 | Gemini API | Ejecutar la prueba opcional de resumen y clasificación sobre datos anonimizados. | Omitir la sugerencia y permitir completar todo el registro manualmente. |
+| DEP-05 | Entorno web de preproducción y base de datos de pruebas | Permitir la revisión temporal con datos ficticios o anonimizados. | Aplicar respaldo y restauración; utilizar una alternativa local si la indisponibilidad impide la sesión. |
+
+La OJV no es una dependencia de software de la versión 1. Su utilización manual
+por los profesionales ocurre fuera de la plataforma y una indisponibilidad de la
+OJV no cambia el funcionamiento interno especificado para este sistema.
+
+### 2.7 Distribución futura de requisitos
+
+Las funciones excluidas pueden conservarse como antecedentes para versiones
+futuras, pero no se implementarán de manera implícita. Su eventual evaluación
+requerirá un issue, análisis de privacidad y seguridad, justificación de valor,
+criterios de aceptación y una decisión formal de alcance.
 
 ## 3. Requisitos específicos
 
@@ -290,6 +360,7 @@ como declaraciones generales de calidad o cumplimiento.
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
 | Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | Pendiente | Diagrama de casos de uso pendiente | Revisión con socios | Propuesto |
+| Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Propuesto |
 | Por completar | Por completar | Por completar | Por completar | Por completar | Por completar | Propuesto |
 
 ## Anexos

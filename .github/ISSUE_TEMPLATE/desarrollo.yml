@@ -1,43 +1,117 @@
-name: Desarrollo
-description: Implementar, corregir o probar una unidad funcional del sistema.
+name: "Trabajo de desarrollo"
+description: "Implementar, corregir o probar una unidad técnica trazable."
 title: "[Desarrollo] "
+labels:
+  - enhancement
+assignees: []
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Todo cambio debe vincularse con requisitos aprobados y utilizar datos ficticios o anonimizados.
+        Después de crear el issue, ajuste las etiquetas y asigne el milestone correspondiente.
+
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo de trabajo
+      options:
+        - Nueva funcionalidad
+        - Corrección
+        - Pruebas
+        - Seguridad o privacidad
+        - Refactorización o deuda técnica
+        - Infraestructura o despliegue
+    validations:
+      required: true
+
+  - type: dropdown
+    id: entrega
+    attributes:
+      label: Entrega objetivo
+      description: Esta selección documenta la entrega; asigne también el milestone al issue.
+      options:
+        - v0.2 — Diseño técnico
+        - v0.3 — Construcción y pruebas
+        - v1.0 — Validación y entrega
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad
+      options:
+        - Alta
+        - Media
+        - Baja
+    validations:
+      required: true
+
   - type: textarea
     id: objetivo
     attributes:
       label: Objetivo
       description: Describa el resultado observable que debe producir el issue.
+      placeholder: "Implementar... para permitir..."
     validations:
       required: true
+
   - type: textarea
     id: alcance
     attributes:
       label: Alcance incluido y excluido
+      placeholder: |
+        Incluye:
+        - ...
+
+        Excluye:
+        - ...
     validations:
       required: true
+
   - type: textarea
     id: requisitos
     attributes:
       label: Requisitos relacionados
       description: Enumere los identificadores RF, RNF y RN aplicables.
+      placeholder: "RF-###, RNF-### y RN-###."
     validations:
       required: true
+
   - type: textarea
     id: criterios
     attributes:
       label: Criterios de aceptación
-      description: Incluya verificaciones funcionales y técnicas.
+      value: |
+        - [ ] Resultado funcional verificable.
+        - [ ] Pruebas aplicables ejecutadas.
+        - [ ] Documentación y diagramas actualizados cuando corresponde.
     validations:
       required: true
+
   - type: textarea
     id: pruebas
     attributes:
       label: Evidencia y pruebas esperadas
+      description: Indique pruebas, capturas anonimizadas, registros o mediciones necesarias.
     validations:
       required: true
+
   - type: textarea
     id: riesgos
     attributes:
       label: Dependencias, riesgos y privacidad
+      description: Incluya servicios externos, datos afectados, fallas previsibles y controles.
     validations:
       required: true
+
+  - type: checkboxes
+    id: confirmaciones
+    attributes:
+      label: Confirmaciones
+      options:
+        - label: El trabajo está vinculado con requisitos o decisiones registradas.
+          required: true
+        - label: No se utilizarán datos personales reales, secretos ni credenciales.
+          required: true

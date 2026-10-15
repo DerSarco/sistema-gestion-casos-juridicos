@@ -1,39 +1,107 @@
-name: Requisito
-description: Proponer, aclarar o modificar un requisito del SRS.
+name: "Requisito del SRS"
+description: "Proponer, aclarar o modificar un requisito verificable de la especificación."
 title: "[SRS] "
 labels:
+  - requirement
   - documentation
+assignees: []
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Complete el formulario sin incluir datos reales del estudio, clientes o causas.
+        Después de crear el issue, asigne el milestone correspondiente.
+
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo de requisito
+      description: Seleccione la clasificación principal.
+      options:
+        - Funcional
+        - No funcional
+        - Regla del negocio
+        - Datos y privacidad
+        - Interfaz o integración autorizada
+        - Aclaración de alcance
+    validations:
+      required: true
+
+  - type: dropdown
+    id: entrega
+    attributes:
+      label: Entrega objetivo
+      description: Esta selección documenta la entrega; asigne también el milestone al issue.
+      options:
+        - v0.1 — Especificación
+        - v0.2 — Diseño técnico
+        - v0.3 — Construcción y pruebas
+        - v1.0 — Validación y entrega
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad
+      options:
+        - Alta
+        - Media
+        - Baja
+    validations:
+      required: true
+
   - type: textarea
     id: contexto
     attributes:
       label: Contexto y fuente
-      description: Indique el origen, necesidad o evidencia del requisito.
+      description: Explique la necesidad y distinga evidencia, regla, supuesto o decisión.
+      placeholder: "Ejemplo: el levantamiento identificó que cada caso activo requiere un responsable identificable."
     validations:
       required: true
+
   - type: textarea
     id: propuesta
     attributes:
       label: Requisito propuesto
-      description: Redacte el comportamiento o atributo esperado de forma verificable.
+      description: Redacte un comportamiento o atributo inequívoco y verificable.
+      placeholder: "El sistema deberá..."
     validations:
       required: true
+
   - type: textarea
     id: criterios
     attributes:
       label: Criterios de aceptación
-      description: Enumere condiciones observables para verificar el requisito.
+      description: Reemplace los ejemplos por condiciones observables.
+      value: |
+        - [ ] Criterio verificable 1.
+        - [ ] Criterio verificable 2.
     validations:
       required: true
+
   - type: textarea
     id: trazabilidad
     attributes:
       label: Trazabilidad y dependencias
-      description: Indique requisitos, casos de uso, diagramas, pruebas o issues relacionados.
+      description: Indique fuentes, requisitos, reglas, casos de uso, diagramas, pruebas o issues relacionados.
+      placeholder: "Relacionados: RF-###, RNF-###, RN-###, #issue."
+
   - type: textarea
     id: privacidad
     attributes:
       label: Impacto en privacidad y seguridad
-      description: Declare datos involucrados, riesgos y controles aplicables.
+      description: Identifique datos involucrados, riesgos, permisos y controles aplicables.
+      placeholder: "Datos tratados, nivel de acceso, minimización y verificación prevista."
     validations:
       required: true
+
+  - type: checkboxes
+    id: confirmaciones
+    attributes:
+      label: Confirmaciones
+      options:
+        - label: No incluí datos personales reales, credenciales ni antecedentes jurídicos identificables.
+          required: true
+        - label: Verifiqué que la propuesta no amplía silenciosamente el alcance de la versión 1.
+          required: true
