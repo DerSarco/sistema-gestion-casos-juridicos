@@ -44,6 +44,8 @@ issue, no solamente en conversaciones externas.
 - Escribir mensajes de commit en modo imperativo y explicar el propósito.
 - Referenciar el issue cuando sea útil, por ejemplo: `docs: define RF-001 (#12)`.
 - Completar la plantilla del pull request.
+- Asignar al pull request al menos una etiqueta descriptiva y el milestone de la
+  entrega. Por defecto, deben coincidir con los del issue principal asociado.
 - Adjuntar capturas o evidencia de pruebas cuando el cambio tenga resultado
   visual o funcional.
 - Solicitar revisión antes de integrar a `main`.
