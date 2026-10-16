@@ -76,6 +76,8 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 
 ## Estado
 
-Especificación v0.1 publicada. El milestone v0.2 se encuentra en construcción y
-ya posee arquitectura, diagramas, esquema PostgreSQL y un flujo funcional de
-clientes y casos sobre memoria temporal con datos ficticios.
+La versión v0.2 incorpora la especificación revisada, arquitectura, diagramas,
+esquema PostgreSQL, verificación automática y flujos funcionales de clientes y
+casos sobre memoria temporal con datos ficticios. La autenticación y la
+autorización permanecen planificadas para v0.3; esta versión no debe desplegarse
+como sistema productivo ni utilizar datos reales.
