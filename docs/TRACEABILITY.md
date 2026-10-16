@@ -51,10 +51,10 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 | RF-001 | ALC-01; RN-001 a RN-003 | CU-001 | DF-001: acceso válido, inválido e inactivo | #4 | Especificado; diferido |
 | RF-002 | ALC-01; RN-002 a RN-004 | CU-002 | DF-002: alta, cambio de rol y desactivación | #4 | Especificado; diferido |
 | RF-003 | ALC-01; RN-001 a RN-003 | Todos los CU protegidos | DF-003: matriz positiva y negativa por rol | #4 | Especificado; diferido |
-| RF-004 | ALC-02; RN-001, RN-005, RN-007 | CU-003 | DF-004: registro válido, inválido y coincidencia | #4 | Especificado |
-| RF-005 | ALC-02; RN-003, RN-005, RN-006 | CU-003 | DF-005: consulta autorizada y denegada | #4 | Especificado |
+| RF-004 | ALC-02; RN-001, RN-005, RN-007 | CU-003 | DF-004: `register-client.test.ts` cubre registro válido e inválido | #4, #25 | Verificado en adaptador temporal |
+| RF-005 | ALC-02; RN-003, RN-005, RN-006 | CU-003 | DF-005: listado y búsqueda disponibles; autorización diferida | #4, #25 | Implementado parcialmente; acceso diferido |
 | RF-006 | ALC-02, ALC-07; RN-003, RN-008, RN-018 | CU-003, CU-007 | DF-006: actualización e historial | #4 | Especificado |
-| RF-007 | ALC-02; RN-005, RN-007 | CU-003 | DF-007: coincidencia sin fusión automática | #4 | Especificado |
+| RF-007 | ALC-02; RN-005, RN-007 | CU-003 | DF-007: `register-client.test.ts` cubre advertencia y confirmación separada | #4, #25 | Verificado en adaptador temporal |
 | RF-008 | ALC-03; RN-006, RN-009, RN-012 | CU-004 | DF-008: creación con antecedentes judiciales ausentes | #4 | Especificado |
 | RF-009 | ALC-03; RN-007, RN-010, RN-011, RN-013 | CU-004 | DF-009: activación válida y faltantes | #4 | Especificado |
 | RF-010 | ALC-03, ALC-07; RN-003, RN-010, RN-018 | CU-004, CU-007 | DF-010: lectura y edición por campo autorizado | #4 | Especificado |
