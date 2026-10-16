@@ -1,20 +1,24 @@
 import styles from "./page.module.css";
+import Link from "next/link";
 
 const modules = [
   {
     title: "Clientes",
     description: "Registro y consulta de fichas ficticias vinculadas con sus casos.",
-    status: "Siguiente incremento",
+    status: "Disponible",
+    href: "/clientes",
   },
   {
     title: "Casos",
     description: "Seguimiento de estado, etapa, responsable e historial operativo.",
     status: "Siguiente incremento",
+    href: null,
   },
   {
     title: "Fechas e hitos",
     description: "Control interno sin cálculo automático de plazos judiciales.",
     status: "Planificado",
+    href: null,
   },
 ];
 
@@ -45,11 +49,21 @@ export default function Home() {
 
         <div className={styles.grid}>
           {modules.map((module) => (
-            <article className={styles.card} key={module.title}>
-              <span>{module.status}</span>
-              <h3>{module.title}</h3>
-              <p>{module.description}</p>
-            </article>
+            module.href ? (
+              <Link className={styles.cardLink} href={module.href} key={module.title}>
+                <article className={styles.card}>
+                  <span>{module.status}</span>
+                  <h3>{module.title}</h3>
+                  <p>{module.description}</p>
+                </article>
+              </Link>
+            ) : (
+              <article className={styles.card} key={module.title}>
+                <span>{module.status}</span>
+                <h3>{module.title}</h3>
+                <p>{module.description}</p>
+              </article>
+            )
           ))}
         </div>
       </section>

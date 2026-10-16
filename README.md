@@ -76,4 +76,5 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 ## Estado
 
 Especificación v0.1 publicada. El milestone v0.2 se encuentra en construcción y
-ya posee arquitectura, diagramas y una base Next.js verificable.
+ya posee arquitectura, diagramas, esquema PostgreSQL y un flujo funcional de
+clientes sobre memoria temporal con datos ficticios.
