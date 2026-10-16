@@ -80,6 +80,7 @@ Desktop.ini
 
 # TypeScript y herramientas de calidad
 *.tsbuildinfo
+next-env.d.ts
 .eslintcache
 .stylelintcache
 
