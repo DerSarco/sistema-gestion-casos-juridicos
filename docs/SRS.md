@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.7
+**Versión del documento:** 0.8
 
 **Estado:** En elaboración
 
@@ -19,6 +19,7 @@
 | 0.5 | 2026-10-16 | Especificación de interfaces y requisitos funcionales | Equipo del proyecto |
 | 0.6 | 2026-10-16 | Especificación de requisitos no funcionales medibles | Equipo del proyecto |
 | 0.7 | 2026-10-16 | Modelo conceptual de datos, privacidad y ciclo de vida | Equipo del proyecto |
+| 0.8 | 2026-10-16 | Matriz detallada de trazabilidad de requisitos y pruebas previstas | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -676,6 +677,11 @@ como declaraciones generales de calidad o cumplimiento.
 
 ## 4. Matriz de trazabilidad
 
+La matriz detallada y mantenible se encuentra en
+[`TRACEABILITY.md`](TRACEABILITY.md). Esta relaciona cada `RF-###`, `RNF-###` y
+`RD-###` con su fuente, reglas, caso de uso o modelo previsto, verificación,
+issue y estado. La tabla siguiente resume los grupos cubiertos.
+
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
 | Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | Pendiente | Diagrama de casos de uso pendiente | Revisión con socios | Propuesto |
@@ -684,7 +690,7 @@ como declaraciones generales de calidad o cumplimiento.
 | RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | Pendiente | Casos de uso y secuencia pendientes | Criterios definidos; pruebas pendientes | Propuesto |
 | RNF-001 a RNF-028 | Informe final, riesgos y plan integrado de pruebas | #5 | Pendiente | Arquitectura y despliegue pendientes | Métodos definidos; ejecución pendiente | Propuesto |
 | ED-01 a ED-14; RD-001 a RD-015 | Informe final, estrategia de privacidad y reglas del negocio | #6 | Pendiente | Diagrama de clases pendiente | Criterios definidos; validación y pruebas pendientes | Propuesto |
-| Por completar | Por completar | Por completar | Por completar | Por completar | Por completar | Propuesto |
+| Matriz detallada de RF, RNF y RD | SRS y backlog de especificación | #7 | CU-001 a CU-013 reservados | Diagramas pendientes | DF, DNF y DD definidos como pruebas previstas | Especificado |
 
 ## Anexos
 
