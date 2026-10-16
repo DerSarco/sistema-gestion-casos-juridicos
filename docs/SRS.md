@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.4
+**Versión del documento:** 0.5
 
 **Estado:** En elaboración
 
@@ -16,6 +16,7 @@
 | 0.2 | 2026-10-14 | Definición inicial de actores, servicios externos y responsabilidades | Equipo del proyecto |
 | 0.3 | 2026-10-14 | Consolidación del alcance, exclusiones, supuestos y dependencias | Equipo del proyecto |
 | 0.4 | 2026-10-14 | Definición inicial de reglas del negocio y asuntos abiertos | Equipo del proyecto |
+| 0.5 | 2026-10-16 | Especificación de interfaces y requisitos funcionales | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -303,34 +304,108 @@ criterios de aceptación y una decisión formal de alcance.
 
 #### 3.1.1 Interfaces de usuario
 
-Por especificar mediante prototipos, criterios de accesibilidad y pruebas de
-aceptación.
+La versión 1 ofrecerá una interfaz web responsiva para los tres perfiles internos.
+Las vistas y acciones disponibles dependerán del rol y de la autorización sobre
+el registro. Los prototipos y requisitos no funcionales precisarán navegación,
+mensajes de validación, accesibilidad y tamaños de pantalla.
 
 #### 3.1.2 Interfaces de software
 
-Por especificar después de validar las integraciones y sus restricciones.
+- PostgreSQL conservará los datos relacionales y aplicará restricciones de
+  integridad complementarias a las reglas de aplicación.
+- Google Calendar recibirá solicitudes expresas para crear eventos seleccionados.
+- OneDrive se utilizará mediante referencias autorizadas a recursos externos; la
+  plataforma no copiará documentos ni modificará permisos externos.
+- Gemini recibirá solamente antecedentes ficticios o anonimizados durante la
+  prueba de concepto y devolverá sugerencias sujetas a revisión humana.
+- La OJV no constituye una interfaz de software: no existirá comunicación
+  técnica de entrada o salida con ella.
 
 #### 3.1.3 Interfaces de comunicaciones
 
-Por especificar junto con los requisitos de seguridad y disponibilidad.
+Las comunicaciones entre navegador, aplicación, base de datos y servicios
+autorizados utilizarán canales cifrados en el entorno desplegado. Las
+credenciales y secretos se mantendrán fuera del código y del repositorio. Los
+tiempos de espera, reintentos y mensajes ante fallas se precisarán en los
+requisitos no funcionales y en el diseño técnico.
 
 ### 3.2 Requisitos funcionales
 
-Cada requisito funcional utilizará la siguiente ficha:
+Los requisitos utilizan prioridad alta, media o baja. Una prioridad alta indica
+que la capacidad es necesaria para aceptar la versión 1; no determina por sí
+sola el orden de construcción. Por decisión de planificación, la autenticación y
+la administración de cuentas se implementarán después del primer incremento
+funcional, sin retirar sus criterios de aceptación finales.
 
-| Campo | Contenido |
-|---|---|
-| ID | RF-### |
-| Nombre | Nombre breve y único |
-| Descripción | Comportamiento requerido |
-| Actor o fuente | Origen del requisito |
-| Precondiciones | Estado necesario antes de ejecutarlo |
-| Flujo y reglas | Comportamiento y reglas del negocio |
-| Resultado | Estado observable al finalizar |
-| Excepciones | Errores y flujos alternativos |
-| Prioridad | Alta, media o baja |
-| Criterios de aceptación | Condiciones verificables |
-| Trazabilidad | Issue, caso de uso y prueba relacionados |
+#### 3.2.1 Acceso y administración interna
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-001 | Autenticar usuario interno | ACT-01, ACT-02, ACT-03 | Permitir el acceso solamente a una cuenta interna activa y establecer su estudio, usuario y rol para la sesión. | Cuenta interna registrada y activa. | Sesión identificable o acceso rechazado. | Credenciales inválidas, cuenta inactiva o falla del proveedor. | Alta; implementación diferida | Una cuenta válida accede; cuentas inválidas o inactivas son rechazadas; no existe registro público de usuarios. | RN-001, RN-002, RN-003 |
+| RF-002 | Administrar cuentas y roles | ACT-01 | Crear, activar, desactivar y asignar rol a cuentas internas sin exponer credenciales. | Administrador autenticado y autorizado. | Cuenta y rol vigentes con acción trazada. | Correo duplicado, rol inexistente o intento no autorizado. | Alta; implementación diferida | Solo ACT-01 ejecuta las operaciones; una cuenta desactivada no accede; el cambio queda registrado. | RN-002, RN-003, RN-004 |
+| RF-003 | Aplicar autorización | Todos | Verificar en el servidor el rol y el alcance sobre el registro antes de consultar o modificar información. | Identidad de sesión disponible. | Operación permitida o rechazada sin revelar datos. | Sesión ausente, permiso insuficiente o recurso de otro alcance. | Alta; implementación diferida | Todos los escenarios negativos de la matriz de permisos son rechazados; ocultar una acción en la interfaz no sustituye la verificación del servidor. | RN-001, RN-002, RN-003 |
+
+#### 3.2.2 Clientes
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-004 | Registrar cliente | ACT-01, ACT-03; ACT-02 si se autoriza | Capturar los datos mínimos definidos, validar formatos y asignar un identificador interno. | Usuario habilitado y catálogos disponibles. | Cliente registrado dentro del estudio. | Datos obligatorios ausentes, formato inválido o coincidencia potencial. | Alta | Con datos válidos se crea un cliente; con datos inválidos no se persiste; la coincidencia se informa antes de confirmar. | RN-001, RN-005, RN-007 |
+| RF-005 | Consultar cliente | ACT-01, ACT-02, ACT-03 | Mostrar datos de contacto, casos relacionados y estado de completitud según autorización. | Cliente existente y permiso de lectura. | Ficha autorizada visible. | Cliente inexistente o acceso no autorizado. | Alta | Un usuario autorizado visualiza la ficha; un usuario sin permiso no obtiene datos del cliente. | RN-003, RN-005, RN-006 |
+| RF-006 | Actualizar cliente | ACT-01, ACT-03; ACT-02 si se autoriza | Modificar campos permitidos conservando usuario, fecha y cambios relevantes. | Cliente existente y permiso de edición. | Datos actualizados e historial generado. | Validación fallida, conflicto o permiso insuficiente. | Alta | Una actualización válida queda visible y trazada; una inválida no altera la ficha. | RN-003, RN-008, RN-018 |
+| RF-007 | Detectar coincidencias de clientes | ACT-01, ACT-03; ACT-02 si se autoriza | Buscar coincidencias básicas en campos autorizados antes de crear un nuevo cliente. | Datos de identificación o contacto ingresados. | Advertencia de posibles coincidencias sin fusión automática. | Datos insuficientes para comparar. | Media | Las coincidencias configuradas se muestran; el sistema nunca fusiona fichas automáticamente. | RN-005, RN-007 |
+
+#### 3.2.3 Casos, estados y asignaciones
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-008 | Registrar caso | ACT-01, ACT-03; ACT-02 si se autoriza | Crear una ficha única vinculada con un cliente e identificador interno. | Cliente existente y usuario habilitado. | Caso en estado inicial permitido. | Cliente inexistente, datos inválidos o coincidencia de identificador. | Alta | Se crea una sola ficha vinculada al cliente; no se exigen RIT, ROL o tribunal antes de estar disponibles. | RN-006, RN-009, RN-012 |
+| RF-009 | Activar caso | ACT-01, ACT-03; ACT-02 si se autoriza | Validar datos mínimos, estado, etapa y responsable antes de marcar el caso como activo. | Caso existente en estado previo. | Caso activo y validado. | Faltan datos obligatorios o la transición no está permitida. | Alta | Ningún caso queda activo sin cliente, estado, etapa y responsable; se informan todos los faltantes detectados. | RN-007, RN-010, RN-011, RN-013 |
+| RF-010 | Consultar y actualizar caso | ACT-01, ACT-02, ACT-03 | Mostrar la ficha consolidada y permitir modificar campos autorizados. | Caso existente y permiso correspondiente. | Ficha actualizada o solo consultada, con trazabilidad cuando aplica. | Acceso insuficiente, validación fallida o conflicto. | Alta | Los usuarios ven y modifican solo campos permitidos; los cambios críticos generan historial. | RN-003, RN-010, RN-018 |
+| RF-011 | Registrar antecedentes judiciales manualmente | ACT-01, ACT-02, ACT-03 según permiso | Permitir ingresar tribunal, RIT, ROL u otros antecedentes cuando el profesional los obtenga fuera del sistema. | Caso existente y dato disponible. | Antecedente asociado al caso y trazado. | Formato inválido o dato aún no disponible. | Alta | La ausencia inicial no bloquea etapas anteriores; no se inventan valores; no existe consulta técnica a la OJV. | RN-012, RN-030 |
+| RF-012 | Administrar catálogos y transiciones | ACT-01 | Crear, activar, ordenar o desactivar valores permitidos y definir transiciones del flujo. | Administrador autorizado. | Catálogos vigentes sin alterar registros históricos. | Valor en uso, duplicado o transición incompatible. | Alta | Los usuarios seleccionan valores vigentes; desactivar un valor no modifica el historial; una transición no permitida es rechazada. | RN-004, RN-011 |
+| RF-013 | Asignar responsable | ACT-01; otros perfiles si se autoriza | Asociar un responsable principal vigente al caso y registrar quién efectuó la asignación. | Caso y usuario responsable activos. | Asignación vigente e historial. | Responsable inactivo o permiso insuficiente. | Alta | Todo caso activo tiene responsable; la asignación registra usuario y fecha. | RN-013, RN-018 |
+| RF-014 | Reasignar responsable | ACT-01; otros perfiles si se autoriza | Cerrar la asignación vigente y crear una nueva sin sobrescribir la anterior. | Caso con responsable vigente. | Nuevo responsable vigente e historial completo. | Mismo responsable, usuario inactivo o permiso insuficiente. | Alta | El responsable anterior, el nuevo, el ejecutor y la fecha pueden reconstruirse desde el historial. | RN-014, RN-018, RN-019 |
+
+#### 3.2.4 Fechas, alertas e historial
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-015 | Registrar fecha o hito | ACT-01, ACT-02, ACT-03 según permiso | Registrar tipo, fecha, responsable, estado y observación en un caso. | Caso existente. | Fecha interna o referencia judicial visible para seguimiento. | Fecha inválida, tipo inexistente o responsable no permitido. | Alta | Se distingue tipo de fecha y responsable; el sistema no interpreta ni calcula definitivamente un plazo judicial. | RN-015, RN-016, RN-017 |
+| RF-016 | Gestionar alerta | ACT-01, ACT-02, ACT-03 según permiso | Configurar y mostrar una alerta asociada con una fecha registrada y permitir actualizar su estado. | Fecha válida con responsable. | Alerta visible con estado trazable. | Configuración inválida o fecha cerrada. | Alta | Las alertas pendientes aparecen antes o al alcanzar su condición; cerrarlas no elimina la fecha ni el historial. | RN-015, RN-016, RN-018 |
+| RF-017 | Consultar historial del caso | ACT-01, ACT-02, ACT-03 según autorización | Presentar cronológicamente las acciones críticas autorizadas. | Caso existente y permiso de lectura. | Timeline con usuario, fecha, acción y valores relevantes. | Acceso no autorizado. | Alta | Se reconstruyen asignaciones, estados y cambios críticos; usuarios comunes no editan entradas. | RN-018, RN-019 |
+| RF-018 | Registrar corrección administrativa | ACT-01 | Corregir un dato crítico mediante una nueva acción que preserve la evidencia anterior. | Administrador autorizado y motivo registrado. | Valor corregido y nueva entrada de historial. | Motivo ausente o permiso insuficiente. | Media | La corrección no elimina la entrada original y permite identificar motivo, ejecutor y fecha. | RN-019 |
+
+#### 3.2.5 Seguimiento, búsqueda y exportación
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-019 | Buscar y filtrar casos | ACT-01, ACT-02, ACT-03 | Buscar dentro del universo autorizado por identificador, cliente, responsable, estado, etapa u otros filtros aprobados. | Usuario con alcance de lectura. | Lista paginada o mensaje sin resultados. | Filtro inválido o acceso insuficiente. | Alta | Ningún resultado fuera del alcance es revelado; los filtros pueden combinarse y limpiarse. | RN-003, RN-009, RN-011 |
+| RF-020 | Mostrar dashboard por rol | ACT-01, ACT-02, ACT-03 | Presentar indicadores operativos, pendientes, alertas y casos incompletos según el rol. | Datos disponibles y usuario habilitado. | Vista consolidada autorizada. | Sin datos o consulta parcial. | Alta | El administrador ve información global autorizada; abogado y asistente ven solo su alcance; se identifican casos activos incompletos. | RN-003, RN-010, RN-013, RN-016 |
+| RF-021 | Exportar información autorizada | ACT-01 y perfiles expresamente habilitados | Generar una exportación con campos, filtros y finalidad permitidos. | Usuario autorizado y consulta válida. | Archivo o resultado exportable y acción trazada. | Sin resultados, exceso de alcance o formato no permitido. | Media | La exportación no incluye campos fuera del permiso y registra usuario, fecha, filtros y finalidad cuando se defina. | RN-003, RN-018, RN-029 |
+
+#### 3.2.6 Anexo de información y autorización
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-022 | Administrar versión de plantilla | ACT-01 | Registrar una versión aprobada de la plantilla y desactivar versiones reemplazadas. | Aprobación de los socios registrada. | Una versión vigente e historial de versiones. | Versión duplicada o contenido sin aprobación. | Alta | Solo la versión vigente genera anexos nuevos; los anexos existentes conservan su versión original. | RN-020, RN-024 |
+| RF-023 | Generar anexo imprimible | ACT-01, ACT-03; ACT-02 si se autoriza | Generar desde la plantilla vigente un documento con folio y versión para revisión y firma fuera de la plataforma. | Cliente y datos autorizados disponibles. | Anexo imprimible identificado y registro de generación. | Datos requeridos ausentes o plantilla no vigente. | Alta | El documento incluye folio y versión; separa finalidades necesarias y opcionales; no incorpora firma electrónica. | RN-020, RN-021, RN-022, RN-024 |
+| RF-024 | Registrar control del anexo | ACT-01, ACT-03; ACT-02 si se autoriza | Registrar entrega, firma manuscrita, estado y referencia al respaldo archivado. | Anexo generado. | Estado documental trazable. | Folio inexistente, transición no permitida o referencia inválida. | Alta | Se puede identificar folio, versión, entrega, firma, estado, referencia, usuario y fecha sin almacenar la firma como credencial. | RN-021, RN-022, RN-023 |
+
+#### 3.2.7 Servicios externos autorizados
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-025 | Crear evento en Calendar | Usuario autorizado | Solicitar expresamente la creación de un evento desde una fecha ya registrada. | Fecha interna válida y autorización del servicio. | Identificador o estado del evento asociado con la fecha. | Rechazo, tiempo de espera o servicio no disponible. | Media | Diez intentos controlados crean el evento o informan la falla sin eliminar ni modificar la fecha interna. | RN-025 |
+| RF-026 | Mantener referencia OneDrive | Usuario autorizado | Registrar o actualizar una referencia autorizada a una carpeta o recurso existente. | Caso existente y referencia permitida. | Referencia asociada al caso. | Formato inválido o recurso no disponible. | Media | El sistema no copia documentos ni modifica permisos; una referencia inválida genera un mensaje comprensible. | RN-026 |
+| RF-027 | Solicitar asistencia Gemini | ACT-01, ACT-02, ACT-03 según autorización | Enviar bajo solicitud expresa antecedentes aprobados como ficticios o anonimizados y solicitar resumen, materia de catálogo y etiquetas sugeridas. | Usuario autorizado, contenido aprobado y servicio habilitado. | Sugerencia estructurada pendiente de decisión humana. | Contenido no apto, respuesta inválida, rechazo o indisponibilidad. | Media | Ninguna solicitud se envía sin confirmación; solo se usan datos ficticios o anonimizados; la respuesta no altera registros. | RN-027, RN-028 |
+| RF-028 | Resolver sugerencia Gemini | Usuario que solicitó o revisor autorizado | Aceptar, editar o descartar por separado el resumen y la clasificación sugerida antes de guardar. | Sugerencia disponible. | Decisión humana registrada o sugerencia descartada. | Respuesta expirada o usuario sin permiso. | Media | Cada resultado requiere acción humana; una falla o descarte permite completar todo el registro manualmente. | RN-028 |
+| RF-029 | Continuar ante falla externa | Todos | Mantener disponibles los flujos internos esenciales cuando Calendar, OneDrive o Gemini fallen. | Operación externa iniciada. | Datos internos conservados y error comprensible. | Falla interna concurrente. | Alta | La falla no elimina datos ni bloquea el registro manual; queda evidencia técnica suficiente para diagnóstico sin exponer secretos. | RN-025, RN-026, RN-028 |
+
+#### 3.2.8 Restricción funcional de la OJV
+
+| ID | Nombre | Actor | Descripción y flujo | Precondición | Resultado | Excepciones | Prioridad | Criterios de aceptación | Reglas |
+|---|---|---|---|---|---|---|---|---|---|
+| RF-030 | Mantener independencia de la OJV | Todos | Garantizar que ninguna función consulte, obtenga, envíe o sincronice información con la OJV ni solicite credenciales judiciales. | Cualquier flujo del sistema. | OJV ausente de interfaces, secretos, dependencias y tráfico de aplicación. | No admite excepción en la versión 1. | Alta | La revisión de arquitectura, código, variables y pruebas no detecta clientes, credenciales ni llamadas a la OJV. | RN-030 |
 
 ### 3.3 Requisitos no funcionales
 
@@ -443,6 +518,7 @@ como declaraciones generales de calidad o cumplimiento.
 | Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | Pendiente | Diagrama de casos de uso pendiente | Revisión con socios | Propuesto |
 | Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Propuesto |
 | RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Vigentes y propuestas según cada regla |
+| RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | Pendiente | Casos de uso y secuencia pendientes | Criterios definidos; pruebas pendientes | Propuesto |
 | Por completar | Por completar | Por completar | Por completar | Por completar | Por completar | Propuesto |
 
 ## Anexos
