@@ -13,7 +13,7 @@ export default function ClientsPage() {
       <nav aria-label="Navegación principal" className={styles.nav}>
         <Link href="/">Resumen</Link>
         <strong>Clientes</strong>
-        <span aria-disabled="true">Casos · próximo incremento</span>
+        <Link href="/casos">Casos</Link>
       </nav>
 
       <header className={styles.header}>

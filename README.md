@@ -77,4 +77,4 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 
 Especificación v0.1 publicada. El milestone v0.2 se encuentra en construcción y
 ya posee arquitectura, diagramas, esquema PostgreSQL y un flujo funcional de
-clientes sobre memoria temporal con datos ficticios.
+clientes y casos sobre memoria temporal con datos ficticios.
