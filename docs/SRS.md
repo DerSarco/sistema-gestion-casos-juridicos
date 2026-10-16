@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.5
+**Versión del documento:** 0.6
 
 **Estado:** En elaboración
 
@@ -17,6 +17,7 @@
 | 0.3 | 2026-10-14 | Consolidación del alcance, exclusiones, supuestos y dependencias | Equipo del proyecto |
 | 0.4 | 2026-10-14 | Definición inicial de reglas del negocio y asuntos abiertos | Equipo del proyecto |
 | 0.5 | 2026-10-16 | Especificación de interfaces y requisitos funcionales | Equipo del proyecto |
+| 0.6 | 2026-10-16 | Especificación de requisitos no funcionales medibles | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -409,12 +410,72 @@ funcional, sin retirar sus criterios de aceptación finales.
 
 ### 3.3 Requisitos no funcionales
 
-Los requisitos no funcionales se agruparán, al menos, en seguridad y privacidad,
-rendimiento, disponibilidad, usabilidad, accesibilidad, mantenibilidad,
-compatibilidad y respaldo o recuperación.
+Los requisitos no funcionales expresan metas de aceptación del entorno académico
+de pruebas. No constituyen por sí solos una certificación, un SLA comercial ni
+una autorización para utilizar datos reales.
 
-Cada requisito no funcional deberá contener una medida y un método de
-verificación.
+#### 3.3.1 Seguridad y control de acceso
+
+| ID | Requisito | Medida o criterio | Verificación | Prioridad | Fuente |
+|---|---|---|---|---|---|
+| RNF-001 | Las decisiones de autorización deben ejecutarse en el servidor para toda lectura o modificación protegida. | El 100 % de los escenarios negativos de la matriz de permisos es rechazado sin revelar el recurso. | Pruebas de integración y navegador por rol sobre RF-003. | Alta; implementación diferida | R1, R8 del informe; RN-003 |
+| RNF-002 | Las cuentas inactivas o sin rol vigente no deben acceder a funciones protegidas. | Todos los intentos definidos para cuentas inactivas, rol ausente y sesión inválida son rechazados. | Pruebas negativas automatizadas sobre RF-001 y RF-002. | Alta; implementación diferida | R1 del informe |
+| RNF-003 | Los secretos no deben almacenarse en código, historial Git, respuestas al navegador ni registros de aplicación. | Cero secretos detectados en repositorio y artefactos revisados; variables requeridas documentadas solo por nombre. | GitGuardian, revisión de configuración y prueba de respuestas o logs. | Alta | Arquitectura del informe; `.gitignore` |
+| RNF-004 | Las comunicaciones del entorno desplegado deben utilizar cifrado en tránsito. | Todas las URL y conexiones externas del entorno de aceptación usan HTTPS o el canal cifrado administrado correspondiente. | Inspección de despliegue y configuración de proveedores. | Alta | Arquitectura de tres capas |
+| RNF-005 | Las acciones críticas y correcciones administrativas deben conservar evidencia no editable por usuarios comunes. | El 100 % del catálogo de acciones críticas genera usuario, fecha, acción y valores relevantes. | Pruebas de integración y revisión de historial. | Alta | R5, R8 del informe; RN-018, RN-019 |
+| RNF-006 | La versión aceptada no debe mantener vulnerabilidades críticas conocidas en dependencias de producción sin una respuesta documentada. | Cero hallazgos críticos abiertos o cada excepción posee evaluación, mitigación y responsable. | Auditoría del administrador de paquetes y registro de riesgos antes de release. | Alta | OWASP ASVS como guía acotada; plan de riesgos |
+
+#### 3.3.2 Privacidad y protección de datos
+
+| ID | Requisito | Medida o criterio | Verificación | Prioridad | Fuente |
+|---|---|---|---|---|---|
+| RNF-007 | La construcción, pruebas, demostraciones y aceptación deben usar exclusivamente datos ficticios o anonimizados. | Cero datos personales reales o antecedentes jurídicos identificables en base de datos, capturas, fixtures, logs y repositorio. | Revisión previa a cada demostración y escaneo del repositorio. | Alta | EXC-10; estrategia de privacidad |
+| RNF-008 | El uso de datos reales debe permanecer bloqueado hasta aprobar la puerta jurídica, técnica y organizacional. | Existe evidencia aprobada de inventario y minimización, finalidades, derechos, permisos, conservación, proveedores, incidentes y revisión antes de cambiar el modo de preproducción. | Lista de verificación y acta de aprobación; en su ausencia, el entorno permanece con datos ficticios o anonimizados. | Alta | R11 del informe; A-28 |
+| RNF-009 | Los registros y mensajes de error no deben exponer datos sensibles, secretos ni contenido jurídico completo. | Los casos de prueba de error muestran identificadores técnicos mínimos y mensajes comprensibles, sin contenido protegido. | Inspección automatizada y manual de logs y respuestas de error. | Alta | Mínimo privilegio y minimización |
+| RNF-010 | La prueba de Gemini debe impedir el envío si el contenido no fue aprobado como ficticio o anonimizado. | El 100 % de los casos sin confirmación es bloqueado antes de invocar el servicio. | Pruebas de RF-027 con confirmación ausente, rechazada y válida. | Alta | R13, R14; RN-027 |
+
+#### 3.3.3 Integridad, confiabilidad y fallas externas
+
+| ID | Requisito | Medida o criterio | Verificación | Prioridad | Fuente |
+|---|---|---|---|---|---|
+| RNF-011 | Las restricciones del caso activo deben aplicarse tanto en la aplicación como en la persistencia cuando corresponda. | Todos los intentos de activar o persistir un caso sin cliente, estado, etapa o responsable son rechazados sin dejar datos parciales. | Pruebas unitarias, integración y restricciones de PostgreSQL. | Alta | R2, R8; RN-010 |
+| RNF-012 | Una operación compuesta debe conservar consistencia si falla antes de completarse. | Asignaciones, reasignaciones y cambios críticos no dejan estado vigente sin su historial asociado. | Pruebas transaccionales con fallas inducidas. | Alta | R3, R5; PostgreSQL |
+| RNF-013 | Una falla de Calendar, OneDrive o Gemini no debe eliminar ni modificar datos internos confirmados. | En el 100 % de los escenarios de rechazo, tiempo de espera y respuesta inválida, el dato interno previo permanece sin cambios y el flujo manual sigue disponible. | Pruebas de integración con dobles de prueba y casos de error. | Alta | R7, R10, R14; DEP-02 a DEP-04 |
+| RNF-014 | Las respuestas externas deben validarse antes de utilizarlas. | Respuestas incompletas, mal formadas o fuera del contrato son rechazadas y tratadas como falla controlada. | Pruebas de contrato y casos inválidos para cada integración. | Alta | Plan de pruebas del informe |
+
+#### 3.3.4 Rendimiento y capacidad
+
+| ID | Requisito | Medida o criterio | Verificación | Prioridad | Fuente |
+|---|---|---|---|---|---|
+| RNF-015 | Un usuario debe localizar un caso autorizado en menos de diez segundos durante la prueba de aceptación. | Diez búsquedas representativas completadas individualmente en menos de 10 s, medidos desde el envío hasta la presentación del resultado. | Registro cronometrado en el entorno de aceptación y conjunto de datos acordado. | Alta | R9 y métrica del informe |
+| RNF-016 | Las listas de clientes, casos e historial deben utilizar paginación o límites explícitos. | Ninguna vista solicita de forma no acotada la totalidad de registros del estudio. | Revisión de consultas y pruebas con volumen representativo. | Media | SUP-06; mantenibilidad operativa |
+| RNF-017 | La capacidad objetivo debe definirse antes de la prueba de carga. | Se registran usuarios simultáneos, volumen de clientes, casos e historial, y crecimiento esperado; las pruebas usan esa línea base. | Acta o issue de validación y reporte de carga. | Alta | SUP-06; no inventar volumen |
+
+#### 3.3.5 Usabilidad, accesibilidad y compatibilidad
+
+| ID | Requisito | Medida o criterio | Verificación | Prioridad | Fuente |
+|---|---|---|---|---|---|
+| RNF-018 | Los flujos críticos deben funcionar en tres tamaños representativos: escritorio, tableta y móvil. | Registro, consulta y actualización prioritarios se completan sin pérdida de controles ni desplazamiento horizontal de la página. | Pruebas Playwright y revisión visual en tres viewports documentados. | Alta | Interfaz responsiva; plan de pruebas |
+| RNF-019 | Todos los campos deben poseer etiqueta, instrucciones o mensajes de error comprensibles y asociados. | El 100 % de los controles de los flujos críticos tiene nombre accesible y los errores identifican el campo y la acción correctiva. | Pruebas de componentes, navegador y revisión manual. | Alta | Características de usuarios; R9 |
+| RNF-020 | Los flujos críticos deben poder operarse con teclado. | Es posible completar registro, búsqueda, consulta y actualización sin quedar atrapado y con foco visible. | Recorrido manual y prueba automatizada de teclado donde sea viable. | Alta | Accesibilidad del SRS |
+| RNF-021 | La aplicación debe funcionar en los motores de navegador cubiertos por las pruebas de aceptación. | Los flujos críticos pasan en Chromium, Firefox y WebKit mediante la versión de Playwright fijada en el proyecto. | Matriz de pruebas de navegador en CI o ejecución reproducible. | Media | Herramientas de pruebas del informe |
+
+#### 3.3.6 Mantenibilidad, pruebas y recuperación
+
+| ID | Requisito | Medida o criterio | Verificación | Prioridad | Fuente |
+|---|---|---|---|---|---|
+| RNF-022 | La rama integrable debe compilar y aprobar verificación de tipos, lint y pruebas automatizadas aplicables. | Cero errores en build, typecheck y lint; 100 % de las pruebas obligatorias del cambio aprobadas. | Pipeline de integración continua y comandos documentados. | Alta | Puerta técnica; GitFlow |
+| RNF-023 | Las reglas críticas de activación, asignación, autorización e historial deben poseer pruebas automatizadas. | Cada regla crítica identificada tiene al menos un caso válido y uno inválido automatizado. | Matriz regla–prueba y reporte del ejecutor. | Alta | Plan integrado de pruebas |
+| RNF-024 | Debe existir un procedimiento reproducible de migración de base de datos. | Una base vacía alcanza el esquema vigente ejecutando migraciones versionadas sin pasos manuales no documentados. | Ejecución en base temporal durante CI o puerta técnica. | Alta | Mitigación PostgreSQL |
+| RNF-025 | Debe existir evidencia de respaldo y restauración antes de la aceptación. | Un respaldo del entorno de prueba se restaura en un destino controlado y permite ejecutar consultas y flujos críticos definidos. | Acta y bitácora de restauración con datos ficticios o anonimizados. | Alta | R10; plan de riesgos |
+| RNF-026 | Los defectos críticos deben bloquear la aceptación. | Cero defectos críticos abiertos y 100 % de los casos críticos ejecutados antes del acta de aceptación. | Reporte de pruebas, tablero de issues y acta de aceptación. | Alta | Plan integrado de monitoreo y pruebas |
+
+#### 3.3.7 Tiempo y trazabilidad operativa
+
+| ID | Requisito | Medida o criterio | Verificación | Prioridad | Fuente |
+|---|---|---|---|---|---|
+| RNF-027 | Las fechas y horas almacenadas deben conservar una referencia temporal no ambigua y presentarse en la zona horaria acordada para el estudio. | Casos de cambio de día y horario se muestran consistentemente en `America/Santiago` durante las pruebas, conservando el instante original. | Pruebas unitarias y de navegador con fechas límite. | Alta | Riesgo de fechas del informe |
+| RNF-028 | Cada release debe permitir identificar requisitos, issues, cambios y pruebas asociados. | Los PR de la release poseen issue, etiquetas, milestone y evidencia; la matriz de trazabilidad no contiene requisitos aprobados sin fuente ni verificación prevista. | Auditoría de release, GitHub y matriz del SRS. | Alta | GitFlow; issue #7 |
 
 ### 3.4 Reglas del negocio
 
@@ -519,6 +580,7 @@ como declaraciones generales de calidad o cumplimiento.
 | Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Propuesto |
 | RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Vigentes y propuestas según cada regla |
 | RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | Pendiente | Casos de uso y secuencia pendientes | Criterios definidos; pruebas pendientes | Propuesto |
+| RNF-001 a RNF-028 | Informe final, riesgos y plan integrado de pruebas | #5 | Pendiente | Arquitectura y despliegue pendientes | Métodos definidos; ejecución pendiente | Propuesto |
 | Por completar | Por completar | Por completar | Por completar | Por completar | Por completar | Propuesto |
 
 ## Anexos
