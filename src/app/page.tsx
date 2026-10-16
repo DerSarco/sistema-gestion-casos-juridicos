@@ -11,8 +11,8 @@ const modules = [
   {
     title: "Casos",
     description: "Seguimiento de estado, etapa, responsable e historial operativo.",
-    status: "Siguiente incremento",
-    href: null,
+    status: "Disponible",
+    href: "/casos",
   },
   {
     title: "Fechas e hitos",

@@ -55,10 +55,10 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 | RF-005 | ALC-02; RN-003, RN-005, RN-006 | CU-003 | DF-005: listado y búsqueda disponibles; autorización diferida | #4, #25 | Implementado parcialmente; acceso diferido |
 | RF-006 | ALC-02, ALC-07; RN-003, RN-008, RN-018 | CU-003, CU-007 | DF-006: actualización e historial | #4 | Especificado |
 | RF-007 | ALC-02; RN-005, RN-007 | CU-003 | DF-007: `register-client.test.ts` cubre advertencia y confirmación separada | #4, #25 | Verificado en adaptador temporal |
-| RF-008 | ALC-03; RN-006, RN-009, RN-012 | CU-004 | DF-008: creación con antecedentes judiciales ausentes | #4 | Especificado |
-| RF-009 | ALC-03; RN-007, RN-010, RN-011, RN-013 | CU-004 | DF-009: activación válida y faltantes | #4 | Especificado |
-| RF-010 | ALC-03, ALC-07; RN-003, RN-010, RN-018 | CU-004, CU-007 | DF-010: lectura y edición por campo autorizado | #4 | Especificado |
-| RF-011 | Flujo observado; RN-012, RN-030 | CU-013 | DF-011: ingreso manual sin llamada a OJV | #4 | Especificado |
+| RF-008 | ALC-03; RN-006, RN-009, RN-012 | CU-004 | DF-008: `register-case.test.ts` cubre creación sin antecedentes judiciales | #4, #26 | Verificado en adaptador temporal |
+| RF-009 | ALC-03; RN-007, RN-010, RN-011, RN-013 | CU-004 | DF-009: registro válido y rechazo de faltantes; catálogos aún ficticios | #4, #26 | Implementado parcialmente |
+| RF-010 | ALC-03, ALC-07; RN-003, RN-010, RN-018 | CU-004, CU-007 | DF-010: ficha de lectura disponible; edición y autorización pendientes | #4, #26 | Implementado parcialmente; acceso diferido |
+| RF-011 | Flujo observado; RN-012, RN-030 | CU-013 | DF-011: tribunal y RIT/ROL admiten ausencia; no existe llamada OJV | #4, #26 | Verificado en primer incremento |
 | RF-012 | ALC-05; RN-004, RN-011 | CU-002 | DF-012: vigencia y transiciones de catálogo | #4 | Especificado |
 | RF-013 | ALC-04; RN-013, RN-018 | CU-005 | DF-013: asignación válida e inválida | #4 | Especificado |
 | RF-014 | ALC-04, ALC-07; RN-014, RN-018, RN-019 | CU-005, CU-007 | DF-014: reasignación conserva responsable anterior | #4 | Especificado |

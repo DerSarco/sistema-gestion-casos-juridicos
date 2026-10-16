@@ -1,0 +1,289 @@
+.page {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 22px 0 64px;
+}
+
+.notice {
+  border: 1px solid #e8b04b;
+  border-radius: 999px;
+  background: #fff7df;
+  color: #6b4600;
+  padding: 9px 16px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+  padding: 28px 2px;
+  color: #5c6b68;
+  font-size: 0.9rem;
+}
+
+.nav a {
+  text-decoration: none;
+}
+
+.nav strong {
+  color: #173d36;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 500px);
+  align-items: end;
+  gap: 40px;
+  border-bottom: 1px solid #ced9d6;
+  padding: 38px 0 42px;
+}
+
+.eyebrow,
+.kicker {
+  margin: 0 0 10px;
+  color: #2d675d;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  margin: 0;
+  color: #142e2a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3.5rem, 7vw, 6.6rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+}
+
+.header > p,
+.formPanel > div > p:last-child {
+  margin: 0;
+  color: #576864;
+  line-height: 1.7;
+}
+
+.listPanel,
+.formPanel {
+  margin-top: 26px;
+  border: 1px solid #d6dfdd;
+  border-radius: 20px;
+  background: rgb(255 255 255 / 88%);
+  padding: 24px;
+  box-shadow: 0 18px 50px rgb(22 52 46 / 6%);
+}
+
+.panelHeading {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.65fr) 1.35fr;
+  align-items: end;
+  gap: 24px;
+}
+
+.panelHeading h2,
+.formPanel h2 {
+  margin: 0;
+  color: #183b35;
+  font-size: 1.45rem;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr 0.9fr;
+  gap: 10px;
+}
+
+.filters label,
+.formPanel label {
+  color: #405550;
+  font-size: 0.79rem;
+  font-weight: 700;
+}
+
+.filters input,
+.filters select,
+.formPanel input,
+.formPanel select {
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid #bccbc7;
+  border-radius: 10px;
+  background: #fff;
+  color: #172421;
+  padding: 10px 11px;
+  outline: none;
+}
+
+.filters input:focus,
+.filters select:focus,
+.formPanel input:focus,
+.formPanel select:focus {
+  border-color: #2d7568;
+  box-shadow: 0 0 0 3px rgb(45 117 104 / 14%);
+}
+
+.caseGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.caseCard {
+  border: 1px solid #dfe7e5;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.cardTopline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.code {
+  color: #2d675d;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.status {
+  border-radius: 999px;
+  background: #e3f1e7;
+  color: #29633a;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.caseCard h3 {
+  margin: 24px 0 4px;
+  color: #183b35;
+  font-size: 1.15rem;
+}
+
+.client {
+  margin: 0;
+  color: #687773;
+  font-size: 0.86rem;
+}
+
+.caseCard dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.caseCard dl div {
+  min-width: 0;
+}
+
+.caseCard dt {
+  color: #81908c;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.caseCard dd {
+  margin: 4px 0 0;
+  color: #354d48;
+  font-size: 0.84rem;
+}
+
+.history {
+  border-top: 1px solid #e0e7e5;
+  color: #667672;
+  padding-top: 13px;
+  font-size: 0.78rem;
+}
+
+.history span {
+  margin-right: 8px;
+  color: #2d675d;
+  font-weight: 800;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  border: 1px dashed #b9c9c5;
+  border-radius: 12px;
+  color: #687773;
+  padding: 24px;
+  text-align: center;
+}
+
+.formPanel {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 30px;
+}
+
+.formPanel form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formPanel small {
+  display: block;
+  margin-top: 5px;
+  color: #a52e2e;
+}
+
+.success {
+  align-self: end;
+  margin: 0;
+  border-radius: 10px;
+  background: #e5f3e9;
+  color: #285e38;
+  padding: 11px;
+  font-size: 0.82rem;
+}
+
+.formPanel button {
+  align-self: end;
+  border: 0;
+  border-radius: 11px;
+  background: #1d554b;
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.formPanel button:hover {
+  background: #16443c;
+}
+
+@media (max-width: 920px) {
+  .header,
+  .panelHeading,
+  .formPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .nav {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .caseGrid,
+  .formPanel form {
+    grid-template-columns: 1fr;
+  }
+}
