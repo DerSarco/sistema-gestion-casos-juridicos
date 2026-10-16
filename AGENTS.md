@@ -34,6 +34,9 @@ crear o modificar requisitos, código, pruebas, diagramas o documentación.
 - No desarrollar funcionalidades directamente en `main` ni en `develop`.
 - Vincular el pull request con el issue mediante `Closes #123` cuando el cambio
   lo resuelva completamente.
+- Asignar a cada pull request al menos una etiqueta que describa su naturaleza y
+  el milestone correspondiente a la entrega. Salvo una justificación registrada,
+  ambos deben coincidir con el issue principal asociado.
 - Dirigir los pull requests de features, documentación y diagramas hacia
   `develop`; reservar los pull requests hacia `main` para releases y hotfixes.
 - No integrar cambios sin verificar sus criterios de aceptación.
@@ -79,9 +82,9 @@ historial, trazabilidad, consultas y reportes autorizados.
 
 Quedan fuera del alcance inicial:
 
-- ingreso automático de demandas al Poder Judicial;
+- cualquier integración, consulta automatizada, obtención o envío de datos con
+  la Oficina Judicial Virtual;
 - almacenamiento de credenciales judiciales;
-- scraping permanente de la Oficina Judicial Virtual;
 - cálculo automático definitivo de plazos judiciales;
 - automatización integral de materias judiciales;
 - inteligencia artificial como núcleo obligatorio de la solución.

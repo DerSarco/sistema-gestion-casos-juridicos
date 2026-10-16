@@ -2,6 +2,12 @@
 
 Closes #
 
+## Clasificación
+
+- [ ] El pull request tiene al menos una etiqueta descriptiva.
+- [ ] El pull request está asociado con el milestone correspondiente.
+- [ ] Las etiquetas y el milestone coinciden con el issue principal o se explicó la diferencia.
+
 ## Flujo de ramas
 
 - [ ] La rama y el destino respetan GitFlow.

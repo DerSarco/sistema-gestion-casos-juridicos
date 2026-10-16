@@ -1,9 +1,17 @@
-name: Diagrama
-description: Crear o actualizar un diagrama del sistema.
+name: "Diagrama del sistema"
+description: "Crear o actualizar un diagrama UML trazable con el SRS."
 title: "[Diagrama] "
 labels:
+  - diagram
   - documentation
+assignees: []
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Conserve la fuente editable y la exportación destinada al repositorio y al informe.
+        Después de crear el issue, asigne el milestone correspondiente.
+
   - type: dropdown
     id: tipo
     attributes:
@@ -15,29 +23,58 @@ body:
         - Despliegue
     validations:
       required: true
+
+  - type: dropdown
+    id: entrega
+    attributes:
+      label: Entrega objetivo
+      description: Esta selección documenta la entrega; asigne también el milestone al issue.
+      options:
+        - v0.1 — Especificación
+        - v0.2 — Diseño técnico
+        - v0.3 — Construcción y pruebas
+        - v1.0 — Validación y entrega
+    validations:
+      required: true
+
   - type: textarea
     id: objetivo
     attributes:
       label: Objetivo y alcance
       description: Explique qué debe comunicar el diagrama y qué queda fuera.
+      placeholder: "Incluye actores y casos de uso de... Excluye..."
     validations:
       required: true
+
   - type: textarea
     id: requisitos
     attributes:
       label: Requisitos relacionados
       description: Enumere los identificadores RF, RNF y RN aplicables.
+      placeholder: "RF-###, RNF-### y RN-###."
     validations:
       required: true
+
   - type: textarea
     id: criterios
     attributes:
       label: Criterios de aceptación
       value: |
-        - [ ] Usa la terminología del SRS.
+        - [ ] Usa la terminología vigente del SRS.
+        - [ ] Representa solamente elementos incluidos en su alcance declarado.
         - [ ] La fuente editable está en `docs/diagrams/src/`.
         - [ ] La exportación está en `docs/diagrams/rendered/`.
         - [ ] La versión para el informe incluye título y fuente.
         - [ ] Fue revisado contra los requisitos relacionados.
     validations:
       required: true
+
+  - type: checkboxes
+    id: confirmaciones
+    attributes:
+      label: Confirmaciones
+      options:
+        - label: El diagrama no contiene nombres, datos ni antecedentes jurídicos reales.
+          required: true
+        - label: La OJV se representa solo como contexto externo y sin interacción técnica con el sistema.
+          required: true
