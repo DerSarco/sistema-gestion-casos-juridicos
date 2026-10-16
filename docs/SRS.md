@@ -717,12 +717,12 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
-| Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | CU-001 a CU-013 | Caso de uso programado | Revisión externa pendiente | Especificado |
-| Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | CU-001 a CU-013 | Modelos programados | Revisión externa pendiente | Especificado |
-| RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | CU relacionados en matriz detallada | Modelos programados | Revisión y pruebas pendientes | Vigentes y propuestas según cada regla |
-| RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | CU-001 a CU-013 | Casos de uso y secuencia programados | Criterios definidos; ejecución pendiente | Especificado |
-| RNF-001 a RNF-028 | Informe final, riesgos y plan integrado de pruebas | #5 | Ámbito indicado en matriz detallada | Arquitectura y despliegue programados | Métodos definidos; ejecución pendiente | Especificado |
-| ED-01 a ED-14; RD-001 a RD-015 | Informe final, estrategia de privacidad y reglas del negocio | #6 | CU relacionados en matriz detallada | Diagrama de clases programado | Criterios definidos; validación y pruebas pendientes | Especificado |
+| Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | CU-001 a CU-013 | Diagrama de casos de uso | Revisión externa pendiente | Especificado y diagramado |
+| Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | CU-001 a CU-013 | Arquitectura y modelos UML | Revisión externa pendiente | Especificado y modelado |
+| RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | CU relacionados en matriz detallada | Casos de uso, clases y secuencias | Revisión y pruebas pendientes | Vigentes y propuestas según cada regla |
+| RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | CU-001 a CU-013 | Casos de uso y secuencias | Criterios definidos; ejecución pendiente | Especificado y modelado |
+| RNF-001 a RNF-028 | Informe final, riesgos y plan integrado de pruebas | #5 | Ámbito indicado en matriz detallada | Arquitectura y despliegue | Métodos definidos; ejecución pendiente | Especificado y modelado |
+| ED-01 a ED-14; RD-001 a RD-015 | Informe final, estrategia de privacidad y reglas del negocio | #6 | CU relacionados en matriz detallada | Diagrama de clases | Criterios definidos; validación y pruebas pendientes | Especificado y modelado |
 | Matriz detallada de RF, RNF y RD | SRS y backlog de especificación | #7 | CU-001 a CU-013 reservados | Modelos programados | DF, DNF y DD definidos como pruebas previstas | Especificado |
 | Revisión IEEE 830-1998 | SRS completo y FO-24 | #8 | Todos | Todos los modelos programados | Lista de revisión documental | Revisado internamente |
 

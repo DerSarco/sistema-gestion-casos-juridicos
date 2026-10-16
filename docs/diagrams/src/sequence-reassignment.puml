@@ -1,0 +1,26 @@
+@startuml
+skinparam backgroundColor white
+title Secuencia — reasignar responsable
+actor Administrador
+boundary "Ficha del caso" as UI
+control "ReasignarResponsable" as UC
+database "CasoRepository" as Repo
+database "HistorialRepository" as History
+
+Administrador -> UI : elige nuevo responsable y motivo
+UI -> UC : ejecutar(caso, responsable, motivo)
+UC -> Repo : obtener caso y asignación vigente
+alt responsable inválido o igual al actual
+  UC --> UI : rechazo sin cambios
+else solicitud válida
+  UC -> Repo : transacción: cerrar anterior\ny crear nueva asignación
+  UC -> History : agregar evento con actor y cambio
+  alt falla en cualquier operación
+    Repo --> UC : rollback
+    UC --> UI : error controlado
+  else confirmación
+    UC --> UI : reasignación e historial
+    UI --> Administrador : muestra responsable vigente
+  end
+end
+@enduml

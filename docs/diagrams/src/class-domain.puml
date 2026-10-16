@@ -1,0 +1,117 @@
+@startuml
+skinparam backgroundColor white
+hide methods
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+title Modelo conceptual de dominio — versión 1
+
+class Estudio <<ED-01>> {
+  id: UUID
+  nombre: String
+  activo: Boolean
+}
+class Usuario <<ED-02>> {
+  id: UUID
+  identificadorAcceso: String
+  estado: EstadoUsuario
+}
+class Rol <<ED-03>> {
+  id: UUID
+  nombre: String
+  vigente: Boolean
+}
+class Cliente <<ED-04>> {
+  id: UUID
+  nombre: String
+  email?: String
+  telefono?: String
+}
+class Caso <<ED-05>> {
+  id: UUID
+  codigoInterno: String
+  materia: String
+  tribunal?: String
+  ritRol?: String
+}
+class Asignacion <<ED-06>> {
+  id: UUID
+  inicio: Instant
+  termino?: Instant
+  principal: Boolean
+}
+class Catalogo <<ED-07>> {
+  id: UUID
+  tipo: String
+  codigo: String
+  vigente: Boolean
+}
+class Hito <<ED-08>> {
+  id: UUID
+  tipo: String
+  fecha: Instant
+  zona: String
+}
+class EventoHistorial <<ED-09>> {
+  id: UUID
+  accion: String
+  fecha: Instant
+  valoresProtegidos: Json
+}
+class ReferenciaExterna <<ED-10>> {
+  id: UUID
+  proveedor: String
+  referencia: String
+}
+class EventoCalendar <<ED-11>> {
+  id: UUID
+  idExterno?: String
+  estado: String
+  errorSanitizado?: String
+}
+class PlantillaAnexo <<ED-12>> {
+  id: UUID
+  version: String
+  vigente: Boolean
+}
+class RegistroAnexo <<ED-13>> {
+  id: UUID
+  folio: String
+  estado: String
+}
+class SolicitudAsistencia <<ED-14>> {
+  id: UUID
+  estado: String
+  decisionHumana?: String
+}
+
+Estudio "1" *-- "0..*" Usuario
+Estudio "1" *-- "0..*" Cliente
+Estudio "1" *-- "0..*" Caso
+Estudio "1" *-- "0..*" Catalogo
+Usuario "0..*" --> "1" Rol
+Cliente "1" -- "0..*" Caso
+Caso "1" *-- "0..*" Asignacion
+Asignacion "0..*" --> "1" Usuario : responsable
+Asignacion "0..*" --> "1" Usuario : ejecutor
+Caso "1" *-- "0..*" Hito
+Hito "1" o-- "0..1" EventoCalendar
+Caso "1" *-- "0..*" EventoHistorial
+EventoHistorial "0..*" --> "1" Usuario : actor
+Caso "1" *-- "0..*" ReferenciaExterna
+PlantillaAnexo "1" -- "0..*" RegistroAnexo
+Caso "0..1" -- "0..*" RegistroAnexo
+Cliente "1" -- "0..*" RegistroAnexo
+Caso "0..1" -- "0..*" SolicitudAsistencia : solo prueba ficticia
+
+note right of Caso
+  RIT/ROL y tribunal son opcionales.
+  No se inventan valores ausentes.
+end note
+note bottom of ReferenciaExterna
+  Conserva referencia autorizada,
+  nunca el documento de OneDrive.
+end note
+note bottom of SolicitudAsistencia
+  Gemini no modifica fichas automáticamente.
+end note
+@enduml
