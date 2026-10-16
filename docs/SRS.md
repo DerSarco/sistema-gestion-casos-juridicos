@@ -2,11 +2,11 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.8
+**Versión del documento:** 0.9
 
-**Estado:** En elaboración
+**Estado:** Revisado internamente; pendiente de validación externa
 
-**Estructura de referencia:** IEEE 830
+**Estructura de referencia:** IEEE Std 830-1998
 
 ## Control de versiones
 
@@ -20,6 +20,7 @@
 | 0.6 | 2026-10-16 | Especificación de requisitos no funcionales medibles | Equipo del proyecto |
 | 0.7 | 2026-10-16 | Modelo conceptual de datos, privacidad y ciclo de vida | Equipo del proyecto |
 | 0.8 | 2026-10-16 | Matriz detallada de trazabilidad de requisitos y pruebas previstas | Equipo del proyecto |
+| 0.9 | 2026-10-16 | Revisión integral de calidad conforme a IEEE 830-1998 y consolidación de referencias | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -33,11 +34,14 @@ un estudio jurídico pequeño.
 
 La plataforma centralizará información de clientes y casos, responsables,
 estados, fechas relevantes e historial de cambios. Facilitará la consulta de
-carga de trabajo y la generación de reportes autorizados.
+carga de trabajo y la generación de reportes autorizados. Su versión 1 incluye
+las capacidades `ALC-01` a `ALC-14` y excluye expresamente los elementos
+`EXC-01` a `EXC-10`.
 
-No reemplazará la Oficina Judicial Virtual ni automatizará la estrategia
-jurídica. El alcance detallado se completará y validará mediante requisitos
-trazables.
+No reemplazará la Oficina Judicial Virtual, no mantendrá comunicación técnica
+con ella ni automatizará la estrategia jurídica. El alcance detallado se define
+mediante requisitos trazables y conserva como asuntos abiertos únicamente las
+decisiones que requieren validación externa.
 
 ### 1.3 Definiciones, siglas y abreviaturas
 
@@ -46,11 +50,34 @@ trazables.
 | OJV | Oficina Judicial Virtual del Poder Judicial de Chile. |
 | SRS | Especificación de requisitos de software. |
 | Versión 1 | Primera entrega funcional, documentada y sometida a aceptación. |
+| RF | Requisito funcional. |
+| RNF | Requisito no funcional. |
+| RN | Regla del negocio. |
+| RD | Requisito de datos. |
+| CU | Caso de uso. |
 
 ### 1.4 Referencias
 
-Las referencias normativas, técnicas y académicas se incorporarán con su
-identificación, versión y fecha de consulta antes de utilizarlas como respaldo.
+La especificación utiliza las siguientes fuentes de referencia:
+
+- IEEE Std 830-1998, *IEEE Recommended Practice for Software Requirements
+  Specifications*, como estructura y criterio de revisión exigido para este
+  entregable. El estándar fue reemplazado posteriormente por ISO/IEC/IEEE 29148,
+  sin que ello modifique la referencia solicitada para el proyecto.
+- *Informe final AINC410: Sistema de gestión de casos jurídicos*, versión vigente
+  del 6 de septiembre de 2026, como fuente consolidada del problema, alcance,
+  arquitectura, requisitos esenciales, riesgos y plan de pruebas.
+- Entrevista presencial semiestructurada con los dos socios propietarios del
+  estudio, realizada el 24 y 28 de abril de 2026, y observación de la planilla
+  operativa anonimizada, como evidencia primaria del proceso.
+- Ley N.º 19.628 y Ley N.º 21.719, ISO 15489-1:2016, ISO/TS 16175-2:2020 y OWASP
+  ASVS 5.0 como referencias legales, documentales y de seguridad. Su uso no
+  constituye por sí solo una declaración de cumplimiento o certificación.
+
+La bibliografía completa, la fecha de consulta, la utilidad, las limitaciones y
+la relación entre afirmaciones y evidencia se mantienen en el repositorio
+académico del proyecto. Este repositorio público conserva solo la especificación
+anonimizada y no publica evidencias confidenciales.
 
 ### 1.5 Visión general del documento
 
@@ -672,8 +699,14 @@ este diseño no equivale por sí sola a cumplimiento legal.
 
 ### 3.6 Atributos del sistema
 
-Las propiedades transversales se expresarán como requisitos verificables y no
-como declaraciones generales de calidad o cumplimiento.
+Las propiedades transversales se expresan en `RNF-001` a `RNF-028` como
+requisitos verificables y no como declaraciones generales de calidad o
+cumplimiento. La prioridad indicada representa importancia para la versión 1,
+no necesariamente el orden de construcción. En particular, autenticación,
+cuentas y autorización permanecen dentro del alcance y con prioridad alta, pero
+su implementación se difiere hasta después del primer incremento funcional.
+Mientras esos controles no existan, cualquier ejecución será exclusivamente de
+desarrollo, con datos ficticios, sin acceso público y sin aptitud productiva.
 
 ## 4. Matriz de trazabilidad
 
@@ -684,13 +717,14 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
-| Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | Pendiente | Diagrama de casos de uso pendiente | Revisión con socios | Propuesto |
-| Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Propuesto |
-| RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Vigentes y propuestas según cada regla |
-| RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | Pendiente | Casos de uso y secuencia pendientes | Criterios definidos; pruebas pendientes | Propuesto |
-| RNF-001 a RNF-028 | Informe final, riesgos y plan integrado de pruebas | #5 | Pendiente | Arquitectura y despliegue pendientes | Métodos definidos; ejecución pendiente | Propuesto |
-| ED-01 a ED-14; RD-001 a RD-015 | Informe final, estrategia de privacidad y reglas del negocio | #6 | Pendiente | Diagrama de clases pendiente | Criterios definidos; validación y pruebas pendientes | Propuesto |
-| Matriz detallada de RF, RNF y RD | SRS y backlog de especificación | #7 | CU-001 a CU-013 reservados | Diagramas pendientes | DF, DNF y DD definidos como pruebas previstas | Especificado |
+| Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | CU-001 a CU-013 | Caso de uso programado | Revisión externa pendiente | Especificado |
+| Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | CU-001 a CU-013 | Modelos programados | Revisión externa pendiente | Especificado |
+| RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | CU relacionados en matriz detallada | Modelos programados | Revisión y pruebas pendientes | Vigentes y propuestas según cada regla |
+| RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | CU-001 a CU-013 | Casos de uso y secuencia programados | Criterios definidos; ejecución pendiente | Especificado |
+| RNF-001 a RNF-028 | Informe final, riesgos y plan integrado de pruebas | #5 | Ámbito indicado en matriz detallada | Arquitectura y despliegue programados | Métodos definidos; ejecución pendiente | Especificado |
+| ED-01 a ED-14; RD-001 a RD-015 | Informe final, estrategia de privacidad y reglas del negocio | #6 | CU relacionados en matriz detallada | Diagrama de clases programado | Criterios definidos; validación y pruebas pendientes | Especificado |
+| Matriz detallada de RF, RNF y RD | SRS y backlog de especificación | #7 | CU-001 a CU-013 reservados | Modelos programados | DF, DNF y DD definidos como pruebas previstas | Especificado |
+| Revisión IEEE 830-1998 | SRS completo y FO-24 | #8 | Todos | Todos los modelos programados | Lista de revisión documental | Revisado internamente |
 
 ## Anexos
 
@@ -705,3 +739,10 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 
 Los asuntos abiertos se administrarán mediante GitHub Issues y se vincularán
 desde esta sección cuando afecten la interpretación del SRS.
+
+### C. Revisión de calidad
+
+El resultado de la revisión interna basada en IEEE 830-1998, sus comprobaciones
+y las decisiones que aún requieren una fuente autorizada se documentan en
+[`SRS_REVIEW.md`](SRS_REVIEW.md). La revisión interna no reemplaza la validación
+con los socios propietarios ni la revisión académica.
