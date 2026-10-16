@@ -1,0 +1,30 @@
+@startuml
+skinparam backgroundColor white
+title Secuencia — registrar cliente
+actor Asistente
+boundary "Formulario" as UI
+control "RegistrarCliente" as UC
+entity "Reglas de cliente" as Domain
+database "ClienteRepository" as Repo
+
+Asistente -> UI : ingresa datos ficticios
+UI -> UC : ejecutar(entrada)
+UC -> Domain : validar y normalizar
+alt datos inválidos
+  Domain --> UC : errores por campo
+  UC --> UI : resultado inválido
+  UI --> Asistente : muestra correcciones
+else datos válidos
+  UC -> Repo : buscarCoincidencias(datos normalizados)
+  alt coincidencia potencial
+    Repo --> UC : candidatos mínimos
+    UC --> UI : requiere confirmación
+    UI --> Asistente : informa sin fusionar
+  else sin coincidencia
+    UC -> Repo : guardar(cliente)
+    Repo --> UC : cliente creado
+    UC --> UI : éxito
+    UI --> Asistente : muestra ficha
+  end
+end
+@enduml

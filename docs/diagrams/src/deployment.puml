@@ -1,0 +1,49 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+title Despliegue previsto — entorno Preview controlado
+
+node "Equipo autorizado" {
+  artifact "Navegador web" as Browser
+}
+
+cloud "Vercel Preview" as Vercel {
+  node "Aplicación Next.js\nNode.js" as App {
+    component "Interfaz / rutas" as UI
+    component "Casos de uso" as UseCases
+    component "Adaptadores de servidor" as Adapters
+  }
+  artifact "Variables de entorno\n(secretos fuera del código)" as Env
+}
+
+cloud "Neon" as Neon {
+  database "PostgreSQL\n(datos ficticios en pruebas)" as DB
+}
+
+cloud "Servicios autorizados" {
+  component "Google Calendar API" as Calendar
+  component "Microsoft Graph / OneDrive" as OneDrive
+  component "Gemini API" as Gemini
+}
+
+rectangle "Fuera del sistema" {
+  component "Oficina Judicial Virtual\nuso manual independiente" as OJV
+  actor "Profesional" as Person
+}
+
+Browser --> UI : HTTPS
+UI --> UseCases
+UseCases --> Adapters
+Adapters --> DB : TLS / conexión protegida
+Env ..> Adapters : configuración de servidor
+Adapters --> Calendar : operación seleccionada
+Adapters --> OneDrive : referencia autorizada
+Adapters --> Gemini : solo contenido ficticio\no anonimizado confirmado
+Person --> Browser
+Person --> OJV : interacción manual
+
+note bottom of OJV
+  No existe conexión, consulta, envío,
+  sincronización ni credencial compartida.
+end note
+@enduml

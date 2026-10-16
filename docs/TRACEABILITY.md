@@ -1,6 +1,6 @@
 # Matriz de trazabilidad de requisitos
 
-**Versión:** 0.1
+**Versión:** 0.2
 
 **Fecha:** 2026-10-16
 
@@ -30,19 +30,19 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 
 | ID | Caso de uso | Actores principales | Estado |
 |---|---|---|---|
-| CU-001 | Acceder a la plataforma interna | ACT-01, ACT-02, ACT-03 | Pendiente de diagrama; implementación diferida |
-| CU-002 | Administrar usuarios, roles y catálogos | ACT-01 | Pendiente de diagrama; acceso diferido |
-| CU-003 | Registrar y mantener clientes | ACT-01, ACT-03; ACT-02 si se autoriza | Pendiente de diagrama |
-| CU-004 | Registrar y mantener casos | ACT-01, ACT-02, ACT-03 según permiso | Pendiente de diagrama |
-| CU-005 | Asignar y reasignar responsables | ACT-01; otros si se autoriza | Pendiente de diagrama |
-| CU-006 | Gestionar fechas, hitos y alertas | Usuarios autorizados | Pendiente de diagrama |
-| CU-007 | Consultar historial y corregir datos | Usuarios autorizados; ACT-01 para corrección | Pendiente de diagrama |
-| CU-008 | Buscar, consultar dashboard y exportar | ACT-01, ACT-02, ACT-03 según alcance | Pendiente de diagrama |
-| CU-009 | Gestionar anexo de información y autorización | ACT-01, ACT-03; ACT-02 si se autoriza | Pendiente de diagrama |
-| CU-010 | Crear evento seleccionado en Calendar | Usuario autorizado | Pendiente de diagrama |
-| CU-011 | Mantener referencia OneDrive | Usuario autorizado | Pendiente de diagrama |
-| CU-012 | Solicitar y resolver asistencia Gemini | Usuario autorizado | Pendiente de diagrama |
-| CU-013 | Registrar manualmente antecedentes obtenidos fuera del sistema | Usuario autorizado | Pendiente de diagrama; OJV no es interfaz |
+| CU-001 | Acceder a la plataforma interna | ACT-01, ACT-02, ACT-03 | Diagramado; implementación diferida |
+| CU-002 | Administrar usuarios, roles y catálogos | ACT-01 | Diagramado; implementación diferida |
+| CU-003 | Registrar y mantener clientes | ACT-01, ACT-03; ACT-02 si se autoriza | Diagramado |
+| CU-004 | Registrar y mantener casos | ACT-01, ACT-02, ACT-03 según permiso | Diagramado |
+| CU-005 | Asignar y reasignar responsables | ACT-01; otros si se autoriza | Diagramado |
+| CU-006 | Gestionar fechas, hitos y alertas | Usuarios autorizados | Diagramado |
+| CU-007 | Consultar historial y corregir datos | Usuarios autorizados; ACT-01 para corrección | Diagramado |
+| CU-008 | Buscar, consultar dashboard y exportar | ACT-01, ACT-02, ACT-03 según alcance | Diagramado |
+| CU-009 | Gestionar anexo de información y autorización | ACT-01, ACT-03; ACT-02 si se autoriza | Diagramado |
+| CU-010 | Crear evento seleccionado en Calendar | Usuario autorizado | Diagramado |
+| CU-011 | Mantener referencia OneDrive | Usuario autorizado | Diagramado |
+| CU-012 | Solicitar y resolver asistencia Gemini | Usuario autorizado | Diagramado |
+| CU-013 | Registrar manualmente antecedentes obtenidos fuera del sistema | Usuario autorizado | Diagramado; OJV no es interfaz |
 
 ## Requisitos funcionales
 
@@ -136,8 +136,11 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 
 - Los 30 RF, 28 RNF y 15 RD definidos en el SRS poseen fuente y verificación
   prevista en esta matriz.
-- Los casos de uso deben materializarse durante el milestone de diseño y enlazar
-  sus archivos fuente y renderizados.
+- Los casos de uso se materializan en
+  [`diagrams/src/use-cases.puml`](diagrams/src/use-cases.puml) y
+  [`diagrams/rendered/use-cases.svg`](diagrams/rendered/use-cases.svg).
+- Los modelos de clases, despliegue y secuencias se enlazan desde
+  [`diagrams/README.md`](diagrams/README.md).
 - Los códigos de prueba deben convertirse en archivos o casos ejecutables durante
   construcción; hasta entonces su estado es previsto.
 - Los asuntos `AR-###` y `AD-###` del SRS deben resolverse o mantenerse

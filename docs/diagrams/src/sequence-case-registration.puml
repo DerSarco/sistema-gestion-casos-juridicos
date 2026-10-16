@@ -1,0 +1,31 @@
+@startuml
+skinparam backgroundColor white
+title Secuencia — registrar caso
+actor Usuario
+boundary "Formulario" as UI
+control "RegistrarCaso" as UC
+entity "Reglas de caso" as Domain
+database "Repositorios" as Repo
+
+Usuario -> UI : selecciona cliente y completa mínimos
+UI -> UC : ejecutar(entrada)
+UC -> Repo : obtenerCliente(clienteId)
+alt cliente inexistente
+  Repo --> UC : no encontrado
+  UC --> UI : error de referencia
+else cliente existente
+  UC -> Domain : validar materia, estado y etapa
+  note right of Domain
+    Tribunal, RIT y ROL pueden estar ausentes.
+  end note
+  alt datos inválidos
+    Domain --> UC : errores por campo
+    UC --> UI : resultado inválido
+  else datos válidos
+    UC -> Repo : guardar caso e historial inicial
+    Repo --> UC : caso creado
+    UC --> UI : éxito
+    UI --> Usuario : muestra ficha
+  end
+end
+@enduml

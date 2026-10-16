@@ -1,0 +1,41 @@
+@startuml
+skinparam backgroundColor white
+title Secuencia — asistencia Gemini con revisión humana
+actor Usuario
+boundary "Asistente de registro" as UI
+control "SolicitarAsistencia" as UC
+entity "Anonimizador / validador" as Privacy
+participant "GeminiAdapter" as Adapter
+participant "Gemini API" as Gemini
+database "CasoRepository" as Repo
+
+Usuario -> UI : prepara antecedente ficticio o anonimizado
+UI -> Usuario : solicita confirmación explícita
+Usuario -> UI : confirma envío
+UI -> UC : ejecutar(contenido)
+UC -> Privacy : verificar condición de prueba
+alt no cumple anonimización
+  Privacy --> UC : bloqueo
+  UC --> UI : registro manual disponible
+else contenido permitido
+  UC -> Adapter : solicitar sugerencia
+  Adapter -> Gemini : contenido mínimo
+  alt falla o respuesta inválida
+    Gemini --> Adapter : error
+    Adapter --> UC : error sanitizado
+    UC --> UI : registro manual disponible
+  else sugerencia válida
+    Gemini --> Adapter : resumen y clasificación
+    Adapter --> UC : propuesta no persistida
+    UC --> UI : mostrar para revisión
+    alt usuario descarta
+      UI --> UC : descartar
+      UC --> UI : ficha sin cambios
+    else usuario acepta o edita
+      UI -> UC : confirmar versión revisada
+      UC -> Repo : guardar decisión humana
+      UC --> UI : ficha actualizada
+    end
+  end
+end
+@enduml
