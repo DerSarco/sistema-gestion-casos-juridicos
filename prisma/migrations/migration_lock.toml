@@ -1,0 +1,2 @@
+# Este archivo debe permanecer versionado con las migraciones.
+provider = "postgresql"

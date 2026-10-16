@@ -141,6 +141,10 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
   [`diagrams/rendered/use-cases.svg`](diagrams/rendered/use-cases.svg).
 - Los modelos de clases, despliegue y secuencias se enlazan desde
   [`diagrams/README.md`](diagrams/README.md).
+- El esquema PostgreSQL y la migración inicial de clientes, casos, catálogos,
+  asignaciones, hitos e historial se documentan en
+  [`architecture/data-model.md`](architecture/data-model.md) mediante el issue
+  #24. Su presencia no acredita todavía una ejecución contra Neon.
 - Los códigos de prueba deben convertirse en archivos o casos ejecutables durante
   construcción; hasta entonces su estado es previsto.
 - Los asuntos `AR-###` y `AD-###` del SRS deben resolverse o mantenerse

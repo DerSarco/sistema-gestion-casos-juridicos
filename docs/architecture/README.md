@@ -71,6 +71,7 @@ reales, la aplicación:
 - [ADR-002: PostgreSQL y Prisma](adr/002-postgresql-prisma.md)
 - [ADR-003: repositorio temporal para el primer incremento](adr/003-repositorio-temporal.md)
 - [ADR-004: autenticación diferida sin seguridad simulada](adr/004-autenticacion-diferida.md)
+- [Modelo físico inicial y migración PostgreSQL](data-model.md)
 
 ## Modelos
 
