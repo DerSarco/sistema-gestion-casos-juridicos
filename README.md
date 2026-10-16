@@ -52,8 +52,9 @@ pnpm test
 pnpm build
 ```
 
-GitHub Actions ejecuta las mismas comprobaciones para cambios dirigidos a
-`develop` y `main`.
+El workflow `Quality` de GitHub Actions ejecuta las mismas comprobaciones para
+todo pull request dirigido a `develop` o `main`. Instala las dependencias desde
+el lockfile y no utiliza secretos ni una base de datos real.
 
 ## Flujo de desarrollo
 
