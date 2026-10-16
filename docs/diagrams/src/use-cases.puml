@@ -1,0 +1,71 @@
+@startuml
+skinparam backgroundColor white
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+title Casos de uso — Sistema de gestión de casos jurídicos
+
+actor "Socio administrador\nACT-01" as Admin
+actor "Abogado\nACT-02" as Lawyer
+actor "Asistente\nACT-03" as Assistant
+actor "Google Calendar\nEXT-01" as Calendar <<servicio>>
+actor "OneDrive\nEXT-02" as OneDrive <<servicio>>
+actor "Gemini API\nEXT-03" as Gemini <<servicio>>
+
+rectangle "Sistema interno" {
+  usecase "CU-001\nAcceder a la plataforma" as CU001
+  usecase "CU-002\nAdministrar usuarios,\nroles y catálogos" as CU002
+  usecase "CU-003\nRegistrar y mantener clientes" as CU003
+  usecase "CU-004\nRegistrar y mantener casos" as CU004
+  usecase "CU-005\nAsignar y reasignar" as CU005
+  usecase "CU-006\nGestionar fechas, hitos\ny alertas" as CU006
+  usecase "CU-007\nConsultar historial\ny corregir datos" as CU007
+  usecase "CU-008\nBuscar, consultar tablero\ny exportar" as CU008
+  usecase "CU-009\nGestionar anexo de\ninformación y autorización" as CU009
+  usecase "CU-010\nCrear evento seleccionado" as CU010
+  usecase "CU-011\nMantener referencia OneDrive" as CU011
+  usecase "CU-012\nSolicitar y resolver\nasistencia Gemini" as CU012
+  usecase "CU-013\nRegistrar antecedentes\nobtenidos fuera del sistema" as CU013
+}
+
+Admin --> CU001
+Admin --> CU002
+Admin --> CU003
+Admin --> CU004
+Admin --> CU005
+Admin --> CU006
+Admin --> CU007
+Admin --> CU008
+Admin --> CU009
+Lawyer --> CU001
+Lawyer --> CU004
+Lawyer --> CU006
+Lawyer --> CU007
+Lawyer --> CU008
+Lawyer --> CU010
+Lawyer --> CU011
+Lawyer --> CU012
+Lawyer --> CU013
+Assistant --> CU001
+Assistant --> CU003
+Assistant --> CU004
+Assistant --> CU006
+Assistant --> CU008
+Assistant --> CU009
+Assistant --> CU010
+Assistant --> CU011
+Assistant --> CU013
+Calendar --> CU010
+OneDrive --> CU011
+Gemini --> CU012
+
+note bottom of CU013
+  La OJV no es actor ni interfaz técnica.
+  El profesional trabaja en ella manualmente
+  y registra después solo lo autorizado.
+end note
+
+note top of CU001
+  Implementación diferida al milestone v0.3.
+end note
+@enduml

@@ -1,6 +1,6 @@
 # Matriz de trazabilidad de requisitos
 
-**Versión:** 0.1
+**Versión:** 0.2
 
 **Fecha:** 2026-10-16
 
@@ -30,19 +30,19 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 
 | ID | Caso de uso | Actores principales | Estado |
 |---|---|---|---|
-| CU-001 | Acceder a la plataforma interna | ACT-01, ACT-02, ACT-03 | Pendiente de diagrama; implementación diferida |
-| CU-002 | Administrar usuarios, roles y catálogos | ACT-01 | Pendiente de diagrama; acceso diferido |
-| CU-003 | Registrar y mantener clientes | ACT-01, ACT-03; ACT-02 si se autoriza | Pendiente de diagrama |
-| CU-004 | Registrar y mantener casos | ACT-01, ACT-02, ACT-03 según permiso | Pendiente de diagrama |
-| CU-005 | Asignar y reasignar responsables | ACT-01; otros si se autoriza | Pendiente de diagrama |
-| CU-006 | Gestionar fechas, hitos y alertas | Usuarios autorizados | Pendiente de diagrama |
-| CU-007 | Consultar historial y corregir datos | Usuarios autorizados; ACT-01 para corrección | Pendiente de diagrama |
-| CU-008 | Buscar, consultar dashboard y exportar | ACT-01, ACT-02, ACT-03 según alcance | Pendiente de diagrama |
-| CU-009 | Gestionar anexo de información y autorización | ACT-01, ACT-03; ACT-02 si se autoriza | Pendiente de diagrama |
-| CU-010 | Crear evento seleccionado en Calendar | Usuario autorizado | Pendiente de diagrama |
-| CU-011 | Mantener referencia OneDrive | Usuario autorizado | Pendiente de diagrama |
-| CU-012 | Solicitar y resolver asistencia Gemini | Usuario autorizado | Pendiente de diagrama |
-| CU-013 | Registrar manualmente antecedentes obtenidos fuera del sistema | Usuario autorizado | Pendiente de diagrama; OJV no es interfaz |
+| CU-001 | Acceder a la plataforma interna | ACT-01, ACT-02, ACT-03 | Diagramado; implementación diferida |
+| CU-002 | Administrar usuarios, roles y catálogos | ACT-01 | Diagramado; implementación diferida |
+| CU-003 | Registrar y mantener clientes | ACT-01, ACT-03; ACT-02 si se autoriza | Diagramado |
+| CU-004 | Registrar y mantener casos | ACT-01, ACT-02, ACT-03 según permiso | Diagramado |
+| CU-005 | Asignar y reasignar responsables | ACT-01; otros si se autoriza | Diagramado |
+| CU-006 | Gestionar fechas, hitos y alertas | Usuarios autorizados | Diagramado |
+| CU-007 | Consultar historial y corregir datos | Usuarios autorizados; ACT-01 para corrección | Diagramado |
+| CU-008 | Buscar, consultar dashboard y exportar | ACT-01, ACT-02, ACT-03 según alcance | Diagramado |
+| CU-009 | Gestionar anexo de información y autorización | ACT-01, ACT-03; ACT-02 si se autoriza | Diagramado |
+| CU-010 | Crear evento seleccionado en Calendar | Usuario autorizado | Diagramado |
+| CU-011 | Mantener referencia OneDrive | Usuario autorizado | Diagramado |
+| CU-012 | Solicitar y resolver asistencia Gemini | Usuario autorizado | Diagramado |
+| CU-013 | Registrar manualmente antecedentes obtenidos fuera del sistema | Usuario autorizado | Diagramado; OJV no es interfaz |
 
 ## Requisitos funcionales
 
@@ -51,14 +51,14 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 | RF-001 | ALC-01; RN-001 a RN-003 | CU-001 | DF-001: acceso válido, inválido e inactivo | #4 | Especificado; diferido |
 | RF-002 | ALC-01; RN-002 a RN-004 | CU-002 | DF-002: alta, cambio de rol y desactivación | #4 | Especificado; diferido |
 | RF-003 | ALC-01; RN-001 a RN-003 | Todos los CU protegidos | DF-003: matriz positiva y negativa por rol | #4 | Especificado; diferido |
-| RF-004 | ALC-02; RN-001, RN-005, RN-007 | CU-003 | DF-004: registro válido, inválido y coincidencia | #4 | Especificado |
-| RF-005 | ALC-02; RN-003, RN-005, RN-006 | CU-003 | DF-005: consulta autorizada y denegada | #4 | Especificado |
+| RF-004 | ALC-02; RN-001, RN-005, RN-007 | CU-003 | DF-004: `register-client.test.ts` cubre registro válido e inválido | #4, #25 | Verificado en adaptador temporal |
+| RF-005 | ALC-02; RN-003, RN-005, RN-006 | CU-003 | DF-005: listado y búsqueda disponibles; autorización diferida | #4, #25 | Implementado parcialmente; acceso diferido |
 | RF-006 | ALC-02, ALC-07; RN-003, RN-008, RN-018 | CU-003, CU-007 | DF-006: actualización e historial | #4 | Especificado |
-| RF-007 | ALC-02; RN-005, RN-007 | CU-003 | DF-007: coincidencia sin fusión automática | #4 | Especificado |
-| RF-008 | ALC-03; RN-006, RN-009, RN-012 | CU-004 | DF-008: creación con antecedentes judiciales ausentes | #4 | Especificado |
-| RF-009 | ALC-03; RN-007, RN-010, RN-011, RN-013 | CU-004 | DF-009: activación válida y faltantes | #4 | Especificado |
-| RF-010 | ALC-03, ALC-07; RN-003, RN-010, RN-018 | CU-004, CU-007 | DF-010: lectura y edición por campo autorizado | #4 | Especificado |
-| RF-011 | Flujo observado; RN-012, RN-030 | CU-013 | DF-011: ingreso manual sin llamada a OJV | #4 | Especificado |
+| RF-007 | ALC-02; RN-005, RN-007 | CU-003 | DF-007: `register-client.test.ts` cubre advertencia y confirmación separada | #4, #25 | Verificado en adaptador temporal |
+| RF-008 | ALC-03; RN-006, RN-009, RN-012 | CU-004 | DF-008: `register-case.test.ts` cubre creación sin antecedentes judiciales | #4, #26 | Verificado en adaptador temporal |
+| RF-009 | ALC-03; RN-007, RN-010, RN-011, RN-013 | CU-004 | DF-009: registro válido y rechazo de faltantes; catálogos aún ficticios | #4, #26 | Implementado parcialmente |
+| RF-010 | ALC-03, ALC-07; RN-003, RN-010, RN-018 | CU-004, CU-007 | DF-010: ficha de lectura disponible; edición y autorización pendientes | #4, #26 | Implementado parcialmente; acceso diferido |
+| RF-011 | Flujo observado; RN-012, RN-030 | CU-013 | DF-011: tribunal y RIT/ROL admiten ausencia; no existe llamada OJV | #4, #26 | Verificado en primer incremento |
 | RF-012 | ALC-05; RN-004, RN-011 | CU-002 | DF-012: vigencia y transiciones de catálogo | #4 | Especificado |
 | RF-013 | ALC-04; RN-013, RN-018 | CU-005 | DF-013: asignación válida e inválida | #4 | Especificado |
 | RF-014 | ALC-04, ALC-07; RN-014, RN-018, RN-019 | CU-005, CU-007 | DF-014: reasignación conserva responsable anterior | #4 | Especificado |
@@ -136,8 +136,15 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 
 - Los 30 RF, 28 RNF y 15 RD definidos en el SRS poseen fuente y verificación
   prevista en esta matriz.
-- Los casos de uso deben materializarse durante el milestone de diseño y enlazar
-  sus archivos fuente y renderizados.
+- Los casos de uso se materializan en
+  [`diagrams/src/use-cases.puml`](diagrams/src/use-cases.puml) y
+  [`diagrams/rendered/use-cases.svg`](diagrams/rendered/use-cases.svg).
+- Los modelos de clases, despliegue y secuencias se enlazan desde
+  [`diagrams/README.md`](diagrams/README.md).
+- El esquema PostgreSQL y la migración inicial de clientes, casos, catálogos,
+  asignaciones, hitos e historial se documentan en
+  [`architecture/data-model.md`](architecture/data-model.md) mediante el issue
+  #24. Su presencia no acredita todavía una ejecución contra Neon.
 - Los códigos de prueba deben convertirse en archivos o casos ejecutables durante
   construcción; hasta entonces su estado es previsto.
 - Los asuntos `AR-###` y `AD-###` del SRS deben resolverse o mantenerse

@@ -1,0 +1,34 @@
+{
+  "name": "sistema-gestion-casos-juridicos",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "postinstall": "prisma generate",
+    "start": "next start",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@prisma/client": "7.10.1",
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "prisma": "7.10.1",
+    "typescript": "^5",
+    "vitest": "4.0.5"
+  },
+  "packageManager": "pnpm@11.19.0"
+}

@@ -80,6 +80,7 @@ Desktop.ini
 
 # TypeScript y herramientas de calidad
 *.tsbuildinfo
+next-env.d.ts
 .eslintcache
 .stylelintcache
 
@@ -92,9 +93,12 @@ Desktop.ini
 # Archivos generados por Prisma u otras herramientas locales
 prisma/dev.db
 prisma/dev.db-journal
+src/generated/prisma/
 
 # Archivos de cobertura o diagnóstico adicionales
 *.lcov
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Los documentos, fuentes UML y diagramas exportados de docs/ deben versionarse.
+
+/src/generated/prisma

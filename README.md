@@ -24,8 +24,37 @@ Este repositorio concentra:
 ## Documentación
 
 - [Especificación de requisitos de software](docs/SRS.md)
+- [Matriz de trazabilidad](docs/TRACEABILITY.md)
+- [Arquitectura y decisiones técnicas](docs/architecture/README.md)
 - [Reglas de contribución](CONTRIBUTING.md)
-- [Criterios para los diagramas](docs/diagrams/README.md)
+- [Diagramas UML](docs/diagrams/README.md)
+
+## Desarrollo local
+
+Requisitos: Node.js 24 y pnpm 11.
+
+```bash
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+La aplicación queda disponible en `http://localhost:3000`. El incremento v0.2
+usa únicamente fixtures ficticios y todavía no implementa autenticación ni
+autorización. Por ello no debe exponerse públicamente ni utilizarse con datos
+reales.
+
+Antes de abrir un pull request se deben ejecutar:
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+El workflow `Quality` de GitHub Actions ejecuta las mismas comprobaciones para
+todo pull request dirigido a `develop` o `main`. Instala las dependencias desde
+el lockfile y no utiliza secretos ni una base de datos real.
 
 ## Flujo de desarrollo
 
@@ -47,4 +76,8 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 
 ## Estado
 
-Proyecto en etapa de especificación y preparación del desarrollo.
+La versión v0.2 incorpora la especificación revisada, arquitectura, diagramas,
+esquema PostgreSQL, verificación automática y flujos funcionales de clientes y
+casos sobre memoria temporal con datos ficticios. La autenticación y la
+autorización permanecen planificadas para v0.3; esta versión no debe desplegarse
+como sistema productivo ni utilizar datos reales.

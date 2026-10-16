@@ -1,0 +1,31 @@
+@startuml
+skinparam backgroundColor white
+title Secuencia — crear evento seleccionado en Calendar
+actor Usuario
+boundary "Hito del caso" as UI
+control "CrearEventoCalendar" as UC
+database "HitoRepository" as Repo
+participant "CalendarAdapter" as Adapter
+participant "Google Calendar" as Calendar
+
+Usuario -> UI : confirma creación del evento
+UI -> UC : ejecutar(hitoId)
+UC -> Repo : obtener hito ya registrado
+Repo --> UC : datos mínimos autorizados
+UC -> Adapter : crearEvento(datos mínimos)
+Adapter -> Calendar : insertar evento
+alt servicio disponible
+  Calendar --> Adapter : id externo
+  Adapter --> UC : éxito
+  UC -> Repo : registrar resultado
+  UC --> UI : evento creado
+else rechazo, timeout o respuesta inválida
+  Calendar --> Adapter : falla
+  Adapter --> UC : error sanitizado
+  UC -> Repo : registrar intento fallido
+  UC --> UI : falla controlada
+  note right of Repo
+    El hito interno no se modifica ni elimina.
+  end note
+end
+@enduml
