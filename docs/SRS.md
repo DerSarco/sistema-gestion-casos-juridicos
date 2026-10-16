@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.6
+**Versión del documento:** 0.7
 
 **Estado:** En elaboración
 
@@ -18,6 +18,7 @@
 | 0.4 | 2026-10-14 | Definición inicial de reglas del negocio y asuntos abiertos | Equipo del proyecto |
 | 0.5 | 2026-10-16 | Especificación de interfaces y requisitos funcionales | Equipo del proyecto |
 | 0.6 | 2026-10-16 | Especificación de requisitos no funcionales medibles | Equipo del proyecto |
+| 0.7 | 2026-10-16 | Modelo conceptual de datos, privacidad y ciclo de vida | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -564,8 +565,109 @@ a cada comportamiento.
 
 ### 3.5 Requisitos de datos
 
-Se documentarán entidades, campos mínimos, relaciones, validaciones, clasificación
-de sensibilidad, conservación y eliminación.
+Esta sección define el modelo conceptual. El esquema físico, los tipos exactos,
+índices y decisiones del ORM se establecerán durante el diseño técnico sin
+cambiar las relaciones o controles aprobados de manera implícita.
+
+#### 3.5.1 Clasificación de información
+
+| Nivel | Descripción | Ejemplos del proyecto | Tratamiento mínimo |
+|---|---|---|---|
+| Pública | Información aprobada para publicación. | README, documentación técnica sin secretos y datos ficticios expresamente publicables. | Revisión antes de publicar. |
+| Interna | Información operativa sin datos personales o jurídicos identificables. | Catálogos, configuración funcional, estados y métricas agregadas. | Acceso según función y trazabilidad cuando corresponda. |
+| Confidencial | Datos personales, de contacto, operativos o jurídicos vinculables con una persona o caso. | Clientes, casos, observaciones, fechas, historial, anexos y referencias documentales. | Mínimo privilegio, minimización, cifrado en tránsito, trazabilidad y reglas de ciclo de vida. |
+| Secreta | Credenciales, tokens y claves que permiten acceso a sistemas o datos. | Secretos de base de datos, Calendar, OneDrive, Gemini y futuro proveedor de autenticación. | Fuera del repositorio y del contenido funcional; acceso técnico restringido y rotación ante exposición. |
+
+Las credenciales judiciales quedan completamente fuera del sistema. Ningún nivel
+de clasificación autoriza almacenarlas.
+
+#### 3.5.2 Entidades y relaciones conceptuales
+
+| ID | Entidad | Propósito | Datos conceptuales mínimos | Relaciones principales | Sensibilidad |
+|---|---|---|---|---|---|
+| ED-01 | Estudio | Delimitar la organización responsable de los registros. | Identificador interno, nombre anonimizado o de prueba, estado, fechas de control. | Posee usuarios, clientes, casos y catálogos. | Interna; confidencial si identifica a la organización real. |
+| ED-02 | Usuario | Identificar a quien ejecuta acciones internas. | Identificador, nombre de prueba, identificador de acceso, estado y rol vigente. | Pertenece a un estudio; participa en asignaciones, cambios y revisiones. | Confidencial. |
+| ED-03 | Rol y permiso | Definir capacidades autorizadas. | Identificador, nombre, descripción, permisos y vigencia. | Se asigna a usuarios; controla operaciones. | Interna. |
+| ED-04 | Cliente | Mantener la ficha y contacto autorizado. | Identificador interno, nombre o denominación, datos mínimos de contacto, estado de completitud y fechas de control. | Pertenece a un estudio; se relaciona con uno o más casos. | Confidencial. |
+| ED-05 | Caso | Mantener la ficha operativa única. | Identificador interno, cliente, materia, tribunal y RIT/ROL cuando correspondan, estado, etapa, prioridad, observaciones y fechas de control. | Pertenece a un estudio y cliente; posee asignaciones, fechas, historial, referencias y anexos. | Confidencial. |
+| ED-06 | Asignación | Conservar responsabilidad actual e histórica. | Caso, responsable, inicio, término, ejecutor y motivo cuando se defina. | Pertenece a un caso y referencia usuarios. | Confidencial. |
+| ED-07 | Catálogo | Normalizar materias, estados, etapas, prioridades y tipos de fecha. | Tipo de catálogo, código, nombre, descripción, orden y vigencia. | Sus valores son utilizados por casos y fechas. | Interna. |
+| ED-08 | Fecha o hito | Registrar seguimiento sin determinar automáticamente plazos jurídicos. | Caso, tipo, instante o fecha, responsable, estado, alerta y observación. | Pertenece a un caso; puede referenciar un evento externo. | Confidencial. |
+| ED-09 | Evento de historial | Registrar acciones críticas y correcciones. | Estudio, caso o entidad afectada, actor, fecha, acción y valores relevantes protegidos. | Referencia usuario y registro afectado. | Confidencial. |
+| ED-10 | Referencia externa | Mantener referencias autorizadas sin duplicar documentos. | Caso, proveedor, identificador o ruta autorizada, estado, fechas y usuario que la registró. | Pertenece a un caso; apunta a OneDrive u otro proveedor aprobado. | Confidencial. |
+| ED-11 | Evento Calendar | Registrar el resultado de una creación seleccionada. | Fecha interna, identificador externo, estado, intento, error sanitizado y fecha de control. | Pertenece a una fecha o hito. | Confidencial. |
+| ED-12 | Plantilla de anexo | Versionar el contenido aprobado para generar anexos. | Identificador, versión, vigencia, estado de aprobación y referencia al contenido aprobado. | Genera registros de anexo. | Interna o confidencial según contenido. |
+| ED-13 | Registro de anexo | Controlar el documento entregado y firmado fuera de la plataforma. | Folio, versión, cliente o caso, generación, entrega, firma manuscrita registrada como estado, estado general y referencia al respaldo. | Pertenece a cliente o caso y a una plantilla. | Confidencial. |
+| ED-14 | Solicitud de asistencia | Evidenciar la prueba opcional de Gemini sin conservar contenido innecesario. | Solicitante, caso ficticio o anonimizado, estado, categoría de resultado, decisión humana y error sanitizado. | Puede vincularse con un caso de prueba y catálogos. | Interna; confidencial si la anonimización es insuficiente, supuesto que debe bloquear el envío. |
+
+Los datos de identificación oficial del cliente, campos de contacto obligatorios,
+materias, transiciones y valores de catálogo deben validarse con los socios antes
+de declararlos obligatorios. El SRS no exige almacenar un RUT u otro identificador
+oficial mientras su necesidad, finalidad y tratamiento no hayan sido aprobados.
+
+#### 3.5.3 Requisitos conceptuales de datos
+
+| ID | Requisito | Criterio verificable | Trazabilidad |
+|---|---|---|---|
+| RD-001 | Toda entidad operativa debe poseer identificador interno estable y pertenencia al estudio cuando corresponda. | No se persisten clientes, casos, catálogos o eventos sin identificador y estudio válidos. | RN-001, RN-005, RN-009 |
+| RD-002 | Las relaciones cliente–caso, caso–asignación y caso–fecha deben preservar integridad referencial. | No existen registros dependientes asociados con una referencia inexistente. | RN-006, RN-014, RN-015 |
+| RD-003 | Un caso activo debe conservar cliente, estado, etapa y responsable principal vigentes. | La aplicación y la persistencia rechazan estados activos incompletos. | RN-010, RNF-011 |
+| RD-004 | Los valores normalizados deben utilizar catálogos vigentes y conservar el valor histórico aunque luego se desactive. | Crear o transicionar usa valores vigentes; desactivar no reescribe registros existentes. | RN-011, RF-012 |
+| RD-005 | Las asignaciones deben conservar periodos no sobrescritos y permitir identificar una sola asignación principal vigente por caso. | Reasignar cierra la anterior y crea la siguiente dentro de una operación consistente. | RN-013, RN-014, RNF-012 |
+| RD-006 | RIT, ROL, tribunal y otros antecedentes judiciales deben admitir ausencia hasta que estén disponibles. | El caso se registra sin valores ficticios y luego admite una actualización manual trazada. | RN-012, RF-011 |
+| RD-007 | Las fechas deben conservar tipo, referencia temporal no ambigua y zona de presentación acordada. | Casos límite mantienen el instante y se presentan consistentemente en `America/Santiago`. | RN-015, RNF-027 |
+| RD-008 | El historial debe ser aditivo para usuarios comunes. | Las correcciones crean un nuevo evento y no eliminan la evidencia original. | RN-018, RN-019, RF-018 |
+| RD-009 | Las referencias externas deben almacenar solo los identificadores o rutas autorizados necesarios para abrir el recurso. | No se copian documentos de OneDrive ni permisos externos al almacenamiento del sistema. | RN-026, RF-026 |
+| RD-010 | Los errores externos almacenados deben estar sanitizados. | No contienen tokens, secretos, contenido jurídico completo ni datos personales innecesarios. | RNF-003, RNF-009 |
+| RD-011 | Cada anexo debe conservar folio, versión de plantilla y estados de control sin sobrescribir la versión histórica. | Un anexo antiguo sigue asociado con la versión que lo generó después de publicar una nueva plantilla. | RN-020 a RN-023 |
+| RD-012 | El sistema no debe guardar como hecho aceptado una sugerencia de Gemini sin decisión humana. | Resumen o clasificación solo pasa a la ficha después de aceptar o editar expresamente; descartar no modifica el caso. | RN-027, RN-028, RF-027, RF-028 |
+| RD-013 | Los datos de prueba deben ser ficticios o estar anonimizados antes de ingresar al entorno. | La revisión previa no detecta identificadores, contactos, causas o antecedentes reales. | RNF-007, RNF-010 |
+| RD-014 | Las exportaciones deben respetar filtros, campos y alcance autorizados. | La exportación no contiene registros o columnas fuera del permiso y genera evidencia de la acción. | RN-029, RF-021 |
+| RD-015 | Las credenciales y tokens de servicios no forman parte del modelo funcional. | El esquema y las respuestas funcionales no contienen credenciales judiciales ni secretos de proveedores. | EXC-02, RNF-003, RF-030 |
+
+#### 3.5.4 Inventario de tratamiento para la puerta de datos reales
+
+Antes de utilizar datos reales se debe completar y aprobar un inventario por
+grupo de datos. En esta versión del SRS los plazos de conservación y la base
+aplicable permanecen sin definir; no deben suponerse.
+
+| Grupo | Finalidad propuesta | Acceso mínimo | Conservación | Estado previo a datos reales |
+|---|---|---|---|---|
+| Identidad y contacto de clientes | Vincular al cliente con sus casos y permitir contacto operativo autorizado. | Perfiles autorizados por función. | Periodo y evento de inicio pendientes de revisión jurídica y organizacional. | Pendiente de finalidad, campos mínimos, habilitación y procedimiento de derechos. |
+| Información operativa y jurídica del caso | Coordinar registro, asignación y seguimiento interno. | Usuario con caso o alcance autorizado. | Pendiente de matriz de conservación por estado y materia. | Pendiente de revisión jurídica, permisos y minimización. |
+| Historial y asignaciones | Acreditar responsabilidad y trazabilidad de cambios críticos. | Lectura autorizada; modificación directa prohibida a usuarios comunes. | Pendiente de regla de archivo, bloqueo y eliminación. | Pendiente de catálogo de acciones y periodo aprobado. |
+| Fechas, hitos y alertas | Apoyar seguimiento interno definido por profesionales. | Perfiles autorizados sobre el caso. | Pendiente de cierre, archivo y eliminación. | Pendiente de tipos, responsables y revisión de riesgo. |
+| Anexos y referencias de respaldo | Evidenciar información, entrega, firma manuscrita y ubicación del respaldo. | Personal autorizado; contenido aprobado por los socios. | Pendiente de regla jurídica y documental. | Pendiente de plantilla, finalidades, base aplicable y conservación. |
+| Referencias a OneDrive y Calendar | Abrir recursos o registrar eventos seleccionados. | Usuario autorizado; permisos efectivos permanecen en el proveedor. | Conservar solo mientras la referencia sea necesaria y según regla pendiente. | Pendiente de evaluación de proveedor y prueba de permisos. |
+| Prueba Gemini | Evaluar resumen y clasificación sugerida con revisión humana. | Usuarios de prueba autorizados. | No conservar contenido enviado más allá de lo estrictamente necesario para la prueba; periodo exacto pendiente de evaluación. | Solo datos ficticios o anonimizados; evaluación del proveedor antes de cualquier cambio. |
+
+#### 3.5.5 Ciclo de vida y controles organizacionales
+
+| Etapa | Control requerido | Evidencia antes de datos reales |
+|---|---|---|
+| Recolección | Finalidad definida, campos minimizados, información al titular y habilitación revisada. | Inventario aprobado y plantilla vigente. |
+| Creación y actualización | Validaciones, exactitud, responsable y trazabilidad de cambios críticos. | Pruebas de integridad y procedimiento de rectificación. |
+| Consulta y uso | Matriz de permisos, mínimo privilegio y registros de acceso o acciones críticas definidos. | Pruebas negativas y matriz aprobada. |
+| Transferencia a proveedor | Evaluación de finalidad, datos enviados, permisos, términos, ubicación, fallas y eliminación. | Ficha de Calendar, OneDrive, alojamiento, base de datos, autenticación y Gemini. |
+| Conservación | Periodo, evento de inicio, bloqueo, respaldo y responsable definidos por grupo. | Matriz de conservación aprobada. |
+| Eliminación o anonimización | Autorización, alcance, dependencias, respaldos y evidencia de ejecución. | Procedimiento probado con datos ficticios. |
+| Derechos e incidentes | Canal, responsables, verificación, plazos aplicables, contención y registro. | Procedimientos aprobados y ejercicio de prueba. |
+
+Mientras falte cualquiera de las aprobaciones anteriores, la plataforma debe
+permanecer en preproducción con datos ficticios o anonimizados. La existencia de
+este diseño no equivale por sí sola a cumplimiento legal.
+
+#### 3.5.6 Asuntos abiertos de datos
+
+| ID | Asunto | Decisión pendiente | Dependencia |
+|---|---|---|---|
+| AD-01 | Campos mínimos de cliente | Definir contacto obligatorio, identificadores y excepciones justificadas. | Validación con socios y revisión de minimización. |
+| AD-02 | Personas múltiples por caso | Determinar si un caso puede poseer más de un cliente o participantes con roles diferentes. | Validación del flujo y posterior modelo físico. |
+| AD-03 | Catálogos y transiciones | Aprobar materias, estados, etapas, prioridades, fechas y transiciones. | Prototipos y reglas operativas. |
+| AD-04 | Conservación | Definir periodos, eventos de inicio, bloqueo, respaldo y eliminación por grupo. | Revisión jurídica, técnica y organizacional. |
+| AD-05 | Historial de valores | Definir qué campos conservan valores anteriores y nivel de detalle permitido. | Privacidad, trazabilidad y capacidad. |
+| AD-06 | Exportaciones | Definir formatos, campos, propósitos y evidencia de autorización. | Matriz de permisos y requisitos funcionales. |
+| AD-07 | Datos enviados a proveedores | Aprobar el conjunto mínimo por integración y la evidencia de eliminación o conservación. | Evaluación de proveedores. |
 
 ### 3.6 Atributos del sistema
 
@@ -581,6 +683,7 @@ como declaraciones generales de calidad o cumplimiento.
 | RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | Pendiente | Diagramas pendientes | Revisión documental y con socios | Vigentes y propuestas según cada regla |
 | RF-001 a RF-030 | Informe final, alcance y reglas del negocio | #4 | Pendiente | Casos de uso y secuencia pendientes | Criterios definidos; pruebas pendientes | Propuesto |
 | RNF-001 a RNF-028 | Informe final, riesgos y plan integrado de pruebas | #5 | Pendiente | Arquitectura y despliegue pendientes | Métodos definidos; ejecución pendiente | Propuesto |
+| ED-01 a ED-14; RD-001 a RD-015 | Informe final, estrategia de privacidad y reglas del negocio | #6 | Pendiente | Diagrama de clases pendiente | Criterios definidos; validación y pruebas pendientes | Propuesto |
 | Por completar | Por completar | Por completar | Por completar | Por completar | Por completar | Propuesto |
 
 ## Anexos
