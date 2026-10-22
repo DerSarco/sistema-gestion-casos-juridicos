@@ -1,8 +1,8 @@
 # Revisión de calidad del SRS
 
-**Documento revisado:** `docs/SRS.md`, versión 1.0
+**Documento revisado:** `docs/SRS.md`, versión 1.1
 
-**Fecha:** 2026-10-21
+**Fecha:** 2026-10-22
 
 **Referencia:** IEEE Std 830-1998
 
@@ -28,7 +28,7 @@ implementación técnica se realizará al final del incremento funcional.
 | Corrección | El alcance responde al problema de registro y seguimiento inicial, sin automatización judicial. | `MVP_SCOPE.md`; `RF-030`; exclusiones. | Cumple internamente. |
 | Ausencia de ambigüedad | Cada requisito conserva identificador y cada historia posee escenarios Gherkin observables. | `USER_STORIES.md`; secciones 3.2 y 3.3. | Cumple. |
 | Completitud del MVP | Las ocho vistas tienen historia, RF y RNF asociados. | Línea base de `TRACEABILITY.md`. | Cumple. |
-| Consistencia | SRS, alcance, historias y trazabilidad usan la misma clasificación. | Versiones 1.0/0.3 de los documentos. | Cumple. |
+| Consistencia | Objetivos, SRS, alcance, historias y trazabilidad usan la misma línea base. | `OBJECTIVES.md`, SRS 1.1 y trazabilidad 0.4. | Cumple. |
 | Priorización | Se separa importancia histórica de compromiso de la iteración. | Tablas de clasificación RF/RNF. | Cumple. |
 | Verificabilidad | Cada historia declara escenarios y cada requisito conserva método previsto. | Códigos `DF`, `DNF`, `DD` y Gherkin. | Cumple en diseño; ejecución pendiente. |
 | Modificabilidad | Los identificadores históricos no se renumeraron y la clasificación está centralizada. | `MVP_SCOPE.md`. | Cumple. |
@@ -42,6 +42,7 @@ implementación técnica se realizará al final del incremento funcional.
   funcional obligatoria (`RNF-008`).
 - 8 historias de usuario con criterios Gherkin.
 - 8 vistas del prototipo funcional.
+- 1 objetivo general y 4 objetivos específicos con medición separada.
 - 15 requisitos de datos conservados para la evolución del modelo.
 
 ## Incongruencias corregidas

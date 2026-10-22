@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 1.0
+**Versión del documento:** 1.1
 
 **Estado:** Revisado internamente; pendiente de validación externa
 
@@ -22,6 +22,7 @@
 | 0.8 | 2026-10-16 | Matriz detallada de trazabilidad de requisitos y pruebas previstas | Equipo del proyecto |
 | 0.9 | 2026-10-16 | Revisión integral de calidad conforme a IEEE 830-1998 y consolidación de referencias | Equipo del proyecto |
 | 1.0 | 2026-10-21 | Repriorización del MVP, clasificación de requisitos y alineación con historias Gherkin y ocho vistas | Equipo del proyecto |
+| 1.1 | 2026-10-22 | Incorporación de objetivos medibles alineados con el MVP priorizado | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -44,6 +45,14 @@ No reemplazará la Oficina Judicial Virtual, no mantendrá comunicación técnic
 con ella ni automatizará la estrategia jurídica. El alcance detallado se define
 mediante requisitos trazables y conserva como asuntos abiertos únicamente las
 decisiones que requieren validación externa.
+
+#### 1.2.1 Objetivos vigentes
+
+El proyecto posee un objetivo general y exactamente cuatro objetivos específicos
+con un único verbo rector cada uno. Sus indicadores, metas, evidencias y momentos
+de verificación se definen en
+[`OBJECTIVES.md`](OBJECTIVES.md). Los objetivos se limitan al MVP priorizado y no
+dependen de requisitos diferidos.
 
 ### 1.3 Definiciones, siglas y abreviaturas
 

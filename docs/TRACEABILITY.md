@@ -1,10 +1,12 @@
 # Matriz de trazabilidad de requisitos
 
-**Versión:** 0.3
+**Versión:** 0.4
 
-**Fecha:** 2026-10-21
+**Fecha:** 2026-10-22
 
 **SRS relacionado:** [Especificación de requisitos](SRS.md)
+
+**Objetivos relacionados:** [Objetivos y medición](OBJECTIVES.md)
 
 ## Propósito y mantenimiento
 
@@ -32,6 +34,10 @@ La clasificación de alcance no debe confundirse con el estado de realización.
 Por ejemplo, un requisito puede estar priorizado y todavía no implementado.
 
 ## Línea base trazable del MVP
+
+Los objetivos `OE-01` a `OE-04` cubren respectivamente discovery, diseño,
+implementación y validación. El objetivo general se verifica mediante la
+aceptación de las ocho historias y la evidencia de los catorce RF priorizados.
 
 | Historia | Vista | Resultado | RF | RNF principales | Issues de diseño |
 |---|---|---|---|---|---|
