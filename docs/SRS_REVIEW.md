@@ -1,74 +1,49 @@
 # Revisión de calidad del SRS
 
-**Documento revisado:** `docs/SRS.md`, versión 1.2
+**Documento revisado:** `docs/SRS.md`, versión 1.3
 
 **Fecha:** 2026-10-22
 
 **Referencia:** IEEE Std 830-1998
 
-**Alcance:** revisión interna; no constituye aprobación de los socios ni de la docente.
+**Alcance:** revisión interna; no constituye aprobación externa.
 
 ## Resultado
 
-El SRS mantiene los identificadores y antecedentes de la versión amplia, pero ya
-no presenta todos los requisitos históricos como compromiso de la iteración. La
-línea base distingue el MVP priorizado, las funciones diferidas y las
-restricciones obligatorias.
-
-El MVP queda apto para validación de diseño y posterior construcción con datos
-ficticios o anonimizados. Comprende ocho historias Gherkin y ocho vistas, sin
-dashboard, reportes, exportaciones, administración avanzada, anexo imprimible ni
-integraciones externas. El acceso interno continúa dentro del MVP, pero su
-implementación técnica se realizará al final del incremento funcional.
+El SRS especifica únicamente el MVP que será diseñado, construido y aceptado en
+esta iteración: ocho historias, diez RF, diez RNF, siete requisitos conceptuales
+de datos y la restricción `RF-030`. Los identificadores históricos restantes no
+se desarrollan como obligaciones normativas y permanecen en `MVP_SCOPE.md` como
+catálogo de posible evolución.
 
 ## Lista de revisión
 
-| Propiedad | Comprobación | Evidencia | Resultado |
-|---|---|---|---|
-| Corrección | El alcance responde al problema de registro y seguimiento inicial, sin automatización judicial. | `MVP_SCOPE.md`; `RF-030`; exclusiones. | Cumple internamente. |
-| Ausencia de ambigüedad | Cada requisito conserva identificador y cada historia posee escenarios Gherkin observables. | `USER_STORIES.md`; secciones 3.2 y 3.3. | Cumple. |
-| Completitud del MVP | Las ocho vistas tienen historia, RF y RNF asociados. | Línea base de `TRACEABILITY.md`. | Cumple. |
-| Consistencia | Objetivos, SRS, alcance, historias, diagramas y trazabilidad usan la misma línea base. | `OBJECTIVES.md`, SRS 1.2, trazabilidad 0.5 y modelos `mvp-*`. | Cumple. |
-| Priorización | Se separa importancia histórica de compromiso de la iteración. | Tablas de clasificación RF/RNF. | Cumple. |
-| Verificabilidad | Cada historia declara escenarios y cada requisito conserva método previsto. | Códigos `DF`, `DNF`, `DD` y Gherkin. | Cumple en diseño; ejecución pendiente. |
-| Modificabilidad | Los identificadores históricos no se renumeraron y la clasificación está centralizada. | `MVP_SCOPE.md`. | Cumple. |
-| Trazabilidad | Vista, historia, requisito e issue están relacionados. | `TRACEABILITY.md`. | Cobertura del MVP completa. |
+| Propiedad IEEE 830 | Evidencia | Resultado |
+|---|---|---|
+| Corrección | El alcance responde al registro y seguimiento inicial sin automatización judicial. | Cumple internamente. |
+| Ausencia de ambigüedad | Cada RF/RNF vigente posee criterio observable. | Cumple. |
+| Completitud | Las ocho historias y vistas están cubiertas por al menos un RF y un RNF. | Cumple. |
+| Consistencia | Objetivos, SRS, alcance, Gherkin, diagramas y trazabilidad usan la misma línea base. | Cumple. |
+| Verificabilidad | Los criterios pueden convertirse en pruebas o revisión documental. | Cumple en diseño; ejecución pendiente. |
+| Modificabilidad | La evolución futura está separada del compromiso actual. | Cumple. |
+| Trazabilidad | Historia, vista, requisito, issue y evidencia prevista están relacionados. | Cumple para el MVP. |
 
-## Comprobaciones de cobertura
+## Cobertura vigente
 
-- 14 requisitos funcionales priorizados, 15 diferidos y una restricción
-  funcional obligatoria (`RF-030`).
-- 16 requisitos no funcionales priorizados, 11 diferidos y una restricción no
-  funcional obligatoria (`RNF-008`).
 - 8 historias de usuario con criterios Gherkin.
-- 8 vistas del prototipo funcional.
-- 1 objetivo general y 4 objetivos específicos con medición separada.
-- 15 requisitos de datos conservados para la evolución del modelo.
+- 8 vistas del prototipo.
+- 10 requisitos funcionales.
+- 10 requisitos no funcionales.
+- 1 restricción funcional obligatoria respecto de la OJV.
+- 7 requisitos conceptuales de datos.
+- 1 objetivo general y 4 objetivos específicos medibles.
 
-## Incongruencias corregidas
+## Límites
 
-- Se eliminó la afirmación de que `ALC-01` a `ALC-14` integran el compromiso actual.
-- Calendar, OneDrive y Gemini dejaron de presentarse como interfaces operativas del MVP.
-- Dashboard, reportes, exportación, anexo, alertas y administración avanzada se clasificaron como diferidos.
-- Se descartó una pantalla separada de detalle de cliente y se definieron formularios reutilizables para alta y edición.
-- La OJV se mantiene únicamente como contexto operativo externo, sin integración de software ni credenciales.
+No forman parte de la aceptación: administración de cuentas o catálogos,
+recuperación de acceso, reasignaciones avanzadas, alertas automáticas, dashboard,
+reportes, exportaciones, anexo imprimible, Calendar, OneDrive, Gemini, portal de
+clientes, cálculo de plazos ni integración con la OJV.
 
-## Decisiones externas pendientes
-
-Los asuntos `AR-01` a `AR-07` y `AD-01` a `AD-07` continúan requiriendo
-validación. Solo bloquean una historia priorizada cuando afectan directamente su
-criterio de aceptación; no autorizan incorporar funciones diferidas.
-
-Mientras permanezcan abiertos:
-
-- se pueden construir prototipos reversibles con datos ficticios;
-- no se deben fijar silenciosamente permisos, conservación o tratamientos;
-- no se deben utilizar datos reales;
-- los supuestos adoptados deben quedar visibles en issues y pruebas.
-
-## Criterio de cambio
-
-Todo cambio de alcance debe actualizar en el mismo pull request
-`MVP_SCOPE.md`, el SRS, las historias, la trazabilidad, el mockup afectado y la
-prueba prevista. Incorporar un requisito diferido exige un issue específico y
-análisis de impacto; su existencia histórica no basta para añadirlo al MVP.
+Todo cambio de alcance debe actualizar conjuntamente `MVP_SCOPE.md`, SRS,
+historias, trazabilidad, mockups y pruebas mediante un issue específico.
