@@ -29,7 +29,7 @@ o de los errores del estudio.
 | Elemento de medición | Definición |
 |---|---|
 | Indicador | Porcentaje de historias priorizadas aceptadas y proporción de requisitos priorizados con evidencia de verificación. |
-| Meta | 8 de 8 historias aceptadas y 14 de 14 requisitos funcionales priorizados con evidencia, manteniendo `RF-030` y `RNF-008` como restricciones obligatorias. |
+| Meta | 8 de 8 historias aceptadas, 10 de 10 requisitos funcionales y 10 de 10 requisitos no funcionales del MVP con evidencia, manteniendo `RF-030` como restricción obligatoria. |
 | Evidencia | Matriz de trazabilidad, resultados de pruebas, demostración del prototipo y registro de aceptación con datos ficticios o anonimizados. |
 | Momento de verificación | Cierre del incremento funcional del segundo semestre académico de 2026, antes de la entrega final del proyecto. |
 
@@ -70,7 +70,7 @@ o de los errores del estudio.
 | Elemento de medición | Definición |
 |---|---|
 | Indicador | Porcentaje de requisitos funcionales priorizados con cambio integrado y prueba asociada. |
-| Meta | 14 de 14 requisitos funcionales priorizados implementados y vinculados con issue, pull request y prueba; acceso y autorización completados en el último incremento funcional. |
+| Meta | 10 de 10 requisitos funcionales del MVP implementados y vinculados con issue, pull request y prueba; acceso interno completado en el último incremento funcional. |
 | Evidencia | Código integrado en `develop`, historial de Issues y pull requests, pipeline de CI y reporte de pruebas. |
 | Momento de verificación | Cierre del incremento funcional, antes de la validación de aceptación. |
 

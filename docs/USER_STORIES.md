@@ -31,7 +31,7 @@ Escenario: Rechazo de credenciales inválidas
   Y no revela si una cuenta específica existe
 ```
 
-Trazabilidad: `MVP-01`, RF-001, RF-003, RNF-001, RNF-003, RNF-007.
+Trazabilidad: `MVP-01`, RF-001, RNF-001, RNF-003, RNF-007.
 
 ## HU-02 — Buscar casos
 
@@ -54,7 +54,7 @@ Escenario: Búsqueda sin coincidencias
   Entonces el sistema muestra un estado sin resultados
 ```
 
-Trazabilidad: `MVP-02`, RF-019, RNF-015, RNF-018.
+Trazabilidad: `MVP-02`, RF-019, RNF-001, RNF-018.
 
 ## HU-03 — Registrar o editar un caso
 
@@ -78,7 +78,7 @@ Escenario: Rechazar un caso activo incompleto
   Y muestra los campos que requieren corrección
 ```
 
-Trazabilidad: `MVP-03`, RF-008 a RF-011, RF-013, RNF-011, RNF-019.
+Trazabilidad: `MVP-03`, RF-008, RF-009, RF-013, RNF-011, RNF-019.
 
 ## HU-04 — Consultar la ficha de un caso
 
@@ -148,7 +148,7 @@ Escenario: Evitar interpretación automática
   Y no calcula ni declara un plazo judicial definitivo
 ```
 
-Trazabilidad: `MVP-06`, RF-015, RF-017, RNF-027, RF-030.
+Trazabilidad: `MVP-06`, RF-015, RF-017, RF-030, RNF-005.
 
 ## HU-07 — Buscar clientes
 
@@ -171,7 +171,7 @@ Escenario: Proteger resultados
   Entonces el cliente no aparece en los resultados
 ```
 
-Trazabilidad: `MVP-07`, RF-005, RNF-001, RNF-015.
+Trazabilidad: `MVP-07`, RF-005, RNF-001, RNF-018.
 
 ## HU-08 — Registrar o editar un cliente
 
@@ -195,7 +195,7 @@ Escenario: Advertir una posible coincidencia
   Y no fusiona las fichas automáticamente
 ```
 
-Trazabilidad: `MVP-08`, RF-004, RF-006, RF-007, RNF-007, RNF-019.
+Trazabilidad: `MVP-08`, RF-004, RNF-007, RNF-019.
 
 ## Criterio de término
 
