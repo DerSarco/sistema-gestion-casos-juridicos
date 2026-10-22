@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 1.1
+**Versión del documento:** 1.2
 
 **Estado:** Revisado internamente; pendiente de validación externa
 
@@ -23,6 +23,7 @@
 | 0.9 | 2026-10-16 | Revisión integral de calidad conforme a IEEE 830-1998 y consolidación de referencias | Equipo del proyecto |
 | 1.0 | 2026-10-21 | Repriorización del MVP, clasificación de requisitos y alineación con historias Gherkin y ocho vistas | Equipo del proyecto |
 | 1.1 | 2026-10-22 | Incorporación de objetivos medibles alineados con el MVP priorizado | Equipo del proyecto |
+| 1.2 | 2026-10-22 | Selección de modelos reducidos del MVP y separación de la visión futura | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -738,6 +739,7 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
+| Línea base del MVP | Objetivos, historias y alcance priorizado | #53 | CU-001, CU-003 a CU-008 y CU-013 | Proceso/contexto, casos de uso y datos reducidos | Revisión documental y visual | Modelado; implementación no inferida |
 | Actores y responsabilidades iniciales | Levantamiento e informe del proyecto | #1 | CU-001 a CU-013 | Diagrama de casos de uso | Revisión externa pendiente | Especificado y diagramado |
 | Alcance, exclusiones, supuestos y dependencias | Informe y decisiones consolidadas del proyecto | #2 | CU-001 a CU-013 | Arquitectura y modelos UML | Revisión externa pendiente | Especificado y modelado |
 | RN-001 a RN-030 | Alcance, levantamiento y decisiones consolidadas del proyecto | #3 | CU relacionados en matriz detallada | Casos de uso, clases y secuencias | Revisión y pruebas pendientes | Vigentes y propuestas según cada regla |
@@ -751,10 +753,10 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 
 ### A. Modelos y diagramas
 
-- Diagrama de casos de uso.
-- Diagrama de clases.
-- Diagramas de secuencia.
-- Diagrama de despliegue.
+La selección vigente del MVP y del video se encuentra en
+[`diagrams/README.md`](diagrams/README.md). Los modelos extensos de casos de uso,
+dominio y despliegue se conservan como visión futura y no amplían el criterio de
+aceptación actual.
 
 ### B. Registro de asuntos abiertos
 

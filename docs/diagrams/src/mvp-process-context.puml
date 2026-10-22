@@ -1,0 +1,43 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam packageStyle rectangle
+left to right direction
+title Proceso y contexto del MVP priorizado — 2026-10-22
+
+actor "Usuario interno\nautorizado" as User
+
+rectangle "Sistema interno — MVP" as System {
+  rectangle "1. Registrar o consultar\ncliente" as Client
+  rectangle "2. Registrar o consultar\ncaso" as Case
+  rectangle "3. Asignar abogado\nresponsable" as Assign
+  rectangle "4. Actualizar estado\no etapa" as State
+  rectangle "5. Registrar fecha\nrelevante" as Date
+  rectangle "6. Consultar ficha\ne historial básico" as History
+  Client --> Case
+  Case --> Assign
+  Assign --> State
+  State --> Date
+  Date --> History
+}
+
+User --> System : opera según su rol
+
+rectangle "Fuera del sistema" as External {
+  rectangle "Oficina Judicial Virtual\nuso manual independiente" as OJV
+}
+User --> OJV : profesional autorizado\nrealiza tramitación manual
+
+note bottom of System
+  Perfiles: socio administrador (ACT-01), abogado (ACT-02)
+  y asistente (ACT-03), sujetos a autorización.
+  Datos ficticios o anonimizados durante el proyecto.
+  Sin dashboard, reportes, exportaciones ni integraciones.
+end note
+note bottom of OJV
+  No existe conexión, consulta automatizada,
+  sincronización ni almacenamiento de credenciales.
+  Los antecedentes disponibles se registran después
+  mediante una acción manual del usuario.
+end note
+@enduml

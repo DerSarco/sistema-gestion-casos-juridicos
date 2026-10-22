@@ -1,0 +1,75 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+hide methods
+title Modelo de datos reducido del MVP — 2026-10-22
+
+class Estudio <<ED-01>> {
+  id: UUID
+  nombre: String
+}
+class Usuario <<ED-02>> {
+  id: UUID
+  identificadorAcceso: String
+  rol: String
+  activo: Boolean
+}
+class Cliente <<ED-04>> {
+  id: UUID
+  nombre: String
+  email?: String
+  telefono?: String
+}
+class Caso <<ED-05>> {
+  id: UUID
+  codigoInterno: String
+  materia: String
+  estado: String
+  etapa: String
+  tribunal?: String
+  ritRol?: String
+}
+class Asignacion <<ED-06>> {
+  id: UUID
+  fecha: Instant
+  principal: Boolean
+}
+class FechaRelevante <<ED-08>> {
+  id: UUID
+  tipo: String
+  fecha: Instant
+  zona: String
+  observacion?: String
+}
+class EventoHistorial <<ED-09>> {
+  id: UUID
+  accion: String
+  fecha: Instant
+  detalleProtegido?: Json
+}
+
+Estudio "1" *-- "0..*" Usuario
+Estudio "1" *-- "0..*" Cliente
+Estudio "1" *-- "0..*" Caso
+Cliente "1" -- "0..*" Caso
+Caso "1" *-- "1" Asignacion
+Asignacion "0..*" --> "1" Usuario : responsable
+Caso "1" *-- "0..*" FechaRelevante
+FechaRelevante "0..*" --> "1" Usuario : responsable
+Caso "1" *-- "0..*" EventoHistorial
+EventoHistorial "0..*" --> "0..1" Usuario : actor
+
+note right of Caso
+  Estado, etapa y materia usan valores controlados.
+  La administración de catálogos queda diferida.
+  Tribunal y RIT/ROL admiten ausencia.
+end note
+note bottom of FechaRelevante
+  Registro manual. No calcula plazos
+  judiciales definitivos ni crea alertas automáticas.
+end note
+note bottom of EventoHistorial
+  Historial básico aditivo para cambios priorizados.
+end note
+@enduml

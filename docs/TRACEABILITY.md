@@ -1,6 +1,6 @@
 # Matriz de trazabilidad de requisitos
 
-**Versión:** 0.4
+**Versión:** 0.5
 
 **Fecha:** 2026-10-22
 
@@ -62,7 +62,7 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 
 | ID | Caso de uso | Actores principales | Estado |
 |---|---|---|---|
-| CU-001 | Acceder a la plataforma interna | ACT-01, ACT-02, ACT-03 | Diagramado; implementación diferida |
+| CU-001 | Acceder a la plataforma interna | ACT-01, ACT-02, ACT-03 | Priorizado; implementación al final |
 | CU-002 | Administrar usuarios, roles y catálogos | ACT-01 | Diferido del MVP |
 | CU-003 | Registrar y mantener clientes | ACT-01, ACT-03; ACT-02 si se autoriza | Diagramado |
 | CU-004 | Registrar y mantener casos | ACT-01, ACT-02, ACT-03 según permiso | Diagramado |
@@ -171,11 +171,16 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
   como restricciones obligatorias.
 - Las ocho historias priorizadas corresponden exactamente a las ocho vistas del
   prototipo; ninguna función diferida forma parte de su aceptación.
-- Los casos de uso se materializan en
-  [`diagrams/src/use-cases.puml`](diagrams/src/use-cases.puml) y
-  [`diagrams/rendered/use-cases.svg`](diagrams/rendered/use-cases.svg).
-- Los modelos de clases, despliegue y secuencias se enlazan desde
-  [`diagrams/README.md`](diagrams/README.md).
+- Los casos de uso priorizados se materializan en
+  [`diagrams/src/mvp-use-cases.puml`](diagrams/src/mvp-use-cases.puml) y
+  [`diagrams/rendered/mvp-use-cases.svg`](diagrams/rendered/mvp-use-cases.svg).
+- El proceso y contexto se representa en
+  [`diagrams/src/mvp-process-context.puml`](diagrams/src/mvp-process-context.puml),
+  con la OJV fuera del sistema y sin comunicación técnica.
+- El modelo de datos reducido se representa en
+  [`diagrams/src/mvp-data-model.puml`](diagrams/src/mvp-data-model.puml).
+- Los modelos amplios y las secuencias de apoyo se clasifican en
+  [`diagrams/README.md`](diagrams/README.md) como apoyo del MVP o visión futura.
 - El esquema PostgreSQL y la migración inicial de clientes, casos, catálogos,
   asignaciones, hitos e historial se documentan en
   [`architecture/data-model.md`](architecture/data-model.md) mediante el issue
