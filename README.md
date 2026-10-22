@@ -24,6 +24,8 @@ Este repositorio concentra:
 ## Documentación
 
 - [Especificación de requisitos de software](docs/SRS.md)
+- [Objetivos y medición del proyecto](docs/OBJECTIVES.md)
+- [Línea base del MVP priorizado](docs/MVP_SCOPE.md)
 - [Matriz de trazabilidad](docs/TRACEABILITY.md)
 - [Arquitectura y decisiones técnicas](docs/architecture/README.md)
 - [Reglas de contribución](CONTRIBUTING.md)
@@ -79,5 +81,6 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 La versión v0.2 incorpora la especificación revisada, arquitectura, diagramas,
 esquema PostgreSQL, verificación automática y flujos funcionales de clientes y
 casos sobre memoria temporal con datos ficticios. La autenticación y la
-autorización permanecen planificadas para v0.3; esta versión no debe desplegarse
-como sistema productivo ni utilizar datos reales.
+autorización se completarán en el último incremento funcional del MVP; la
+versión actual no debe desplegarse como sistema productivo ni utilizar datos
+reales.
