@@ -1,0 +1,43 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam packageStyle rectangle
+left to right direction
+title Casos de uso del MVP priorizado — 2026-10-22
+
+actor "Usuario interno autorizado\nACT-01, ACT-02 o ACT-03" as User
+
+rectangle "Sistema interno — MVP" {
+  usecase "CU-001\nAcceder a la plataforma" as CU001
+  usecase "CU-003\nRegistrar y mantener clientes" as CU003
+  usecase "CU-004\nRegistrar y mantener casos" as CU004
+  usecase "CU-005\nAsignar responsable" as CU005
+  usecase "CU-006\nRegistrar fecha relevante" as CU006
+  usecase "CU-007\nConsultar historial básico" as CU007
+  usecase "CU-008\nBuscar clientes y casos" as CU008
+  usecase "CU-013\nRegistrar antecedentes\nobtenidos manualmente" as CU013
+}
+
+User --> CU001
+User --> CU003
+User --> CU004
+User --> CU005
+User --> CU006
+User --> CU007
+User --> CU008
+User --> CU013
+
+note bottom of CU001
+  RF-001 y RF-003 se implementan
+  en el último incremento funcional.
+end note
+note bottom of CU013
+  La OJV no es actor ni interfaz técnica.
+  Tribunal y RIT/ROL se registran manualmente.
+end note
+
+note left of User
+  Las operaciones efectivas dependen
+  de la matriz de permisos pendiente.
+end note
+@enduml
