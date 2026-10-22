@@ -1,8 +1,8 @@
 # Matriz de trazabilidad de requisitos
 
-**Versión:** 0.2
+**Versión:** 0.3
 
-**Fecha:** 2026-10-16
+**Fecha:** 2026-10-21
 
 **SRS relacionado:** [Especificación de requisitos](SRS.md)
 
@@ -13,14 +13,40 @@ los modelos previstos y la evidencia de verificación. Debe actualizarse en el
 mismo pull request cuando un requisito cambie de identificador, alcance, estado
 o método de prueba.
 
-Estados utilizados:
+Clasificaciones de alcance utilizadas:
+
+- **MVP priorizado:** requisito comprometido para esta iteración.
+- **Diferido:** requisito conservado para evaluación posterior y excluido del
+  criterio de aceptación actual.
+- **Restricción obligatoria:** límite que se verifica en el MVP aunque no
+  produzca una función visible.
+
+Estados de realización utilizados:
 
 - **Especificado:** definido en el SRS y pendiente de validación o construcción.
 - **Validado:** revisado y aceptado por la fuente autorizada.
 - **Implementado:** existe evidencia técnica en la rama de integración.
 - **Verificado:** la prueba vinculada fue ejecutada y aprobada.
-- **Diferido:** permanece en la versión 1, pero su implementación se programó
-  para un incremento posterior.
+
+La clasificación de alcance no debe confundirse con el estado de realización.
+Por ejemplo, un requisito puede estar priorizado y todavía no implementado.
+
+## Línea base trazable del MVP
+
+| Historia | Vista | Resultado | RF | RNF principales | Issues de diseño |
+|---|---|---|---|---|---|
+| HU-01 | MVP-01 Inicio de sesión | Acceso interno sin registro público | RF-001, RF-003 | RNF-001, RNF-003, RNF-007 | #43 |
+| HU-02 | MVP-02 Casos | Buscar y filtrar casos autorizados | RF-019 | RNF-015, RNF-018 | #45 |
+| HU-03 | MVP-03 Formulario de caso | Registrar o editar una ficha única | RF-008 a RF-011, RF-013 | RNF-011, RNF-019 | #45 |
+| HU-04 | MVP-04 Ficha del caso | Consultar información e historial básico | RF-010, RF-017 | RNF-001, RNF-005 | #45 |
+| HU-05 | MVP-05 Cambio de estado o etapa | Actualizar el flujo y trazar el cambio | RF-009, RF-010, RF-017 | RNF-005 | #42, #45 |
+| HU-06 | MVP-06 Fecha relevante | Registrar manualmente una fecha | RF-015, RF-017, RF-030 | RNF-027 | #46 |
+| HU-07 | MVP-07 Clientes | Buscar información mínima autorizada | RF-005 | RNF-001, RNF-015 | #44 |
+| HU-08 | MVP-08 Formulario de cliente | Registrar o editar y advertir coincidencias | RF-004, RF-006, RF-007 | RNF-007, RNF-019 | #44 |
+
+La especificación completa de las historias está en
+[`USER_STORIES.md`](USER_STORIES.md) y la clasificación de todos los RF/RNF en
+[`MVP_SCOPE.md`](MVP_SCOPE.md).
 
 Los códigos `CU-###`, `DF-###`, `DNF-###` y `DD-###` reservan respectivamente
 casos de uso, pruebas funcionales, pruebas no funcionales y pruebas de datos. La
@@ -31,17 +57,17 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 | ID | Caso de uso | Actores principales | Estado |
 |---|---|---|---|
 | CU-001 | Acceder a la plataforma interna | ACT-01, ACT-02, ACT-03 | Diagramado; implementación diferida |
-| CU-002 | Administrar usuarios, roles y catálogos | ACT-01 | Diagramado; implementación diferida |
+| CU-002 | Administrar usuarios, roles y catálogos | ACT-01 | Diferido del MVP |
 | CU-003 | Registrar y mantener clientes | ACT-01, ACT-03; ACT-02 si se autoriza | Diagramado |
 | CU-004 | Registrar y mantener casos | ACT-01, ACT-02, ACT-03 según permiso | Diagramado |
-| CU-005 | Asignar y reasignar responsables | ACT-01; otros si se autoriza | Diagramado |
-| CU-006 | Gestionar fechas, hitos y alertas | Usuarios autorizados | Diagramado |
-| CU-007 | Consultar historial y corregir datos | Usuarios autorizados; ACT-01 para corrección | Diagramado |
-| CU-008 | Buscar, consultar dashboard y exportar | ACT-01, ACT-02, ACT-03 según alcance | Diagramado |
-| CU-009 | Gestionar anexo de información y autorización | ACT-01, ACT-03; ACT-02 si se autoriza | Diagramado |
-| CU-010 | Crear evento seleccionado en Calendar | Usuario autorizado | Diagramado |
-| CU-011 | Mantener referencia OneDrive | Usuario autorizado | Diagramado |
-| CU-012 | Solicitar y resolver asistencia Gemini | Usuario autorizado | Diagramado |
+| CU-005 | Asignar responsable | ACT-01; otros si se autoriza | Priorizado; reasignación diferida |
+| CU-006 | Registrar fechas o hitos manuales | Usuarios autorizados | Priorizado; alertas diferidas |
+| CU-007 | Consultar historial básico | Usuarios autorizados | Priorizado; corrección administrativa diferida |
+| CU-008 | Buscar clientes y casos | ACT-01, ACT-02, ACT-03 según alcance | Priorizado; dashboard y exportación diferidos |
+| CU-009 | Gestionar anexo de información y autorización | ACT-01, ACT-03; ACT-02 si se autoriza | Diferido del MVP |
+| CU-010 | Crear evento seleccionado en Calendar | Usuario autorizado | Diferido del MVP |
+| CU-011 | Mantener referencia OneDrive | Usuario autorizado | Diferido del MVP |
+| CU-012 | Solicitar y resolver asistencia Gemini | Usuario autorizado | Diferido del MVP |
 | CU-013 | Registrar manualmente antecedentes obtenidos fuera del sistema | Usuario autorizado | Diagramado; OJV no es interfaz |
 
 ## Requisitos funcionales
@@ -134,8 +160,11 @@ existencia de un código no implica que la evidencia ya haya sido ejecutada.
 
 ## Cobertura y asuntos abiertos
 
-- Los 30 RF, 28 RNF y 15 RD definidos en el SRS poseen fuente y verificación
-  prevista en esta matriz.
+- Los 30 RF y 28 RNF históricos conservan fuente y verificación prevista, pero el
+  MVP compromete 14 RF y 16 RNF implementables, además de `RF-030` y `RNF-008`
+  como restricciones obligatorias.
+- Las ocho historias priorizadas corresponden exactamente a las ocho vistas del
+  prototipo; ninguna función diferida forma parte de su aceptación.
 - Los casos de uso se materializan en
   [`diagrams/src/use-cases.puml`](diagrams/src/use-cases.puml) y
   [`diagrams/rendered/use-cases.svg`](diagrams/rendered/use-cases.svg).

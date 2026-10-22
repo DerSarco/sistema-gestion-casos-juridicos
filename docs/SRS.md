@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 0.9
+**Versión del documento:** 1.0
 
 **Estado:** Revisado internamente; pendiente de validación externa
 
@@ -21,22 +21,24 @@
 | 0.7 | 2026-10-16 | Modelo conceptual de datos, privacidad y ciclo de vida | Equipo del proyecto |
 | 0.8 | 2026-10-16 | Matriz detallada de trazabilidad de requisitos y pruebas previstas | Equipo del proyecto |
 | 0.9 | 2026-10-16 | Revisión integral de calidad conforme a IEEE 830-1998 y consolidación de referencias | Equipo del proyecto |
+| 1.0 | 2026-10-21 | Repriorización del MVP, clasificación de requisitos y alineación con historias Gherkin y ocho vistas | Equipo del proyecto |
 
 ## 1. Introducción
 
 ### 1.1 Propósito
 
-Este documento especifica los requisitos de la versión 1 de una plataforma web
+Este documento especifica los requisitos del MVP priorizado de una plataforma web
 para centralizar el registro, la asignación y el seguimiento inicial de casos en
 un estudio jurídico pequeño.
 
 ### 1.2 Alcance del producto
 
 La plataforma centralizará información de clientes y casos, responsables,
-estados, fechas relevantes e historial de cambios. Facilitará la consulta de
-carga de trabajo y la generación de reportes autorizados. Su versión 1 incluye
-las capacidades `ALC-01` a `ALC-14` y excluye expresamente los elementos
-`EXC-01` a `EXC-10`.
+estados, etapas, fechas relevantes e historial básico. El compromiso de esta
+iteración corresponde a las capacidades `ALC-01` a `ALC-08` con las reducciones
+indicadas en la sección 2.2.1. Las capacidades `ALC-09` a `ALC-14` permanecen
+documentadas como evolución futura y no forman parte de la aceptación del MVP.
+Las exclusiones `EXC-01` a `EXC-10` continúan vigentes.
 
 No reemplazará la Oficina Judicial Virtual, no mantendrá comunicación técnica
 con ella ni automatizará la estrategia jurídica. El alcance detallado se define
@@ -49,7 +51,8 @@ decisiones que requieren validación externa.
 |---|---|
 | OJV | Oficina Judicial Virtual del Poder Judicial de Chile. |
 | SRS | Especificación de requisitos de software. |
-| Versión 1 | Primera entrega funcional, documentada y sometida a aceptación. |
+| MVP priorizado | Subconjunto de requisitos comprometido para el prototipo funcional académico actual; no corresponde a una edición comercial. |
+| Diferido | Requisito conservado para una iteración posterior y excluido del criterio de aceptación actual. |
 | RF | Requisito funcional. |
 | RNF | Requisito no funcional. |
 | RN | Regla del negocio. |
@@ -95,30 +98,26 @@ almacenamiento documental.
 
 ### 2.2 Alcance funcional del producto
 
-#### 2.2.1 Capacidades incluidas en la versión 1
+#### 2.2.1 Capacidades incluidas en el MVP priorizado
 
 | ID | Capacidad incluida | Resultado esperado |
 |---|---|---|
-| ALC-01 | Administrar usuarios internos y roles autorizados. | Cada usuario opera con un perfil identificable y permisos acordes con sus funciones. |
+| ALC-01 | Permitir acceso interno controlado. | Cada usuario opera con una identidad y permisos; no existe registro público. La implementación técnica se completa al final del incremento funcional. |
 | ALC-02 | Registrar y mantener clientes con sus datos de contacto autorizados. | La información mínima del cliente se encuentra vinculada de forma trazable con sus casos. |
 | ALC-03 | Registrar y mantener casos con un identificador interno, estado, etapa y responsable. | Cada caso activo posee los datos obligatorios definidos por las reglas del negocio. |
-| ALC-04 | Asignar y reasignar responsables. | El sistema conserva la responsabilidad actual y el historial de reasignaciones. |
-| ALC-05 | Administrar catálogos de estados, etapas y tipos autorizados. | Los usuarios seleccionan valores normalizados en lugar de crear variantes de texto libre. |
+| ALC-04 | Asignar un responsable principal. | El caso identifica al abogado responsable y registra la asignación. La reasignación avanzada queda diferida. |
+| ALC-05 | Usar estados y etapas controlados. | Los usuarios seleccionan valores predefinidos. La administración de catálogos queda diferida. |
 | ALC-06 | Registrar fechas relevantes, responsables y observaciones operativas. | La información queda disponible para consulta y control interno sin calcular plazos jurídicos definitivos. |
 | ALC-07 | Mantener historial de cambios críticos. | Las acciones definidas como críticas conservan usuario, fecha y cambio realizado. |
 | ALC-08 | Buscar y consultar información autorizada. | El usuario localiza clientes o casos sin acceder a registros fuera de sus permisos. |
-| ALC-09 | Consultar carga de trabajo, pendientes y reportes autorizados. | Cada perfil obtiene una vista coherente con su responsabilidad y nivel de acceso. |
-| ALC-10 | Generar el anexo imprimible de información y autorización desde una plantilla aprobada. | El personal registra folio, versión, entrega, firma manuscrita, estado y referencia al respaldo archivado. |
-| ALC-11 | Crear de forma controlada eventos autorizados en Google Calendar. | Una falla externa no elimina ni modifica los datos internos del caso. |
-| ALC-12 | Mantener una referencia autorizada a recursos conservados en OneDrive. | La plataforma no duplica documentos ni reemplaza los permisos del repositorio externo. |
-| ALC-13 | Ejecutar una prueba de concepto de asistencia con Gemini sobre antecedentes anonimizados. | El servicio propone un resumen o clasificación que requiere revisión humana y nunca modifica registros automáticamente. |
-| ALC-14 | Exportar información cuando el perfil y el propósito lo permitan. | La exportación respeta los permisos y controles que se definan en los requisitos específicos. |
 
-Estas capacidades describen el límite funcional general. Los requisitos
-`RF-###`, las reglas `RN-###` y sus criterios de aceptación precisarán el
-comportamiento verificable de cada una.
+Las capacidades históricas `ALC-09` a `ALC-14` —dashboard y reportes, anexo
+imprimible, Calendar, OneDrive, Gemini y exportaciones— quedan diferidas. La
+clasificación completa y vinculante se mantiene en
+[`MVP_SCOPE.md`](MVP_SCOPE.md); las historias y criterios Gherkin se mantienen
+en [`USER_STORIES.md`](USER_STORIES.md).
 
-#### 2.2.2 Exclusiones de la versión 1
+#### 2.2.2 Exclusiones del MVP
 
 | ID | Exclusión | Tratamiento |
 |---|---|---|
@@ -126,9 +125,9 @@ comportamiento verificable de cada una.
 | EXC-02 | Almacenamiento de credenciales judiciales. | Las credenciales permanecen completamente fuera del sistema. |
 | EXC-03 | Cálculo automático definitivo de plazos judiciales. | Las fechas se registran para control interno y requieren interpretación profesional. |
 | EXC-04 | Automatización de la estrategia jurídica o toma autónoma de decisiones. | Las decisiones permanecen bajo responsabilidad humana. |
-| EXC-05 | Inteligencia artificial como núcleo o requisito para operar. | La prueba de concepto es opcional y posee un flujo manual alternativo. |
-| EXC-06 | Reemplazo de OneDrive como repositorio documental. | La plataforma conserva referencias autorizadas, no los documentos jurídicos. |
-| EXC-07 | Sincronización bidireccional completa con Google Calendar. | La integración se limita a la creación controlada de eventos autorizados. |
+| EXC-05 | Inteligencia artificial como núcleo o requisito para operar. | El MVP no utiliza inteligencia artificial. |
+| EXC-06 | Reemplazo o integración con OneDrive. | El MVP no gestiona documentos ni referencias externas. |
+| EXC-07 | Integración con Google Calendar. | El MVP registra fechas únicamente dentro de la plataforma. |
 | EXC-08 | Portal para clientes y aplicación móvil nativa. | Los clientes no operan la plataforma y la interfaz prevista es web responsiva. |
 | EXC-09 | Facturación, contabilidad y firma electrónica. | Estas funciones no forman parte del problema ni de los objetivos de la versión 1. |
 | EXC-10 | Migración histórica completa o uso cotidiano con casos reales durante el proyecto académico. | La construcción y aceptación utilizan datos ficticios o anonimizados. |
@@ -139,8 +138,9 @@ proyecto.
 
 ### 2.3 Características de los usuarios y actores externos
 
-La versión 1 considera tres perfiles humanos internos y servicios externos
-acotados. Los permisos descritos en esta sección constituyen una base funcional
+El MVP considera tres perfiles humanos internos. Los servicios externos se
+documentan solo como contexto o evolución futura. Los permisos descritos
+constituyen una base funcional
 para elaborar los requisitos y casos de uso; su detalle deberá validarse con los
 socios propietarios antes de cerrar la especificación.
 
@@ -208,23 +208,19 @@ general por el solo hecho de registrar información.
 
 ##### EXT-01: Google Calendar
 
-Servicio externo previsto para crear eventos autorizados a partir de una fecha
-registrada, evitando una redigitación innecesaria. La integración será acotada y
-una falla del servicio no podrá provocar la pérdida de los datos internos del
-caso.
+Servicio externo evaluado para una iteración posterior. No constituye interfaz
+ni dependencia operativa del MVP priorizado.
 
 ##### EXT-02: OneDrive
 
-Repositorio documental externo. La plataforma conservará solamente una
-referencia autorizada al recurso o carpeta correspondiente y deberá respetar los
-permisos definidos en OneDrive. La versión 1 no reemplaza este repositorio.
+Repositorio documental externo considerado como evolución futura. El MVP no
+consulta, copia ni mantiene referencias a sus recursos.
 
 ##### EXT-03: Gemini API
 
-Servicio externo utilizado exclusivamente en una prueba de concepto para resumir
-y sugerir una clasificación de antecedentes anonimizados. Toda respuesta requiere
-revisión humana y no puede modificar fichas ni tomar decisiones automáticamente.
-Su indisponibilidad no debe impedir el registro manual.
+Servicio externo considerado para una prueba de concepto futura con antecedentes
+anonimizados. El MVP no lo invoca y funciona completamente sin inteligencia
+artificial.
 
 ##### EXT-04: Oficina Judicial Virtual
 
@@ -237,25 +233,22 @@ credenciales judiciales.
 #### 2.3.3 Personas relacionadas que no operan la plataforma
 
 El cliente del estudio es la persona a quien se refiere parte de la información
-registrada, pero no es usuario ni actor operativo de la versión 1. Revisa y firma
-fuera de la plataforma el anexo de información y autorización cuando corresponda.
-El personal autorizado registra posteriormente los datos de control del
-documento. La versión 1 no incorpora un portal de clientes.
+registrada, pero no es usuario ni actor operativo del MVP. El MVP no incorpora
+un portal de clientes ni la gestión del anexo de información y autorización.
 
 #### 2.3.4 Matriz inicial de responsabilidades
 
 | Capacidad | ACT-01 Administrador | ACT-02 Abogado | ACT-03 Asistente |
 |---|---|---|---|
-| Consultar visión global del estudio | Previsto | Según autorización | Según autorización |
-| Administrar usuarios, roles y catálogos | Previsto | No previsto | No previsto |
+| Consultar clientes y casos autorizados | Previsto | Según autorización | Según autorización |
+| Administrar usuarios, roles y catálogos | Diferido | No previsto | No previsto |
 | Registrar clientes y casos | Previsto | Según autorización | Previsto |
 | Actualizar información operativa | Previsto | Casos autorizados | Campos autorizados |
-| Asignar o reasignar responsables | Previsto | Participación por definir | Participación por definir |
+| Asignar responsable | Previsto | Participación por definir | Participación por definir |
 | Consultar historial de cambios | Previsto | Casos autorizados | Según autorización |
 | Eliminar o alterar historial crítico | No permitido | No permitido | No permitido |
-| Preparar anexo imprimible | Previsto | Según autorización | Previsto |
-| Aprobar contenido de la plantilla | Previsto | No previsto | No previsto |
-| Revisar sugerencias de Gemini | Previsto | Según autorización | Según autorización |
+| Gestionar anexo imprimible | Diferido | Diferido | Diferido |
+| Revisar sugerencias de Gemini | Diferido | Diferido | Diferido |
 
 La matriz expresa responsabilidades previstas y no sustituye la futura matriz
 detallada de permisos. Las celdas marcadas como `Según autorización` o
@@ -287,9 +280,8 @@ acceso.
   mínimo privilegio.
 - Las acciones críticas definidas en los requisitos conservarán trazabilidad y no
   podrán alterarse silenciosamente por usuarios comunes.
-- Las integraciones externas no podrán provocar pérdida de datos internos ni
-  impedir la continuidad de los flujos manuales esenciales.
-- La versión 1 terminará con pruebas y aceptación con los socios; esta aceptación
+- Las integraciones externas permanecen diferidas y no son dependencias del MVP.
+- El MVP terminará con pruebas y aceptación con los socios; esta aceptación
   no equivale a una autorización automática para uso productivo con datos reales.
 
 ### 2.5 Supuestos
@@ -299,8 +291,8 @@ acceso.
 | SUP-01 | Los perfiles iniciales administrador, abogado y asistente cubren las funciones internas prioritarias. | Pendiente de validación detallada | Revisión de la matriz de permisos con los socios. | Ajustar actores, permisos, requisitos y casos de uso antes de implementar autorización. |
 | SUP-02 | Los usuarios de prueba dispondrán de navegador actualizado y conexión a internet durante la aceptación. | Supuesto de trabajo | Confirmación previa a la sesión de prueba. | Preparar alternativa local o reprogramar las pruebas dependientes de servicios remotos. |
 | SUP-03 | Los socios podrán validar catálogos, campos mínimos, permisos y flujos prioritarios. | Confirmado como compromiso del proceso, fechas por coordinar | Registro de revisiones y decisiones en issues o minutas anonimizadas. | Mantener los elementos afectados en estado propuesto y no tratarlos como aceptados. |
-| SUP-04 | Existirán cuentas de prueba y autorizaciones suficientes para evaluar Calendar y OneDrive. | Pendiente | Prueba técnica con cuentas sin información real. | Aplicar el flujo manual y conservar la integración como no verificada. |
-| SUP-05 | La prueba de Gemini podrá realizarse con antecedentes ficticios o anonimizados. | Pendiente de validación técnica | Verificación del conjunto de prueba y revisión de privacidad antes del envío. | No ejecutar la prueba externa y mantener el registro manual. |
+| SUP-04 | Podrían existir cuentas de prueba para evaluar Calendar y OneDrive en una iteración futura. | Diferido | Nuevo issue y evaluación de proveedor. | No afecta el MVP. |
+| SUP-05 | Una prueba futura de Gemini utilizaría exclusivamente antecedentes ficticios o anonimizados. | Diferido | Nuevo issue y revisión de privacidad. | No afecta el MVP. |
 | SUP-06 | El volumen y concurrencia requeridos serán compatibles con un estudio pequeño. | No medido | Levantamiento de usuarios simultáneos, volumen de casos y crecimiento esperado. | Ajustar requisitos de rendimiento, arquitectura y pruebas de carga. |
 
 Los supuestos pendientes no pueden presentarse como hechos confirmados. Cada uno
@@ -312,9 +304,9 @@ que afecte una decisión irreversible.
 | ID | Dependencia | Uso previsto | Comportamiento ante indisponibilidad |
 |---|---|---|---|
 | DEP-01 | Participación de los socios propietarios | Validar requisitos, reglas operativas, prototipos y aceptación. | Registrar la validación como pendiente y no asumir aprobación. |
-| DEP-02 | Google Calendar | Crear eventos autorizados desde una fecha registrada. | Conservar los datos internos, informar el error y permitir continuar sin crear el evento. |
-| DEP-03 | OneDrive | Acceder mediante una referencia autorizada al recurso externo. | Conservar la referencia, informar la indisponibilidad y no modificar permisos externos. |
-| DEP-04 | Gemini API | Ejecutar la prueba opcional de resumen y clasificación sobre datos anonimizados. | Omitir la sugerencia y permitir completar todo el registro manualmente. |
+| DEP-02 | Google Calendar | Diferido; no se usa en el MVP. | No afecta el funcionamiento del MVP. |
+| DEP-03 | OneDrive | Diferido; no se usa en el MVP. | No afecta el funcionamiento del MVP. |
+| DEP-04 | Gemini API | Diferido; no se usa en el MVP. | No afecta el funcionamiento del MVP. |
 | DEP-05 | Entorno web de preproducción y base de datos de pruebas | Permitir la revisión temporal con datos ficticios o anonimizados. | Aplicar respaldo y restauración; utilizar una alternativa local si la indisponibilidad impide la sesión. |
 
 La OJV no es una dependencia de software de la versión 1. Su utilización manual
@@ -334,7 +326,7 @@ criterios de aceptación y una decisión formal de alcance.
 
 #### 3.1.1 Interfaces de usuario
 
-La versión 1 ofrecerá una interfaz web responsiva para los tres perfiles internos.
+El MVP ofrecerá una interfaz web responsiva para los tres perfiles internos.
 Las vistas y acciones disponibles dependerán del rol y de la autorización sobre
 el registro. Los prototipos y requisitos no funcionales precisarán navegación,
 mensajes de validación, accesibilidad y tamaños de pantalla.
@@ -343,11 +335,8 @@ mensajes de validación, accesibilidad y tamaños de pantalla.
 
 - PostgreSQL conservará los datos relacionales y aplicará restricciones de
   integridad complementarias a las reglas de aplicación.
-- Google Calendar recibirá solicitudes expresas para crear eventos seleccionados.
-- OneDrive se utilizará mediante referencias autorizadas a recursos externos; la
-  plataforma no copiará documentos ni modificará permisos externos.
-- Gemini recibirá solamente antecedentes ficticios o anonimizados durante la
-  prueba de concepto y devolverá sugerencias sujetas a revisión humana.
+- Google Calendar, OneDrive y Gemini no constituyen interfaces del MVP; sus
+  requisitos históricos permanecen diferidos.
 - La OJV no constituye una interfaz de software: no existirá comunicación
   técnica de entrada o salida con ella.
 
@@ -361,11 +350,23 @@ requisitos no funcionales y en el diseño técnico.
 
 ### 3.2 Requisitos funcionales
 
-Los requisitos utilizan prioridad alta, media o baja. Una prioridad alta indica
-que la capacidad es necesaria para aceptar la versión 1; no determina por sí
-sola el orden de construcción. Por decisión de planificación, la autenticación y
-la administración de cuentas se implementarán después del primer incremento
-funcional, sin retirar sus criterios de aceptación finales.
+Los identificadores se conservan para no romper la trazabilidad histórica. El
+compromiso actual se limita a catorce RF priorizados; quince RF quedan diferidos
+y `RF-030` opera como restricción obligatoria:
+
+| Clasificación | Requisitos |
+|---|---|
+| MVP priorizado | RF-001, RF-003 a RF-011, RF-013, RF-015, RF-017 y RF-019 |
+| Diferido | RF-002, RF-012, RF-014, RF-016, RF-018 y RF-020 a RF-029 |
+| Restricción obligatoria | RF-030 |
+
+La prioridad histórica indicada en las tablas expresa importancia, no pertenencia
+al MVP. Ante una diferencia, prevalece esta clasificación y `MVP_SCOPE.md`.
+
+Los requisitos utilizan prioridad alta, media o baja como registro histórico de
+su importancia. Solo la clasificación `MVP priorizado` determina el compromiso
+de aceptación actual. Por decisión de planificación, la autenticación y la
+autorización se implementarán después del primer incremento funcional.
 
 #### 3.2.1 Acceso y administración interna
 
@@ -438,6 +439,18 @@ funcional, sin retirar sus criterios de aceptación finales.
 | RF-030 | Mantener independencia de la OJV | Todos | Garantizar que ninguna función consulte, obtenga, envíe o sincronice información con la OJV ni solicite credenciales judiciales. | Cualquier flujo del sistema. | OJV ausente de interfaces, secretos, dependencias y tráfico de aplicación. | No admite excepción en la versión 1. | Alta | La revisión de arquitectura, código, variables y pruebas no detecta clientes, credenciales ni llamadas a la OJV. | RN-030 |
 
 ### 3.3 Requisitos no funcionales
+
+La iteración compromete dieciséis RNF transversales. Los demás se conservan
+para incrementos posteriores y `RNF-008` permanece como puerta obligatoria:
+
+| Clasificación | Requisitos |
+|---|---|
+| MVP priorizado | RNF-001, RNF-003 a RNF-007, RNF-009, RNF-011, RNF-015, RNF-018 a RNF-020, RNF-022, RNF-023, RNF-027 y RNF-028 |
+| Diferido | RNF-002, RNF-010, RNF-012 a RNF-014, RNF-016, RNF-017, RNF-021 y RNF-024 a RNF-026 |
+| Restricción obligatoria | RNF-008 |
+
+La reducción de alcance no autoriza debilitar el control de acceso, publicar
+secretos, usar datos reales ni omitir la trazabilidad técnica.
 
 Los requisitos no funcionales expresan metas de aceptación del entorno académico
 de pruebas. No constituyen por sí solos una certificación, un SLA comercial ni
@@ -701,10 +714,9 @@ este diseño no equivale por sí sola a cumplimiento legal.
 
 Las propiedades transversales se expresan en `RNF-001` a `RNF-028` como
 requisitos verificables y no como declaraciones generales de calidad o
-cumplimiento. La prioridad indicada representa importancia para la versión 1,
-no necesariamente el orden de construcción. En particular, autenticación,
-cuentas y autorización permanecen dentro del alcance y con prioridad alta, pero
-su implementación se difiere hasta después del primer incremento funcional.
+cumplimiento. La clasificación de la sección 3.3 define el compromiso actual.
+En particular, acceso y autorización permanecen en el MVP, pero su implementación
+se completa después del primer incremento funcional.
 Mientras esos controles no existan, cualquier ejecución será exclusivamente de
 desarrollo, con datos ficticios, sin acceso público y sin aptitud productiva.
 
