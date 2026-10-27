@@ -17,8 +17,8 @@
 | Backlog | `PRODUCT_BACKLOG.md` | Listo | Prioridad, puntos, estado y dependencias |
 | Visual Story Mapping | `STORY_MAP.md` | Listo | Corte entre MVP y evolución |
 | Product Roadmap | `ROADMAP.md` | Listo | Hitos v0.3 a v1.0 |
-| Gantt | `GANTT.md` | Listo como estimación | 10 semanas, 120 h estimadas |
-| 80 % de mockups | `docs/mockups/stitch/` | 8 de 8 capturas disponibles | Cobertura visual 100 %; navegación y responsive pendientes |
+| Gantt | `GANTT.md` | Rebaselinado como estimación | W1 5–11 oct.; W10 7–13 dic.; 120 h estimadas y control semanal |
+| 80 % de mockups | `docs/mockups/stitch/` | 8 de 8 capturas; navegación configurada en Stitch | Cobertura visual 100 %; responsive, accesibilidad y validación formal pendientes |
 | Modelo de datos | `mvp-data-model.svg` | Listo como modelo reducido | No confundir con persistencia conectada |
 | Construcción del MVP | Código v0.2.0 y 11 pruebas | Parcial | Demostrar solo clientes/casos temporales y CI |
 | Conclusiones | Alcance, valor y próximos pasos | Pendiente de redactar en PPT | No afirmar beneficios aún no medidos |

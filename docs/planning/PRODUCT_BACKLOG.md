@@ -1,6 +1,8 @@
 # Product Backlog priorizado
 
-**Línea base:** MVP AINC422 del 2026-10-22
+**Línea base de alcance:** MVP AINC422 del 2026-10-22
+
+**Rebaselinación temporal:** 2026-10-27, issue #64
 
 ## Escala
 
@@ -8,10 +10,10 @@ Se usa estimación relativa Fibonacci. Los puntos comparan tamaño, incertidumbr
 esfuerzo; no equivalen a horas. El estado `Parcial` indica evidencia existente en
 v0.2.0, pero no aceptación de la historia completa.
 
-| Orden | ID | Resultado | Trazabilidad | Prioridad | Puntos | Dependencias | Estado al 2026-10-22 |
+| Orden | ID | Resultado | Trazabilidad | Prioridad | Puntos | Dependencias | Estado al 2026-10-27 |
 |---:|---|---|---|---|---:|---|---|
 | 1 | PB-01 | Mantener línea base de objetivos, alcance, SRS y trazabilidad | OE-01; 10 RF; 10 RNF | Must | 3 | Ninguna | Terminado documentalmente |
-| 2 | PB-02 | Consolidar ocho vistas y evidencia limpia del prototipo | OE-02; MVP-01 a MVP-08 | Must | 5 | PB-01 | Parcial; capturas disponibles, validación responsive pendiente |
+| 2 | PB-02 | Consolidar ocho vistas y evidencia limpia del prototipo | OE-02; MVP-01 a MVP-08 | Must | 5 | PB-01 | Parcial; capturas y navegación configurada en Stitch, validación responsive y formal pendientes |
 | 3 | PB-03 | Conectar persistencia PostgreSQL mediante adaptadores Prisma | RD-001 a RD-003 | Must | 8 | PB-01 | Esquema y migración existentes; conexión pendiente |
 | 4 | PB-04 | Registrar o editar clientes | HU-08; RF-004 | Must | 5 | PB-03 | Registro temporal parcial; edición y persistencia pendientes |
 | 5 | PB-05 | Buscar clientes autorizados | HU-07; RF-005 | Must | 3 | PB-03, PB-04 | Búsqueda temporal parcial; autorización pendiente |
@@ -27,6 +29,18 @@ v0.2.0, pero no aceptación de la historia completa.
 
 **Tamaño relativo total:** 84 puntos. No se usa este total para afirmar avance
 porcentual porque los elementos parciales todavía no cumplen su Definition of Done.
+
+## Ventana prevista después de la rebaselinación
+
+| Ventana | Elementos previstos | Regla de entrada o salida |
+|---|---|---|
+| W4, 26 oct.–1 nov. | PB-01, PB-02 | Cerrar definición y diseño solo con evidencia; no confundir configuración de Stitch con aceptación |
+| W5, 2–8 nov. | PB-03, PB-04, PB-05 | Construcción comienza después de la puerta W4 |
+| W6, 9–15 nov. | PB-06, PB-07 | Persistencia de clientes disponible y criterios preparados |
+| W7, 16–22 nov. | PB-08, PB-09 | Casos registrables y pruebas del incremento anterior aprobadas |
+| W8, 23–29 nov. | PB-10 y continuidad de PB-08/PB-09 | Historial verificable y sin automatización jurídica |
+| W9, 30 nov.–6 dic. | PB-11, PB-12, continuidad de PB-13 | Acceso al final del incremento funcional; calidad ejecutada durante toda la construcción |
+| W10, 7–13 dic. | Cierre PB-13, PB-14 | No admite recuperar alcance nuevo; solo verificación, corrección crítica, aceptación y release |
 
 ## Definition of Ready
 
