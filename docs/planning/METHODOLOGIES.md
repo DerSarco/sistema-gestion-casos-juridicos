@@ -47,8 +47,12 @@ reconstruye en Next.js, pero una maqueta no se contabiliza como software liberad
 |---|---|---|---|
 | Alcance | Historias incorporadas sin control de cambio | 0 | Issues y `MVP_SCOPE.md` |
 | Avance | Elementos que cumplen Definition of Done | Seguimiento semanal, sin convertir parciales en terminados | Backlog y PR |
-| Capacidad | Horas reales respecto de 12 h/semana | Replanificar si la desviación supera 20 % | Registro semanal |
+| Capacidad | Horas reales respecto de 12 h/semana | Replanificar si la desviación absoluta supera 20 % (<9,6 h o >14,4 h) | Registro semanal |
 | Calidad | Build, tipos, lint y pruebas | 100 % aprobados | CI |
 | Defectos | Defectos críticos abiertos al aceptar | 0 | Issues y reporte de pruebas |
 | Trazabilidad | Historias con RF, issue, PR y prueba | 100 % al cierre | `TRACEABILITY.md` |
 | Privacidad | Datos reales detectados | 0 | Revisión de fixtures, capturas y logs |
+
+Cada semana termina con evidencia enlazada de Issues, PR, CI y trazabilidad. Si
+falta una de esas evidencias, el trabajo no se declara cerrado aunque exista una
+captura, un commit local o una estimación de avance.

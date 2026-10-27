@@ -38,6 +38,25 @@ Si el tiempo disminuye, se renegocia fecha o criterio secundario; no se elimina
 silenciosamente una historia ni se incorporan dashboard, reportes, alertas,
 integraciones o automatización jurídica.
 
+## Control semanal de la línea base
+
+La semana de planificación comienza el lunes y termina el domingo. Antes de
+seleccionar trabajo nuevo se contrasta el estado real con `GANTT.md` y se deja un
+comentario de cierre en el issue semanal o en el issue principal del incremento.
+El registro mínimo contiene:
+
+- 12 horas planificadas, horas reales respaldadas y desviación porcentual;
+- compromisos terminados según DoD, no terminados y trasladados;
+- Issues atendidos, PR integrados y enlace al CI correspondiente;
+- RF, RNF y HU afectados, con actualización de `TRACEABILITY.md`;
+- riesgos, bloqueos y decisiones de replanificación;
+- confirmación de cero funciones diferidas incorporadas sin control de cambios.
+
+Una desviación absoluta superior a 20 % obliga a replanificar antes de asumir
+nuevo trabajo. Una función diferida solo puede entrar mediante issue de cambio,
+análisis de impacto, actualización coordinada de artefactos y aprobación previa.
+La ausencia de registro de horas no autoriza estimarlas como horas ejecutadas.
+
 ## Convenciones de evidencia
 
 - Cada PR menciona RF/RNF o artefacto afectado.
