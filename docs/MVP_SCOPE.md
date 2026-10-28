@@ -44,22 +44,20 @@ externos.
 
 | Clasificación | Requisitos | Compromiso |
 |---|---|---|
-| MVP | RF-001, RF-004, RF-005, RF-008 a RF-010, RF-013, RF-015, RF-017 y RF-019 | Implementar y verificar mediante las ocho historias priorizadas. RF-001 se implementa al final del incremento funcional. |
-| Catálogo histórico para evolución | RF-002, RF-003, RF-006, RF-007, RF-011, RF-012, RF-014, RF-016, RF-018 y RF-020 a RF-029 | No son requisitos del MVP ni criterios de aceptación; requieren una nueva decisión de alcance. |
-| Restricción obligatoria | RF-030 | La solución no se comunica técnicamente con la OJV ni solicita credenciales judiciales. |
+| MVP | RF-001 a RF-010 | Implementar y verificar mediante las ocho historias priorizadas. RF-001 se implementa al final del incremento funcional. |
+| Restricción obligatoria | RF-011 | La solución no se comunica técnicamente con la OJV ni solicita credenciales judiciales. |
 
-El MVP comprende diez requisitos funcionales y una restricción obligatoria. Los
-identificadores históricos restantes se conservan únicamente para evitar perder
-decisiones previas; no forman parte de la especificación normativa vigente.
+El MVP comprende once requisitos funcionales, incluido `RF-011` como restricción
+obligatoria. La numeración vigente es continua y no reserva identificadores para
+capacidades diferidas.
 
 ## Línea base no funcional
 
 | Clasificación | Requisitos | Compromiso |
 |---|---|---|
-| MVP | RNF-001, RNF-003, RNF-005, RNF-007, RNF-008, RNF-011, RNF-018, RNF-019, RNF-022 y RNF-028 | Aplicar autorización, seguridad de secretos, trazabilidad, privacidad, integridad, responsividad, accesibilidad y calidad técnica. |
-| Catálogo histórico para evolución | RNF-002, RNF-004, RNF-006, RNF-009, RNF-010, RNF-012 a RNF-017, RNF-020, RNF-021 y RNF-023 a RNF-027 | No son requisitos del MVP; podrán evaluarse en una iteración posterior según riesgo y valor. |
+| MVP | RNF-001 a RNF-010 | Aplicar autorización, seguridad de secretos, trazabilidad, privacidad, integridad, responsividad, accesibilidad y calidad técnica. |
 
-El MVP comprende diez requisitos no funcionales. `RNF-008` forma parte de esos
+El MVP comprende diez requisitos no funcionales. `RNF-005` forma parte de esos
 diez requisitos y funciona además como puerta obligatoria para impedir el uso de
 datos reales.
 

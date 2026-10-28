@@ -11,7 +11,7 @@ tres se utilizarán en el video de hasta quince minutos:
 
 | Orden | Diagrama | Propósito en el video | Tiempo objetivo | Fuente | SVG | Trazabilidad |
 |---|---|---|---:|---|---|---|
-| 1 | Proceso y contexto del MVP | Explicar el flujo interno y separar la OJV del sistema. | 50 s | [`mvp-process-context.puml`](src/mvp-process-context.puml) | [`mvp-process-context.svg`](rendered/mvp-process-context.svg) | Objetivo general; RF-030; HU-02 a HU-08 |
+| 1 | Proceso y contexto del MVP | Explicar el flujo interno y separar la OJV del sistema. | 50 s | [`mvp-process-context.puml`](src/mvp-process-context.puml) | [`mvp-process-context.svg`](rendered/mvp-process-context.svg) | Objetivo general; RF-011; HU-02 a HU-08 |
 | 2 | Casos de uso reducidos | Mostrar actores y capacidades realmente comprometidas. | 60 s | [`mvp-use-cases.puml`](src/mvp-use-cases.puml) | [`mvp-use-cases.svg`](rendered/mvp-use-cases.svg) | CU-001, CU-003 a CU-008 y CU-013 |
 | 3 | Modelo de datos reducido | Explicar las entidades mínimas y su trazabilidad. | 60 s | [`mvp-data-model.puml`](src/mvp-data-model.puml) | [`mvp-data-model.svg`](rendered/mvp-data-model.svg) | ED-01, ED-02, ED-04 a ED-06, ED-08 y ED-09 |
 
@@ -24,8 +24,8 @@ una integración.
 
 | Diagrama | Fuente | Renderizado | Trazabilidad |
 |---|---|---|---|
-| Registro de cliente | [`sequence-client-registration.puml`](src/sequence-client-registration.puml) | [`sequence-client-registration.svg`](rendered/sequence-client-registration.svg) | CU-003; RF-004, RF-007 |
-| Registro de caso | [`sequence-case-registration.puml`](src/sequence-case-registration.puml) | [`sequence-case-registration.svg`](rendered/sequence-case-registration.svg) | CU-004; RF-008, RF-009 |
+| Registro de cliente | [`sequence-client-registration.puml`](src/sequence-client-registration.puml) | [`sequence-client-registration.svg`](rendered/sequence-client-registration.svg) | CU-003; RF-002 |
+| Registro de caso | [`sequence-case-registration.puml`](src/sequence-case-registration.puml) | [`sequence-case-registration.svg`](rendered/sequence-case-registration.svg) | CU-004; RF-004, RF-005 |
 
 Estos diagramas pueden respaldar preguntas técnicas, pero no necesitan ocupar
 tiempo propio en el video principal.
@@ -41,9 +41,9 @@ del MVP:
 | Casos de uso versión amplia | [`use-cases.puml`](src/use-cases.puml) | [`use-cases.svg`](rendered/use-cases.svg) | Administración, alertas, dashboard, exportación, anexo e integraciones. |
 | Dominio versión amplia | [`class-domain.puml`](src/class-domain.puml) | [`class-domain.svg`](rendered/class-domain.svg) | Referencias externas, Calendar, anexo y asistencia. |
 | Despliegue previsto ampliado | [`deployment.puml`](src/deployment.puml) | [`deployment.svg`](rendered/deployment.svg) | Calendar, OneDrive, Gemini y persistencia administrada. |
-| Reasignación avanzada | [`sequence-reassignment.puml`](src/sequence-reassignment.puml) | [`sequence-reassignment.svg`](rendered/sequence-reassignment.svg) | RF-014. |
-| Evento Calendar | [`sequence-calendar.puml`](src/sequence-calendar.puml) | [`sequence-calendar.svg`](rendered/sequence-calendar.svg) | RF-025 y RF-029. |
-| Asistencia Gemini | [`sequence-gemini.puml`](src/sequence-gemini.puml) | [`sequence-gemini.svg`](rendered/sequence-gemini.svg) | RF-027 a RF-029. |
+| Reasignación avanzada | [`sequence-reassignment.puml`](src/sequence-reassignment.puml) | [`sequence-reassignment.svg`](rendered/sequence-reassignment.svg) | Capacidad diferida, sin RF vigente. |
+| Evento Calendar | [`sequence-calendar.puml`](src/sequence-calendar.puml) | [`sequence-calendar.svg`](rendered/sequence-calendar.svg) | Capacidad diferida, sin RF vigente. |
+| Asistencia Gemini | [`sequence-gemini.puml`](src/sequence-gemini.puml) | [`sequence-gemini.svg`](rendered/sequence-gemini.svg) | Capacidad diferida, sin RF vigente. |
 
 La conservación de estos archivos no autoriza su implementación. Cualquier
 traslado al alcance requiere el control de cambios definido en

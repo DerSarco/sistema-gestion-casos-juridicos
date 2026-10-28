@@ -9,7 +9,7 @@
 ## Propósito
 
 Estos artefactos planifican el MVP académico definido por ocho historias, diez
-requisitos funcionales, diez no funcionales y la restricción `RF-030`. Las
+requisitos funcionales —incluida la restricción `RF-011`— y diez no funcionales. Las
 fechas, horas y puntos son estimaciones de trabajo; no representan resultados
 logrados ni autorizan ampliar el alcance. La línea temporal académica vigente es
 W1 = 5–11 de octubre y W10 = 7–13 de diciembre de 2026.

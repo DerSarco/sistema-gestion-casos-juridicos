@@ -6,7 +6,7 @@
 
 ## Contexto
 
-RF-001 a RF-003 son requisitos de alta prioridad, pero se decidió construir
+RF-001 es un requisito de alta prioridad, pero se decidió construir
 primero los flujos funcionales de clientes y casos. Una pantalla ficticia de
 inicio de sesión produciría una falsa expectativa de protección.
 

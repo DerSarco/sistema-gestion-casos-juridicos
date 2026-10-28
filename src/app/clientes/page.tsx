@@ -18,7 +18,7 @@ export default function ClientsPage() {
 
       <header className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>RF-004 a RF-007</p>
+          <p className={styles.eyebrow}>RF-002 y RF-003</p>
           <h1>Clientes</h1>
         </div>
         <p>

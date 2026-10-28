@@ -29,7 +29,7 @@ o de los errores del estudio.
 | Elemento de medición | Definición |
 |---|---|
 | Indicador | Porcentaje de historias priorizadas aceptadas y proporción de requisitos priorizados con evidencia de verificación. |
-| Meta | 8 de 8 historias aceptadas, 10 de 10 requisitos funcionales y 10 de 10 requisitos no funcionales del MVP con evidencia, manteniendo `RF-030` como restricción obligatoria. |
+| Meta | 8 de 8 historias aceptadas, 11 de 11 requisitos funcionales y 10 de 10 requisitos no funcionales del MVP con evidencia, manteniendo `RF-011` como restricción obligatoria. |
 | Evidencia | Matriz de trazabilidad, resultados de pruebas, demostración del prototipo y registro de aceptación con datos ficticios o anonimizados. |
 | Momento de verificación | Cierre del incremento funcional del segundo semestre académico de 2026, antes de la entrega final del proyecto. |
 
