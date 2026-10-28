@@ -63,7 +63,7 @@ desviación supera el umbral, se debe replanificar antes de iniciar o ampliar tr
 acceso y permisos → aceptación`.
 
 El acceso se implementa al final del incremento funcional por decisión expresa,
-pero ningún entorno puede declararse apto para datos reales sin `RNF-008`.
+pero ningún entorno puede declararse apto para datos reales sin `RNF-005`.
 
 ## Cierre y control semanal
 

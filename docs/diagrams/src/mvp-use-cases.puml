@@ -28,7 +28,7 @@ User --> CU008
 User --> CU013
 
 note bottom of CU001
-  RF-001 y RF-003 se implementan
+  RF-001 se implementa
   en el último incremento funcional.
 end note
 note bottom of CU013

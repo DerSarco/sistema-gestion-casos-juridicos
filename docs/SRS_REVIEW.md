@@ -1,8 +1,8 @@
 # Revisión de calidad del SRS
 
-**Documento revisado:** `docs/SRS.md`, versión 1.3
+**Documento revisado:** `docs/SRS.md`, versión 1.4
 
-**Fecha:** 2026-10-22
+**Fecha:** 2026-10-27
 
 **Referencia:** IEEE Std 830-1998
 
@@ -11,10 +11,10 @@
 ## Resultado
 
 El SRS especifica únicamente el MVP que será diseñado, construido y aceptado en
-esta iteración: ocho historias, diez RF, diez RNF, siete requisitos conceptuales
-de datos y la restricción `RF-030`. Los identificadores históricos restantes no
-se desarrollan como obligaciones normativas y permanecen en `MVP_SCOPE.md` como
-catálogo de posible evolución.
+esta iteración: ocho historias, once RF —incluida la restricción `RF-011`—, diez
+RNF y siete requisitos conceptuales de datos. Los identificadores históricos
+fueron sustituidos por secuencias continuas; este cambio editorial no modifica
+el alcance ni crea obligaciones nuevas.
 
 ## Lista de revisión
 
@@ -32,9 +32,8 @@ catálogo de posible evolución.
 
 - 8 historias de usuario con criterios Gherkin.
 - 8 vistas del prototipo.
-- 10 requisitos funcionales.
+- 11 requisitos funcionales, incluida la restricción de independencia de la OJV.
 - 10 requisitos no funcionales.
-- 1 restricción funcional obligatoria respecto de la OJV.
 - 7 requisitos conceptuales de datos.
 - 1 objetivo general y 4 objetivos específicos medibles.
 

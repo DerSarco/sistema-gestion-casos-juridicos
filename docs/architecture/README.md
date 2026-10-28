@@ -24,14 +24,16 @@ Dominio ─── puertos de repositorio y servicios
 
 | Módulo | Responsabilidad inicial | Trazabilidad principal |
 |---|---|---|
-| `clients` | Registro, consulta, búsqueda y coincidencias potenciales de clientes. | RF-004 a RF-007; RD-001, RD-002, RD-013 |
-| `cases` | Registro, consulta, filtros, estado, etapa y vínculo con cliente. | RF-008 a RF-012; RD-002 a RD-004, RD-006 |
-| `assignments` | Responsabilidad actual e historial de reasignaciones. | RF-013, RF-014; RD-005 |
-| `timeline` | Hitos, alertas e historial aditivo. | RF-015 a RF-018; RD-007, RD-008 |
-| `reporting` | Búsqueda, tablero y exportaciones autorizadas. | RF-019 a RF-021; RD-014 |
-| `authorizations` | Plantillas y control del anexo firmado fuera de la plataforma. | RF-022 a RF-024; RD-011 |
-| `integrations` | Adaptadores explícitos para Calendar, OneDrive y Gemini. | RF-025 a RF-029; RD-009, RD-010, RD-012 |
-| `access` | Cuentas internas y autorización en servidor. | RF-001 a RF-003; implementación diferida a v0.3 |
+| `clients` | Registro, consulta y búsqueda de clientes. | RF-002, RF-003; RD-001, RD-002, RD-007 |
+| `cases` | Registro, consulta, filtros, estado, etapa y vínculo con cliente. | RF-004 a RF-006, RF-010; RD-002 a RD-004 |
+| `assignments` | Responsabilidad principal vigente. | RF-007; RD-003 |
+| `timeline` | Fechas relevantes e historial aditivo. | RF-008, RF-009; RD-005, RD-006 |
+| `reporting` | Búsqueda y filtros autorizados. | RF-010 |
+| `access` | Cuentas internas y autorización en servidor. | RF-001, RNF-001; implementación diferida al último incremento funcional |
+
+Los módulos de autorizaciones documentales e integraciones externas de la
+especificación amplia no forman parte del catálogo normativo del MVP. Su eventual
+incorporación exige una nueva decisión de alcance.
 
 La OJV no es un adaptador ni una interfaz del sistema. Los antecedentes que una
 persona obtenga fuera de la plataforma solo pueden ingresarse manualmente.

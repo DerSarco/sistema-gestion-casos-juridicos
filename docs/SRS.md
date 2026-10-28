@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 1.3
+**Versión del documento:** 1.4
 
 **Estado:** Revisado internamente; pendiente de validación externa
 
@@ -25,6 +25,7 @@
 | 1.1 | 2026-10-22 | Incorporación de objetivos medibles alineados con el MVP priorizado | Equipo del proyecto |
 | 1.2 | 2026-10-22 | Selección de modelos reducidos del MVP y separación de la visión futura | Equipo del proyecto |
 | 1.3 | 2026-10-22 | Reducción de la línea base normativa a diez RF, diez RNF y siete requisitos de datos del MVP | Equipo del proyecto |
+| 1.4 | 2026-10-27 | Normalización continua de identificadores: once RF, diez RNF y siete requisitos de datos, sin cambio de alcance | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -347,30 +348,29 @@ requisitos no funcionales y en el diseño técnico.
 
 ### 3.2 Requisitos funcionales
 
-La línea base normativa contiene diez requisitos funcionales. Cada uno aporta una
-capacidad visible en las ocho historias Gherkin. Los identificadores omitidos se
-conservan únicamente en el catálogo histórico de `MVP_SCOPE.md`; no son
-requisitos del MVP ni criterios de aceptación.
+La línea base normativa contiene once requisitos funcionales. Diez aportan una
+capacidad visible en las ocho historias Gherkin y el último establece una
+restricción obligatoria de independencia respecto de la OJV.
 
 | ID | Requisito del MVP | Criterio verificable | Historias |
 |---|---|---|---|
 | RF-001 | Permitir el inicio de sesión de cuentas internas activas, sin registro público. | Una cuenta válida accede; credenciales inválidas son rechazadas sin revelar si la cuenta existe. | HU-01 |
-| RF-004 | Registrar y editar clientes mediante un formulario reutilizable con datos mínimos validados. | Un registro válido se guarda; datos obligatorios o formatos inválidos impiden guardar y muestran la corrección necesaria. | HU-08 |
-| RF-005 | Buscar clientes por nombre o dato de contacto autorizado. | Solo se muestran coincidencias dentro del alcance del usuario y un estado vacío cuando no existen resultados. | HU-07 |
-| RF-008 | Registrar y editar una ficha de caso vinculada con un cliente. | El caso se guarda con identificador interno; tribunal, RIT o ROL pueden quedar vacíos mientras no estén disponibles. | HU-03 |
-| RF-009 | Mantener estado y etapa mediante valores predefinidos. | Un cambio confirmado actualiza el caso y se incorpora al historial; cancelar no altera los valores anteriores. | HU-03, HU-05 |
-| RF-010 | Consultar la ficha consolidada de un caso autorizado. | La ficha presenta cliente, responsable, estado, etapa, fechas e historial básico sin revelar casos no autorizados. | HU-04 |
-| RF-013 | Asignar un abogado responsable principal al caso. | Todo caso activo posee un responsable y la asignación registra ejecutor y fecha. | HU-03 |
-| RF-015 | Registrar manualmente una fecha relevante con tipo, responsable y observación opcional. | La fecha queda visible en la ficha y el sistema no calcula ni declara plazos judiciales definitivos. | HU-06 |
-| RF-017 | Consultar el historial básico cronológico del caso. | Los cambios de estado, etapa, responsable y fechas muestran acción, usuario y momento; un usuario común no los edita. | HU-04 a HU-06 |
-| RF-019 | Buscar y filtrar casos por identificador, cliente, responsable, estado o etapa. | Los filtros pueden combinarse y limpiarse sin mostrar casos fuera del alcance autorizado. | HU-02 |
+| RF-002 | Registrar y editar clientes mediante un formulario reutilizable con datos mínimos validados. | Un registro válido se guarda; datos obligatorios o formatos inválidos impiden guardar y muestran la corrección necesaria. | HU-08 |
+| RF-003 | Buscar clientes por nombre o dato de contacto autorizado. | Solo se muestran coincidencias dentro del alcance del usuario y un estado vacío cuando no existen resultados. | HU-07 |
+| RF-004 | Registrar y editar una ficha de caso vinculada con un cliente. | El caso se guarda con identificador interno; tribunal, RIT o ROL pueden quedar vacíos mientras no estén disponibles. | HU-03 |
+| RF-005 | Mantener estado y etapa mediante valores predefinidos. | Un cambio confirmado actualiza el caso y se incorpora al historial; cancelar no altera los valores anteriores. | HU-03, HU-05 |
+| RF-006 | Consultar la ficha consolidada de un caso autorizado. | La ficha presenta cliente, responsable, estado, etapa, fechas e historial básico sin revelar casos no autorizados. | HU-04 |
+| RF-007 | Asignar un abogado responsable principal al caso. | Todo caso activo posee un responsable y la asignación registra ejecutor y fecha. | HU-03 |
+| RF-008 | Registrar manualmente una fecha relevante con tipo, responsable y observación opcional. | La fecha queda visible en la ficha y el sistema no calcula ni declara plazos judiciales definitivos. | HU-06 |
+| RF-009 | Consultar el historial básico cronológico del caso. | Los cambios de estado, etapa, responsable y fechas muestran acción, usuario y momento; un usuario común no los edita. | HU-04 a HU-06 |
+| RF-010 | Buscar y filtrar casos por identificador, cliente, responsable, estado o etapa. | Los filtros pueden combinarse y limpiarse sin mostrar casos fuera del alcance autorizado. | HU-02 |
+| RF-011 | Mantener independencia técnica respecto de la OJV y las credenciales judiciales. | La revisión de arquitectura, código, configuración y tráfico confirma que el sistema no consulta, obtiene, envía ni sincroniza información con la OJV y no solicita ni almacena credenciales judiciales. | HU-06; EXC-01, EXC-02 |
 
 #### 3.2.1 Restricción funcional obligatoria
 
-`RF-030` no agrega una pantalla: impide que el MVP consulte, obtenga, envíe o
-sincronice información con la OJV y prohíbe solicitar o almacenar credenciales
-judiciales. Se verifica mediante revisión de arquitectura, código, configuración
-y tráfico de la aplicación.
+`RF-011` no agrega una pantalla. Su inclusión en el catálogo funcional conserva
+explícita y verificable la frontera entre el sistema interno y la plataforma
+judicial externa.
 
 ### 3.3 Requisitos no funcionales
 
@@ -381,15 +381,15 @@ capacidad o explotación productiva en obligaciones de la iteración académica.
 | ID | Requisito del MVP | Medida o criterio | Verificación |
 |---|---|---|---|
 | RNF-001 | Toda lectura o modificación protegida debe autorizarse en el servidor. | El 100 % de los escenarios negativos definidos por rol es rechazado sin revelar el recurso. | Pruebas de integración y navegador. |
-| RNF-003 | Los secretos no deben almacenarse en código, Git, respuestas ni registros de aplicación. | Cero secretos detectados; las variables se documentan solo por nombre. | GitGuardian y revisión de configuración. |
-| RNF-005 | Las acciones críticas deben generar historial no editable por usuarios comunes. | El 100 % de cambios de estado, etapa, responsable y fecha registra usuario, momento y acción. | Pruebas de integración y revisión del historial. |
-| RNF-007 | Construcción, pruebas, demostración y aceptación deben usar datos ficticios o anonimizados. | Cero datos reales identificables en base, capturas, fixtures, logs y repositorio. | Revisión previa a cada demostración. |
-| RNF-008 | El uso de datos reales debe permanecer bloqueado hasta una aprobación jurídica, técnica y organizacional. | Sin la lista y acta aprobadas, el entorno continúa en preproducción con datos ficticios o anonimizados. | Revisión documental de la puerta de datos reales. |
-| RNF-011 | Un caso activo debe conservar cliente, estado, etapa y responsable. | Todos los intentos incompletos son rechazados sin dejar un caso activo parcial. | Pruebas unitarias y de integración. |
-| RNF-018 | Los ocho flujos deben ser utilizables en escritorio, tableta y móvil. | Se completan sin pérdida de controles ni desplazamiento horizontal de página. | Revisión visual y pruebas en tres viewports. |
-| RNF-019 | Los campos y errores deben ser comprensibles y estar asociados al control correspondiente. | El 100 % de controles críticos posee nombre accesible y sus errores indican corrección. | Pruebas de componentes y revisión manual. |
-| RNF-022 | Toda rama integrable debe aprobar build, tipos, lint y pruebas aplicables. | Cero errores y 100 % de pruebas obligatorias del cambio aprobadas. | Pipeline de integración continua. |
-| RNF-028 | Cada cambio debe ser trazable desde requisito e issue hasta PR y prueba. | Los PR poseen issue, etiqueta, milestone y evidencia; la matriz no contiene requisitos aprobados sin verificación. | Auditoría de GitHub y trazabilidad. |
+| RNF-002 | Los secretos no deben almacenarse en código, Git, respuestas ni registros de aplicación. | Cero secretos detectados; las variables se documentan solo por nombre. | GitGuardian y revisión de configuración. |
+| RNF-003 | Las acciones críticas deben generar historial no editable por usuarios comunes. | El 100 % de cambios de estado, etapa, responsable y fecha registra usuario, momento y acción. | Pruebas de integración y revisión del historial. |
+| RNF-004 | Construcción, pruebas, demostración y aceptación deben usar datos ficticios o anonimizados. | Cero datos reales identificables en base, capturas, fixtures, logs y repositorio. | Revisión previa a cada demostración. |
+| RNF-005 | El uso de datos reales debe permanecer bloqueado hasta una aprobación jurídica, técnica y organizacional. | Sin la lista y acta aprobadas, el entorno continúa en preproducción con datos ficticios o anonimizados. | Revisión documental de la puerta de datos reales. |
+| RNF-006 | Un caso activo debe conservar cliente, estado, etapa y responsable. | Todos los intentos incompletos son rechazados sin dejar un caso activo parcial. | Pruebas unitarias y de integración. |
+| RNF-007 | Los ocho flujos deben ser utilizables en escritorio, tableta y móvil. | Se completan sin pérdida de controles ni desplazamiento horizontal de página. | Revisión visual y pruebas en tres viewports. |
+| RNF-008 | Los campos y errores deben ser comprensibles y estar asociados al control correspondiente. | El 100 % de controles críticos posee nombre accesible y sus errores indican corrección. | Pruebas de componentes y revisión manual. |
+| RNF-009 | Toda rama integrable debe aprobar build, tipos, lint y pruebas aplicables. | Cero errores y 100 % de pruebas obligatorias del cambio aprobadas. | Pipeline de integración continua. |
+| RNF-010 | Cada cambio debe ser trazable desde requisito e issue hasta PR y prueba. | Los PR poseen issue, etiqueta, milestone y evidencia; la matriz no contiene requisitos aprobados sin verificación. | Auditoría de GitHub y trazabilidad. |
 
 ### 3.4 Reglas del negocio
 
@@ -503,11 +503,11 @@ oficial mientras su necesidad, finalidad y tratamiento no hayan sido aprobados.
 |---|---|---|---|
 | RD-001 | Toda entidad operativa debe poseer identificador interno estable y pertenencia al estudio cuando corresponda. | No se persisten clientes, casos, catálogos o eventos sin identificador y estudio válidos. | RN-001, RN-005, RN-009 |
 | RD-002 | Las relaciones cliente–caso, caso–asignación y caso–fecha deben preservar integridad referencial. | No existen registros dependientes asociados con una referencia inexistente. | RN-006, RN-013, RN-015 |
-| RD-003 | Un caso activo debe conservar cliente, estado, etapa y responsable principal vigentes. | La aplicación y la persistencia rechazan estados activos incompletos. | RN-010, RNF-011 |
-| RD-006 | RIT, ROL, tribunal y otros antecedentes judiciales deben admitir ausencia hasta que estén disponibles. | El caso se registra sin valores ficticios y luego admite una actualización manual. | RF-008, RF-030 |
-| RD-007 | Las fechas deben conservar tipo, valor y responsable. | La información registrada se muestra sin transformarla en un cálculo jurídico automático. | RF-015 |
-| RD-008 | El historial debe ser aditivo para usuarios comunes. | Los eventos existentes no se editan ni eliminan desde los flujos del MVP. | RF-017, RNF-005 |
-| RD-013 | Los datos de prueba deben ser ficticios o estar anonimizados antes de ingresar al entorno. | La revisión previa no detecta identificadores, contactos, causas o antecedentes reales. | RNF-007, RNF-008 |
+| RD-003 | Un caso activo debe conservar cliente, estado, etapa y responsable principal vigentes. | La aplicación y la persistencia rechazan estados activos incompletos. | RN-010, RNF-006 |
+| RD-004 | RIT, ROL, tribunal y otros antecedentes judiciales deben admitir ausencia hasta que estén disponibles. | El caso se registra sin valores ficticios y luego admite una actualización manual. | RF-004, RF-011 |
+| RD-005 | Las fechas deben conservar tipo, valor y responsable. | La información registrada se muestra sin transformarla en un cálculo jurídico automático. | RF-008 |
+| RD-006 | El historial debe ser aditivo para usuarios comunes. | Los eventos existentes no se editan ni eliminan desde los flujos del MVP. | RF-009, RNF-003 |
+| RD-007 | Los datos de prueba deben ser ficticios o estar anonimizados antes de ingresar al entorno. | La revisión previa no detecta identificadores, contactos, causas o antecedentes reales. | RNF-004, RNF-005 |
 
 #### 3.5.4 Inventario de tratamiento para la puerta de datos reales
 
@@ -568,10 +568,10 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
 | Línea base del MVP | Objetivos, historias y alcance priorizado | #53, #61 | Ocho historias | Tres modelos `mvp-*` | Revisión documental y visual | Modelado; implementación no inferida |
-| 10 RF y RF-030 | Problema, alcance e historias Gherkin | #61 | HU-01 a HU-08 | Casos de uso y datos reducidos | Criterios definidos; ejecución pendiente | Especificado |
+| 11 RF | Problema, alcance e historias Gherkin | #61 | HU-01 a HU-08 | Casos de uso y datos reducidos | Criterios definidos; ejecución pendiente | Especificado |
 | 10 RNF | Riesgos esenciales y plan de calidad | #61 | Transversal | Proceso y modelo reducido | Métodos definidos; ejecución pendiente | Especificado |
 | 7 RD | Privacidad, integridad y modelo reducido | #61 | HU-03, HU-04, HU-06, HU-08 | Modelo de datos del MVP | Criterios definidos; ejecución pendiente | Especificado |
-| Revisión IEEE 830-1998 | SRS 1.3 | #61 | Todo el MVP | Modelos seleccionados | Lista de revisión documental | Revisado internamente |
+| Revisión IEEE 830-1998 | SRS 1.4 | #61, #66 | Todo el MVP | Modelos seleccionados | Lista de revisión documental | Revisado internamente |
 
 ## Anexos
 

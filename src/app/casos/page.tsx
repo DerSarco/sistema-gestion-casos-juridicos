@@ -19,7 +19,7 @@ export default function CasesPage() {
 
       <header className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>RF-008 a RF-011</p>
+          <p className={styles.eyebrow}>RF-004 a RF-006</p>
           <h1>Casos</h1>
         </div>
         <p>
