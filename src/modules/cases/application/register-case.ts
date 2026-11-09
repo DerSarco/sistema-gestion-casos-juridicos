@@ -21,10 +21,12 @@ export class RegisterCase {
     private readonly now: () => string,
   ) {}
 
-  execute(rawInput: LegalCaseInput): RegisterCaseResult {
+  async execute(rawInput: LegalCaseInput): Promise<RegisterCaseResult> {
     const input = normalizeLegalCaseInput(rawInput);
     const errors = validateLegalCaseInput(input);
-    const client = this.clients.list().find(({ id }) => id === input.clientId);
+    const client = (await this.clients.list()).find(
+      ({ id }) => id === input.clientId,
+    );
 
     if (input.clientId && !client) {
       errors.clientId = "El cliente seleccionado no existe en este entorno.";

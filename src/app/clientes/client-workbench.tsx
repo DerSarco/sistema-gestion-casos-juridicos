@@ -26,7 +26,7 @@ export function ClientWorkbench({ initialClients }: { initialClients: Client[] }
       () => new Date().toISOString(),
     ),
   );
-  const [clients, setClients] = useState(() => repository.list());
+  const [clients, setClients] = useState(initialClients);
   const [query, setQuery] = useState("");
   const [errors, setErrors] = useState<ClientValidationErrors>({});
   const [feedback, setFeedback] = useState<Feedback>(null);
@@ -42,11 +42,11 @@ export function ClientWorkbench({ initialClients }: { initialClients: Client[] }
     );
   }, [clients, query]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const result = registerClient.execute(
+    const result = await registerClient.execute(
       {
         displayName: String(formData.get("displayName") ?? ""),
         email: String(formData.get("email") ?? ""),
@@ -72,7 +72,7 @@ export function ClientWorkbench({ initialClients }: { initialClients: Client[] }
       return;
     }
 
-    setClients(repository.list());
+    setClients(await repository.list());
     setErrors({});
     setFeedback({
       kind: "success",

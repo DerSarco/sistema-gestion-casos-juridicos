@@ -11,15 +11,15 @@ const createUseCase = (repository = new InMemoryClientRepository()) =>
   );
 
 describe("RegisterClient", () => {
-  it("registra una ficha ficticia válida", () => {
+  it("registra una ficha ficticia válida", async () => {
     const repository = new InMemoryClientRepository();
-    const result = createUseCase(repository).execute({
+    const result = await createUseCase(repository).execute({
       displayName: "  Cliente 03  ",
       email: "CLIENTE03@EXAMPLE.TEST",
     });
 
     expect(result.status).toBe("created");
-    expect(repository.list()).toEqual([
+    await expect(repository.list()).resolves.toEqual([
       expect.objectContaining({
         displayName: "Cliente 03",
         email: "cliente03@example.test",
@@ -27,31 +27,31 @@ describe("RegisterClient", () => {
     ]);
   });
 
-  it("rechaza datos inválidos sin persistir", () => {
+  it("rechaza datos inválidos sin persistir", async () => {
     const repository = new InMemoryClientRepository();
-    const result = createUseCase(repository).execute({
+    const result = await createUseCase(repository).execute({
       displayName: "A",
       email: "correo-invalido",
     });
 
     expect(result.status).toBe("invalid");
-    expect(repository.list()).toHaveLength(0);
+    await expect(repository.list()).resolves.toHaveLength(0);
   });
 
-  it("informa una coincidencia sin fusionar automáticamente", () => {
+  it("informa una coincidencia sin fusionar automáticamente", async () => {
     const repository = new InMemoryClientRepository(fictionalClients);
-    const result = createUseCase(repository).execute({
+    const result = await createUseCase(repository).execute({
       displayName: "Otra etiqueta",
       email: "cliente01@example.test",
     });
 
     expect(result.status).toBe("potential-match");
-    expect(repository.list()).toHaveLength(2);
+    await expect(repository.list()).resolves.toHaveLength(2);
   });
 
-  it("permite confirmar una ficha separada después de advertir", () => {
+  it("permite confirmar una ficha separada después de advertir", async () => {
     const repository = new InMemoryClientRepository(fictionalClients);
-    const result = createUseCase(repository).execute(
+    const result = await createUseCase(repository).execute(
       {
         displayName: "Cliente 01",
         phone: "+56999999999",
@@ -60,6 +60,6 @@ describe("RegisterClient", () => {
     );
 
     expect(result.status).toBe("created");
-    expect(repository.list()).toHaveLength(3);
+    await expect(repository.list()).resolves.toHaveLength(3);
   });
 });

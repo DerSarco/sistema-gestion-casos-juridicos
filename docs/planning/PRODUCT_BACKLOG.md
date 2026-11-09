@@ -14,8 +14,8 @@ v0.2.0, pero no aceptación de la historia completa.
 |---:|---|---|---|---|---:|---|---|
 | 1 | PB-01 | Mantener línea base de objetivos, alcance, SRS y trazabilidad | OE-01; 11 RF; 10 RNF; 7 RD | Must | 3 | Ninguna | Terminado documentalmente; auditado en #68 |
 | 2 | PB-02 | Consolidar ocho vistas y evidencia limpia del prototipo | OE-02; MVP-01 a MVP-08 | Must | 5 | PB-01 | Parcial; capturas y navegación configurada en Stitch, validación responsive y formal pendientes |
-| 3 | PB-03 | Conectar persistencia PostgreSQL mediante adaptadores Prisma | RD-001 a RD-003 | Must | 8 | PB-01 | Esquema y migración existentes; conexión pendiente |
-| 4 | PB-04 | Registrar o editar clientes | HU-08; RF-002 | Must | 5 | PB-03 | Registro temporal parcial; edición y persistencia pendientes |
+| 3 | PB-03 | Conectar persistencia PostgreSQL mediante adaptadores Prisma | RD-001 a RD-003 | Must | 8 | PB-01 | Adaptador de clientes implementado en #70; conexión del flujo y adaptador de casos pendientes |
+| 4 | PB-04 | Registrar o editar clientes | HU-08; RF-002 | Must | 5 | PB-03 | Creación disponible en memoria y Prisma; edición, conexión real y aceptación pendientes |
 | 5 | PB-05 | Buscar clientes autorizados | HU-07; RF-003 | Must | 3 | PB-03, PB-04 | Búsqueda temporal parcial; autorización pendiente |
 | 6 | PB-06 | Registrar o editar casos con cliente y responsable | HU-03; RF-004, RF-005, RF-007 | Must | 8 | PB-03, PB-04 | Registro temporal parcial; edición y asignación pendientes |
 | 7 | PB-07 | Buscar y filtrar casos autorizados | HU-02; RF-010 | Must | 3 | PB-06 | Filtro temporal parcial; autorización pendiente |

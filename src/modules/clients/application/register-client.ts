@@ -24,10 +24,10 @@ export class RegisterClient {
     private readonly now: () => string,
   ) {}
 
-  execute(
+  async execute(
     rawInput: ClientInput,
     options: RegisterOptions = {},
-  ): RegisterClientResult {
+  ): Promise<RegisterClientResult> {
     const input = normalizeClientInput(rawInput);
     const errors = validateClientInput(input);
 
@@ -35,7 +35,7 @@ export class RegisterClient {
       return { status: "invalid", errors };
     }
 
-    const matches = findPotentialMatches(this.repository.list(), input);
+    const matches = findPotentialMatches(await this.repository.list(), input);
     if (matches.length > 0 && !options.confirmPotentialMatch) {
       return { status: "potential-match", matches };
     }
@@ -49,7 +49,7 @@ export class RegisterClient {
       createdAt: this.now(),
     };
 
-    this.repository.save(client);
+    await this.repository.save(client);
     return { status: "created", client };
   }
 }

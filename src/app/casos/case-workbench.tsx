@@ -58,11 +58,11 @@ export function CaseWorkbench({
     [cases, query, responsible, status],
   );
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const result = registerCase.execute({
+    const result = await registerCase.execute({
       clientId: String(formData.get("clientId") ?? ""),
       title: String(formData.get("title") ?? ""),
       matter: String(formData.get("matter") ?? ""),

@@ -1,10 +1,10 @@
 # Matriz de trazabilidad del MVP
 
-**Versión:** 0.6
+**Versión:** 0.7
 
-**Fecha:** 2026-10-22
+**Fecha:** 2026-11-08
 
-**Issue de revisión:** #61
+**Issues de revisión:** #61, #68, #70
 
 ## Criterio
 
@@ -30,8 +30,8 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 | RF | Fuente | Verificación prevista | Estado real al 2026-10-22 |
 |---|---|---|---|
 | RF-001 | ALC-01; HU-01 | Acceso válido e inválido sin registro público | Especificado; implementación pendiente |
-| RF-002 | ALC-02; HU-08 | Registro y edición válidos e inválidos | Registro verificado en adaptador temporal; edición pendiente |
-| RF-003 | ALC-02; HU-07 | Búsqueda autorizada y estado sin resultados | Implementado parcialmente; autorización pendiente |
+| RF-002 | ALC-02; HU-08 | Registro y edición válidos e inválidos | Creación disponible en adaptadores temporal y Prisma; edición y conexión del flujo pendientes |
+| RF-003 | ALC-02; HU-07 | Búsqueda autorizada y estado sin resultados | Listado Prisma aislado por estudio; búsqueda persistente y autorización pendientes |
 | RF-004 | ALC-03; HU-03 | Alta y edición sin exigir antecedentes judiciales ausentes | Alta verificada en adaptador temporal; edición pendiente |
 | RF-005 | ALC-05; HU-03, HU-05 | Valores controlados y cancelación sin cambios | Implementado parcialmente con catálogos ficticios |
 | RF-006 | ALC-03; HU-04 | Consulta autorizada y actualización válida | Consulta parcial; edición y autorización pendientes |
@@ -67,3 +67,9 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 La presencia de código o diagramas amplios anteriores no acredita una función del
 MVP. Un estado solo cambia a implementado o verificado cuando existe evidencia
 integrada y ejecutada.
+
+## Evidencia de implementación
+
+| Incremento | Requisitos | Pruebas | PR | Estado para el porcentaje |
+|---|---|---|---|---|
+| Adaptador Prisma de clientes | RF-002, RF-003; RD-001, RD-002 | Contrato asíncrono, aislamiento por estudio y mapeo de persistencia | #70 | Parcial; P1 conserva 0 % hasta completar su DoD |

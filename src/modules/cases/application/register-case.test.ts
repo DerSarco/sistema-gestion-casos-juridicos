@@ -15,9 +15,9 @@ const createUseCase = (cases = new InMemoryCaseRepository()) =>
   );
 
 describe("RegisterCase", () => {
-  it("registra un caso activo con historial inicial", () => {
+  it("registra un caso activo con historial inicial", async () => {
     const cases = new InMemoryCaseRepository();
-    const result = createUseCase(cases).execute({
+    const result = await createUseCase(cases).execute({
       clientId: fictionalClients[0].id,
       title: "Caso de prueba 03",
       matter: "Civil",
@@ -37,9 +37,9 @@ describe("RegisterCase", () => {
     );
   });
 
-  it("rechaza un cliente inexistente y campos incompletos", () => {
+  it("rechaza un cliente inexistente y campos incompletos", async () => {
     const cases = new InMemoryCaseRepository();
-    const result = createUseCase(cases).execute({
+    const result = await createUseCase(cases).execute({
       clientId: "cliente-inexistente",
       title: "",
       matter: "",
@@ -51,8 +51,8 @@ describe("RegisterCase", () => {
     expect(cases.list()).toHaveLength(0);
   });
 
-  it("filtra por texto, estado y responsable", () => {
-    const first = createUseCase().execute({
+  it("filtra por texto, estado y responsable", async () => {
+    const first = await createUseCase().execute({
       clientId: fictionalClients[0].id,
       title: "Caso civil filtrable",
       matter: "Civil",
