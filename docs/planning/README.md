@@ -1,14 +1,14 @@
 # Planificación del MVP AINC422
 
-**Versión:** 1.1
+**Versión:** 1.2
 
-**Fecha de rebaselinación:** 2026-10-27
+**Fecha de rebaselinación:** 2026-11-08
 
-**Issues:** #54, #64
+**Issues:** #54, #64, #68
 
 ## Propósito
 
-Estos artefactos planifican el MVP académico definido por ocho historias, diez
+Estos artefactos planifican el MVP académico definido por ocho historias, once
 requisitos funcionales —incluida la restricción `RF-011`— y diez no funcionales. Las
 fechas, horas y puntos son estimaciones de trabajo; no representan resultados
 logrados ni autorizan ampliar el alcance. La línea temporal académica vigente es
@@ -23,6 +23,7 @@ W1 = 5–11 de octubre y W10 = 7–13 de diciembre de 2026.
 - [`METHODOLOGIES.md`](METHODOLOGIES.md): metodología de gestión y metodología de desarrollo.
 - [`CONFIGURATION_MANAGEMENT.md`](CONFIGURATION_MANAGEMENT.md): control de configuración y cambios.
 - [`WEEKLY_TRACKING.md`](WEEKLY_TRACKING.md): horas reales, desviaciones y evidencia de cierre semanal.
+- [`HITO2_BASELINE.md`](HITO2_BASELINE.md): línea base canónica y denominador verificable del 60 %.
 - [`AINC422_COVERAGE.md`](AINC422_COVERAGE.md): cobertura de la pauta de la Sumativa 1.
 
 ## Fuentes autoritativas
