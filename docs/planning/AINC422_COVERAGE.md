@@ -8,7 +8,7 @@
 | Objetivos | `OBJECTIVES.md` | Listo | Objetivo general y cuatro específicos |
 | Solución | `MVP_SCOPE.md` y SRS | Listo en diseño; construcción parcial | Separar propuesta de implementación real |
 | Proceso abordado | `mvp-process-context.svg` | Listo | Mostrar flujo interno y OJV externa |
-| Requisitos UML o HU | `mvp-use-cases.svg` y `USER_STORIES.md` | Listo | 8 HU, 10 RF, 10 RNF |
+| Requisitos UML o HU | `mvp-use-cases.svg` y `USER_STORIES.md` | Listo | 8 HU, 11 RF, 10 RNF y 7 RD |
 | Alcance del MVP | `MVP_SCOPE.md` y `STORY_MAP.md` | Listo | Incluido, diferido y fuera de alcance |
 | Herramientas de desarrollo | Next.js, Prisma, PostgreSQL previsto, Vitest, GitHub | Parcialmente implementado | Distinguir selección de uso efectivo |
 | Metodología de gestión | `METHODOLOGIES.md` | Lista como planificación | Gestión híbrida ligera |
