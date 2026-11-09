@@ -8,13 +8,13 @@ export class InMemoryClientRepository implements ClientRepository {
     this.clients = structuredClone(initialClients);
   }
 
-  list(): Client[] {
+  async list(): Promise<Client[]> {
     return structuredClone(this.clients).sort((a, b) =>
       a.displayName.localeCompare(b.displayName, "es-CL"),
     );
   }
 
-  save(client: Client): void {
+  async save(client: Client): Promise<void> {
     this.clients.push(structuredClone(client));
   }
 }
