@@ -186,3 +186,11 @@ tbody tr:hover { background: #f8fafc; }
 }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+
+body { overflow-x: hidden; }
+.clear-filters { border: 0; background: transparent; color: var(--teal); font: inherit; font-weight: 700; cursor: pointer; margin: 0 0 12px; text-decoration: underline; }
+.empty-state { display: grid; justify-items: center; gap: 10px; padding: 42px 20px; text-align: center; }
+.empty-state strong { font-size: 1.08rem; }
+.field-error { color: #9f1239; font-weight: 700; }
+.error-summary { display: grid; gap: 4px; padding: 12px 14px; border: 1px solid #be123c; border-left-width: 4px; border-radius: 8px; background: #fff1f2; color: #881337; }
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: #be123c; outline-color: #be123c; }

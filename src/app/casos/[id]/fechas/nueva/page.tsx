@@ -1,7 +1,4 @@
-import Link from "next/link";
 import { CaseDetail } from "@/components/case-detail";
-import { Modal } from "@/components/modal";
-
-export default function NewDatePage() {
-  return <CaseDetail modal={<Modal title="Registrar fecha relevante" subtitle="CASO-001 · Cliente 01" closeHref="/casos/CASO-001"><form className="modal-body"><aside className="notice compact">La fecha se registra manualmente y debe ser verificada por el usuario.</aside><label className="field"><span>Nombre de la fecha <b>*</b></span><input placeholder="Ej. Audiencia preparatoria, entrega de antecedentes..." /></label><div className="form-grid"><label className="field"><span>Fecha <b>*</b></span><input type="date" /></label><label className="field"><span>Hora <em>Opcional</em></span><input type="time" /></label></div><label className="field"><span>Abogado responsable <b>*</b></span><select><option>Abogado A</option><option>Abogado B</option></select></label><label className="field"><span>Observación <em>Opcional</em></span><textarea placeholder="Notas u observaciones internas para el equipo..." /></label><label className="checkbox"><input type="checkbox" /><span><strong>Recordatorio interno</strong><small>Mostrar aviso en el listado y ficha del caso</small></span></label><footer className="form-actions"><Link className="button button-secondary" href="/casos/CASO-001">Cancelar</Link><Link className="button button-primary" href="/casos/CASO-001">Guardar fecha</Link></footer></form></Modal>} />;
-}
+import { RelevantDateForm } from "@/components/relevant-date-form";
+export const instant = false;
+export default async function NewDatePage({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; return <CaseDetail caseCode={id} modal={<RelevantDateForm caseCode={id} />} />; }
