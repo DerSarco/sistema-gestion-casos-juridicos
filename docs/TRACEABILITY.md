@@ -1,6 +1,6 @@
 # Matriz de trazabilidad del MVP
 
-**Versión:** 0.8
+**Versión:** 0.9
 
 **Fecha:** 2026-11-09
 
@@ -17,28 +17,28 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 | Historia | Vista | Resultado verificable | RF | RNF principales | Issue de diseño |
 |---|---|---|---|---|---|
 | HU-01 | MVP-01 Inicio de sesión | Acceso interno sin registro público | RF-001 | RNF-001, RNF-002, RNF-004 | #43 |
-| HU-02 | MVP-02 Casos | Buscar y filtrar casos autorizados | RF-010 | RNF-001, RNF-007 | #45 |
-| HU-03 | MVP-03 Formulario de caso | Registrar o editar caso con cliente, estado, etapa y responsable | RF-004, RF-005, RF-007 | RNF-006, RNF-008 | #45 |
-| HU-04 | MVP-04 Ficha del caso | Consultar ficha e historial básico | RF-006, RF-009 | RNF-001, RNF-003 | #45 |
+| HU-02 | MVP-02 Casos | Buscar y filtrar casos autorizados por atributos operativos y condición de archivo | RF-010 | RNF-001, RNF-007 | #45 |
+| HU-03 | MVP-03 Formulario de caso | Registrar o editar caso con cliente activo, estado, etapa y responsable | RF-004, RF-005, RF-007 | RNF-006, RNF-008 | #45 |
+| HU-04 | MVP-04 Ficha del caso | Consultar ficha e historial; archivar o reactivar con permiso elevado | RF-004, RF-006, RF-009 | RNF-001, RNF-003 | #45 |
 | HU-05 | MVP-05 Estado o etapa | Confirmar o cancelar un cambio trazable | RF-005, RF-009 | RNF-003, RNF-008 | #42, #45 |
 | HU-06 | MVP-06 Fecha relevante | Registrar una fecha sin cálculo jurídico automático | RF-008, RF-009, RF-011 | RNF-003, RNF-004 | #46 |
-| HU-07 | MVP-07 Clientes | Buscar información mínima autorizada | RF-003 | RNF-001, RNF-007 | #44 |
-| HU-08 | MVP-08 Formulario de cliente | Registrar o editar datos mínimos | RF-002 | RNF-004, RNF-008 | #44 |
+| HU-07 | MVP-07 Clientes | Buscar información mínima autorizada y distinguir actividad | RF-003 | RNF-001, RNF-007 | #44 |
+| HU-08 | MVP-08 Formulario de cliente | Registrar, editar, desactivar o reactivar con permiso elevado | RF-002, RF-009 | RNF-001, RNF-003, RNF-004, RNF-008 | #44 |
 
 ## Requisitos funcionales
 
-| RF | Fuente | Verificación prevista | Estado real al 2026-10-22 |
+| RF | Fuente | Verificación prevista | Estado real al 2026-11-09 |
 |---|---|---|---|
 | RF-001 | ALC-01; HU-01 | Acceso válido e inválido sin registro público | Simulado en interfaz para demostración; autenticación y autorización reales pendientes |
-| RF-002 | ALC-02; HU-08 | Registro y edición válidos e inválidos | Flujo temporal en memoria y adaptador Prisma separados; conexión persistente pendiente |
-| RF-003 | ALC-02; HU-07 | Búsqueda autorizada y estado sin resultados | Búsqueda temporal y listado Prisma separados; autorización y conexión persistente pendientes |
-| RF-004 | ALC-03; HU-03 | Alta y edición sin exigir antecedentes judiciales ausentes | Alta y edición temporales verificadas; persistencia pendiente |
-| RF-005 | ALC-05; HU-03, HU-05 | Valores controlados y cancelación sin cambios | Flujo temporal verificable con catálogos ficticios no definitivos |
-| RF-006 | ALC-03; HU-04 | Consulta autorizada y actualización válida | Consulta temporal verificable; autorización y persistencia pendientes |
-| RF-007 | ALC-04; HU-03 | Asignación de un responsable vigente | Especificado; implementación pendiente |
+| RF-002 | ALC-02; HU-08 | Registro, edición y ciclo reversible válidos; rechazo sin permiso | Registro y edición temporales; desactivación, permiso, auditoría y conexión persistente pendientes |
+| RF-003 | ALC-02; HU-07 | Búsqueda autorizada, actividad visible y estado sin resultados | Búsqueda temporal; filtro de actividad, autorización y conexión persistente pendientes |
+| RF-004 | ALC-03; HU-03, HU-04 | Alta y edición; archivo reversible sin eliminar relaciones | Alta y edición temporales; archivo, permiso y persistencia pendientes |
+| RF-005 | ALC-05; HU-03, HU-05 | Siete etapas, valores controlados y cancelación sin cambios | Flujo temporal con catálogo ficticio; subetapas y transiciones pendientes de validación |
+| RF-006 | ALC-03; HU-04 | Consulta autorizada de ficha activa o archivada | Consulta temporal; ciclo de vida, autorización y persistencia pendientes |
+| RF-007 | ALC-04; HU-03 | Responsable, participantes y prioridad trazables | Responsable temporal; participantes, prioridad y persistencia pendientes |
 | RF-008 | ALC-06; HU-06 | Fecha manual válida sin cálculo de plazo | Flujo temporal verificable; persistencia pendiente |
-| RF-009 | ALC-07; HU-04 a HU-06 | Historial cronológico no editable por usuarios comunes | Historial temporal verificable; auditoría persistente pendiente |
-| RF-010 | ALC-08; HU-02 | Filtros combinables dentro del alcance autorizado | Filtros temporales combinables; autorización persistente pendiente |
+| RF-009 | ALC-07; HU-04 a HU-06, HU-08 | Historial cronológico de acciones críticas no editable | Historial temporal; auditoría persistente de ciclo de vida y permisos pendiente |
+| RF-010 | ALC-08; HU-02 | Filtros combinables, incluida condición de archivo | Filtros temporales; subetapa, prioridad, archivo y autorización persistente pendientes |
 | RF-011 | EXC-01, EXC-02 | Auditoría sin clientes, secretos ni tráfico OJV | Restricción especificada |
 
 ## Requisitos no funcionales
@@ -47,7 +47,7 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 |---|---|---|---|
 | RNF-001 | Autorización | Matriz negativa por rol ejecutada en servidor | Especificado; implementación pendiente |
 | RNF-002 | Secretos | Escaneo de repositorio, respuestas y logs | CI con GitGuardian disponible |
-| RNF-003 | Historial | Acciones críticas generan evidencia | Especificado |
+| RNF-003 | Historial | Ciclo de vida, asignación, prioridad, etapa y fecha generan evidencia | Especificado; implementación persistente pendiente |
 | RNF-004 | Datos de prueba | Revisión de fixtures, BD, capturas y logs | Aplicado en datos actuales |
 | RNF-005 | Puerta de datos reales | Acta aprobada o bloqueo de uso real | Bloqueo vigente |
 | RNF-006 | Integridad | Caso activo incompleto rechazado | Implementado parcialmente |
@@ -64,6 +64,10 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 | `mvp-use-cases` | Mostrar las capacidades de las ocho historias | MVP |
 | `mvp-data-model` | Representar clientes, casos, asignación, fechas e historial | MVP |
 
+Los modelos MVP reflejan cuatro perfiles, siete etapas y ciclos de vida
+reversibles. Los permisos exactos, transiciones y excepciones continúan marcados
+como decisiones pendientes y no se representan como reglas ya aprobadas.
+
 La presencia de código o diagramas amplios anteriores no acredita una función del
 MVP. Un estado solo cambia a implementado o verificado cuando existe evidencia
 integrada y ejecutada.
@@ -74,4 +78,11 @@ integrada y ejecutada.
 |---|---|---|---|---|
 | Adaptador Prisma de clientes | RF-002, RF-003; RD-001, RD-002 | Contrato asíncrono, aislamiento por estudio y mapeo de persistencia | #70 | Parcial; P1 conserva 0 % hasta completar su DoD |
 | Ocho pantallas de Stitch implementadas | HU-01 a HU-08; RNF-004, RNF-007, RNF-008 | Ocho rutas, navegación, revisión visual de escritorio y móvil, build y prueba estructural | #72 | Evidencia visual implementada; no suma porcentaje funcional sin persistencia y aceptación |
-| Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | Validaciones positivas y negativas, creación y edición en memoria, filtros, modales accesibles y Playwright en tres viewports | PR #75, issue #74 | Evidencia de interacción y calidad; no suma porcentaje funcional sin persistencia, autorización y aceptación |
+| Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | 16 pruebas unitarias y 7 Playwright: validaciones, creación y edición en memoria, filtros, modales accesibles y tres viewports | PR #75, issue #74 | Evidencia temporal integrada; mantiene 0 % funcional aceptado sin persistencia, autorización y aceptación |
+
+## Estado del denominador
+
+El avance funcional aceptado al 9 de noviembre de 2026 es **0 %**. La interfaz,
+los repositorios temporales, el adaptador parcial y las pruebas reducen riesgo,
+pero ningún paquete satisface todavía toda la Definition of Done de
+[`planning/HITO2_BASELINE.md`](planning/HITO2_BASELINE.md).

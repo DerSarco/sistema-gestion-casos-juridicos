@@ -12,13 +12,15 @@ tres se utilizarán en el video de hasta quince minutos:
 | Orden | Diagrama | Propósito en el video | Tiempo objetivo | Fuente | SVG | Trazabilidad |
 |---|---|---|---:|---|---|---|
 | 1 | Proceso y contexto del MVP | Explicar el flujo interno y separar la OJV del sistema. | 50 s | [`mvp-process-context.puml`](src/mvp-process-context.puml) | [`mvp-process-context.svg`](rendered/mvp-process-context.svg) | Objetivo general; RF-011; HU-02 a HU-08 |
-| 2 | Casos de uso reducidos | Mostrar actores y capacidades realmente comprometidas. | 60 s | [`mvp-use-cases.puml`](src/mvp-use-cases.puml) | [`mvp-use-cases.svg`](rendered/mvp-use-cases.svg) | CU-001, CU-003 a CU-008 y CU-013 |
+| 2 | Casos de uso reducidos | Mostrar cuatro perfiles y capacidades realmente comprometidas. | 60 s | [`mvp-use-cases.puml`](src/mvp-use-cases.puml) | [`mvp-use-cases.svg`](rendered/mvp-use-cases.svg) | CU-001, CU-003 a CU-008 y CU-013 |
 | 3 | Modelo de datos reducido | Explicar las entidades mínimas y su trazabilidad. | 60 s | [`mvp-data-model.puml`](src/mvp-data-model.puml) | [`mvp-data-model.svg`](rendered/mvp-data-model.svg) | ED-01, ED-02, ED-04 a ED-06, ED-08 y ED-09 |
 
 El bloque completo ocupa aproximadamente 2 minutos y 50 segundos. En la
 presentación debe indicarse que el acceso está diseñado pero todavía no
-implementado en v0.2, que la persistencia actual es temporal y que la OJV no es
-una integración.
+implementado, que la persistencia actual es temporal, que #74 mantiene 0 %
+funcional aceptado y que la OJV no es una integración. Los modelos reflejan
+cuatro perfiles, siete etapas y ciclos de vida reversibles sin imponer las
+transiciones ni permisos todavía pendientes de validación.
 
 ## Diagramas de apoyo del MVP
 

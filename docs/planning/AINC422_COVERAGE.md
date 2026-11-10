@@ -20,7 +20,7 @@
 | Gantt | `GANTT.md` | Rebaselinado como estimación | W1 5–11 oct.; W10 7–13 dic.; 120 h estimadas y control semanal |
 | 80 % de mockups | `docs/mockups/stitch/` | 8 de 8 capturas; navegación configurada en Stitch | Cobertura visual 100 %; responsive, accesibilidad y validación formal pendientes |
 | Modelo de datos | `mvp-data-model.svg` | Listo como modelo reducido | No confundir con persistencia conectada |
-| Construcción del MVP | Código v0.2.0 y 11 pruebas | Parcial | Demostrar solo clientes/casos temporales y CI |
+| Construcción del MVP | Interfaz temporal, 16 pruebas unitarias y 7 Playwright | Parcial; 0 % funcional aceptado | Demostrar interacción y calidad sin atribuir persistencia ni autorización |
 | Conclusiones | Alcance, valor y próximos pasos | Pendiente de redactar en PPT | No afirmar beneficios aún no medidos |
 
 ## Evidencia técnica que puede declararse
@@ -28,7 +28,7 @@
 - rutas Next.js `/`, `/clientes` y `/casos`;
 - repositorios temporales en memoria para clientes y casos;
 - modelo Prisma y migración inicial sin adaptador operativo conectado;
-- once pruebas automatizadas;
+- dieciséis pruebas unitarias y siete pruebas Playwright sobre los flujos temporales;
 - CI con lint, tipos, pruebas, build y GitGuardian;
 - GitFlow, Issues, milestones, PR y tags `v0.1.0` y `v0.2.0`.
 
