@@ -1,8 +1,8 @@
 # Historias de usuario priorizadas del MVP
 
-**Versión:** 1.0
+**Versión:** 1.1
 
-**Fecha:** 2026-10-21
+**Fecha:** 2026-11-09
 
 **Issue de origen:** #51
 
@@ -44,7 +44,7 @@ Trazabilidad: `MVP-01`, RF-001, RNF-001, RNF-002, RNF-004.
 ```gherkin
 Escenario: Filtrar casos autorizados
   Dado que existen casos ficticios dentro del alcance del usuario
-  Cuando busca por identificador, cliente, responsable, estado o etapa
+  Cuando busca por identificador, cliente, responsable, estado, etapa, subetapa, prioridad o condición de archivo
   Entonces el sistema muestra únicamente las coincidencias autorizadas
   Y permite limpiar los filtros
 
@@ -66,8 +66,8 @@ Trazabilidad: `MVP-02`, RF-010, RNF-001, RNF-007.
 
 ```gherkin
 Escenario: Registrar un caso válido
-  Dado que existe un cliente ficticio y un abogado responsable activo
-  Cuando el usuario completa los datos mínimos y guarda el formulario
+  Dado que existe un cliente ficticio activo y un responsable activo
+  Cuando el usuario completa cliente, estado, etapa y responsable y guarda el formulario
   Entonces el sistema crea una ficha única vinculada con el cliente
   Y no exige tribunal, RIT o ROL antes de que estén disponibles
 
@@ -76,6 +76,12 @@ Escenario: Rechazar un caso activo incompleto
   Cuando el usuario intenta guardar el caso como activo
   Entonces el sistema no activa el caso
   Y muestra los campos que requieren corrección
+
+Escenario: Impedir un caso nuevo para un cliente inactivo
+  Dado que el cliente seleccionado se encuentra inactivo
+  Cuando el usuario intenta registrar un caso nuevo
+  Entonces el sistema rechaza la operación
+  Y conserva disponibles los casos históricos del cliente
 ```
 
 Trazabilidad: `MVP-03`, RF-004, RF-005, RF-007, RNF-006, RNF-008.
@@ -92,16 +98,27 @@ Trazabilidad: `MVP-03`, RF-004, RF-005, RF-007, RNF-006, RNF-008.
 Escenario: Consultar una ficha autorizada
   Dado que existe un caso dentro del alcance del usuario
   Cuando abre su ficha
-  Entonces visualiza cliente, responsable, estado, etapa y fechas registradas
+  Entonces visualiza cliente, responsable, participantes, prioridad, estado, etapa, subetapa y fechas registradas
   Y puede acceder al historial básico del caso
 
 Escenario: Impedir una consulta no autorizada
   Dado que el caso está fuera del alcance del usuario
   Cuando intenta abrir su ficha
   Entonces el sistema rechaza la solicitud sin revelar sus datos
+
+Escenario: Archivar y reactivar un caso con permiso elevado
+  Dado que existe un caso autorizado y el usuario posee el permiso elevado requerido
+  Cuando confirma el archivo o la reactivación e indica un motivo
+  Entonces el sistema cambia reversiblemente la condición del caso
+  Y registra actor, momento, motivo y valores relevantes en el historial
+
+Escenario: Rechazar el archivo sin permiso elevado
+  Dado que el usuario no posee el permiso requerido
+  Cuando intenta archivar o reactivar un caso
+  Entonces el sistema rechaza la operación sin modificar la ficha
 ```
 
-Trazabilidad: `MVP-04`, RF-006, RF-009, RNF-001, RNF-003.
+Trazabilidad: `MVP-04`, RF-004, RF-006, RF-009, RNF-001, RNF-003.
 
 ## HU-05 — Cambiar estado o etapa
 
@@ -113,7 +130,7 @@ Trazabilidad: `MVP-04`, RF-006, RF-009, RNF-001, RNF-003.
 
 ```gherkin
 Escenario: Registrar un cambio válido
-  Dado que existe un caso y una transición permitida
+  Dado que existe un caso y una transición configurada como permitida
   Cuando el usuario selecciona el nuevo estado o etapa y confirma
   Entonces el sistema actualiza el caso
   Y agrega el cambio al historial con usuario y fecha
@@ -137,12 +154,12 @@ Trazabilidad: `MVP-05`, RF-005, RF-006, RF-009, RNF-003.
 ```gherkin
 Escenario: Registrar una fecha válida
   Dado que existe un caso autorizado
-  Cuando el usuario indica tipo, fecha, responsable y observación opcional
+  Cuando el usuario indica tipo, fecha, responsable y fuente u observación opcional
   Entonces el sistema incorpora la fecha a la ficha
   Y registra la acción en el historial
 
 Escenario: Evitar interpretación automática
-  Dado que el usuario registra una fecha de referencia judicial
+  Dado que el usuario registra manualmente una referencia de caducidad
   Cuando guarda la información
   Entonces el sistema conserva el valor ingresado
   Y no calcula ni declara un plazo judicial definitivo
@@ -161,8 +178,8 @@ Trazabilidad: `MVP-06`, RF-008, RF-009, RF-011, RNF-003.
 ```gherkin
 Escenario: Buscar un cliente autorizado
   Dado que existen clientes ficticios registrados
-  Cuando el usuario busca por nombre o dato de contacto autorizado
-  Entonces el sistema muestra las coincidencias con información mínima
+  Cuando el usuario busca por nombre, dato de contacto autorizado o estado de actividad
+  Entonces el sistema muestra las coincidencias con información mínima y estado visible
   Y permite acceder a sus casos relacionados
 
 Escenario: Proteger resultados
@@ -173,7 +190,7 @@ Escenario: Proteger resultados
 
 Trazabilidad: `MVP-07`, RF-003, RNF-001, RNF-007.
 
-## HU-08 — Registrar o editar un cliente
+## HU-08 — Registrar, editar o cambiar el estado de un cliente
 
 **Como** integrante habilitado
 
@@ -193,9 +210,20 @@ Escenario: Advertir una posible coincidencia
   Cuando el usuario intenta registrar otro cliente
   Entonces el sistema advierte la posible duplicidad
   Y no fusiona las fichas automáticamente
+
+Escenario: Desactivar y reactivar un cliente con permiso elevado
+  Dado que existe un cliente y el usuario posee el permiso elevado requerido
+  Cuando confirma la desactivación o reactivación e indica un motivo
+  Entonces el sistema cambia reversiblemente el estado del cliente
+  Y registra actor, momento, motivo y valores relevantes en el historial
+
+Escenario: Rechazar la desactivación sin permiso elevado
+  Dado que el usuario no posee el permiso requerido
+  Cuando intenta desactivar o reactivar un cliente
+  Entonces el sistema rechaza la operación sin modificar la ficha
 ```
 
-Trazabilidad: `MVP-08`, RF-002, RNF-004, RNF-008.
+Trazabilidad: `MVP-08`, RF-002, RF-009, RNF-001, RNF-003, RNF-004, RNF-008.
 
 ## Criterio de término
 
