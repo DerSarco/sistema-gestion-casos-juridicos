@@ -20,9 +20,9 @@
 | W1 | 5–11 oct. | Inicio académico, contextualización y revisión de antecedentes | 12 | Ninguna | Inicio del curso y discovery | Periodo transcurrido; primera clase realizada el 10 oct.; horas reales pendientes de consolidar |
 | W2 | 12–18 oct. | Revisar problema, evidencia y código v0.2.0 | 12 | W1 | Línea base técnica inicial | Periodo transcurrido; existen artefactos integrados, sin inferir horas ejecutadas |
 | W3 | 19–25 oct. | Rebaselinar objetivos, SRS, historias, modelos y planificación | 12 | W2 | `v0.3` documental | Periodo transcurrido; documentación integrada en `develop`, horas reales pendientes de consolidar |
-| W4 | 26 oct.–1 nov. | Cerrar contraste del prototipo, navegación, responsividad prevista y planificación | 12 | W3 | Puerta de definición y diseño `v0.4` | En curso; cierre sujeto a evidencia y criterios abiertos |
-| W5 | 2–8 nov. | Conectar persistencia y completar flujo de clientes | 12 | W4 | Inicio de construcción; incremento clientes | Planificado |
-| W6 | 9–15 nov. | Completar registro, edición, búsqueda y filtrado de casos | 12 | W5 | Incremento casos I | Planificado |
+| W4 | 26 oct.–1 nov. | Cerrar contraste del prototipo, navegación, responsividad prevista y planificación | 12 | W3 | Puerta de definición y diseño `v0.4` | Evidencia visual integrada en #72; issues de contraste formal permanecen abiertos |
+| W5 | 2–8 nov. | Conectar persistencia y completar flujo de clientes | 12 | W4 | Inicio de construcción; incremento clientes | Adaptador Prisma parcial en #70 y flujo temporal en #74; conexión persistente pendiente |
+| W6 | 9–15 nov. | Completar registro, edición, búsqueda y filtrado de casos | 12 | W5 | Incremento casos I | #74 verifica interacción temporal; modelo refinado y persistencia continúan pendientes |
 | W7 | 16–22 nov. | Construir ficha, estado, etapa, responsable e historial asociado | 12 | W6 | Incremento casos II | Planificado |
 | W8 | 23–29 nov. | Construir fechas relevantes e historial básico verificable | 12 | W7 | Seguimiento básico | Planificado |
 | W9 | 30 nov.–6 dic. | Implementar acceso, permisos y adaptación responsive; ejecutar calidad continua | 12 | W5–W8 | `v0.5` funcional | Planificado |

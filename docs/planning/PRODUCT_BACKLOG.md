@@ -2,7 +2,7 @@
 
 **Línea base de alcance:** MVP AINC422 del 2026-10-22
 
-**Rebaselinación temporal:** 2026-10-27, issue #64
+**Última actualización de estado:** 2026-11-09, issue #74
 
 ## Escala
 
@@ -13,18 +13,18 @@ v0.2.0, pero no aceptación de la historia completa.
 | Orden | ID | Resultado | Trazabilidad | Prioridad | Puntos | Dependencias | Estado al 2026-10-27 |
 |---:|---|---|---|---|---:|---|---|
 | 1 | PB-01 | Mantener línea base de objetivos, alcance, SRS y trazabilidad | OE-01; 11 RF; 10 RNF; 7 RD | Must | 3 | Ninguna | Terminado documentalmente; auditado en #68 |
-| 2 | PB-02 | Consolidar ocho vistas y evidencia limpia del prototipo | OE-02; MVP-01 a MVP-08 | Must | 5 | PB-01 | Parcial; capturas y navegación configurada en Stitch, validación responsive y formal pendientes |
+| 2 | PB-02 | Consolidar ocho vistas y evidencia limpia del prototipo | OE-02; MVP-01 a MVP-08 | Must | 5 | PB-01 | Interfaz y navegación implementadas; #74 agrega verificación temporal, responsive y accesible; aceptación funcional persistente pendiente |
 | 3 | PB-03 | Conectar persistencia PostgreSQL mediante adaptadores Prisma | RD-001 a RD-003 | Must | 8 | PB-01 | Adaptador de clientes implementado en #70; conexión del flujo y adaptador de casos pendientes |
-| 4 | PB-04 | Registrar o editar clientes | HU-08; RF-002 | Must | 5 | PB-03 | Creación disponible en memoria y Prisma; edición, conexión real y aceptación pendientes |
-| 5 | PB-05 | Buscar clientes autorizados | HU-07; RF-003 | Must | 3 | PB-03, PB-04 | Búsqueda temporal parcial; autorización pendiente |
-| 6 | PB-06 | Registrar o editar casos con cliente y responsable | HU-03; RF-004, RF-005, RF-007 | Must | 8 | PB-03, PB-04 | Registro temporal parcial; edición y asignación pendientes |
-| 7 | PB-07 | Buscar y filtrar casos autorizados | HU-02; RF-010 | Must | 3 | PB-06 | Filtro temporal parcial; autorización pendiente |
-| 8 | PB-08 | Consultar ficha e historial básico | HU-04; RF-006, RF-009 | Must | 5 | PB-06 | Consulta básica parcial; historial pendiente |
-| 9 | PB-09 | Cambiar estado o etapa con historial | HU-05; RF-005, RF-009 | Must | 5 | PB-08 | Preparado |
-| 10 | PB-10 | Registrar manualmente una fecha relevante | HU-06; RF-008, RF-009, RF-011 | Must | 5 | PB-08 | Preparado |
+| 4 | PB-04 | Registrar o editar clientes | HU-08; RF-002 | Must | 5 | PB-03 | Flujo temporal verificable y adaptador Prisma separados; conexión real y aceptación pendientes |
+| 5 | PB-05 | Buscar clientes autorizados | HU-07; RF-003 | Must | 3 | PB-03, PB-04 | Búsqueda temporal verificable; persistencia y autorización pendientes |
+| 6 | PB-06 | Registrar o editar casos con cliente y responsable | HU-03; RF-004, RF-005, RF-007 | Must | 8 | PB-03, PB-04 | Registro y edición temporales verificables; persistencia y autorización pendientes |
+| 7 | PB-07 | Buscar y filtrar casos autorizados | HU-02; RF-010 | Must | 3 | PB-06 | Filtros temporales verificables; autorización pendiente |
+| 8 | PB-08 | Consultar ficha e historial básico | HU-04; RF-006, RF-009 | Must | 5 | PB-06 | Consulta e historial temporales; persistencia y autorización pendientes |
+| 9 | PB-09 | Cambiar estado o etapa con historial | HU-05; RF-005, RF-009 | Must | 5 | PB-08 | Flujo temporal verificable con catálogos ficticios no definitivos |
+| 10 | PB-10 | Registrar manualmente una fecha relevante | HU-06; RF-008, RF-009, RF-011 | Must | 5 | PB-08 | Flujo temporal verificable sin cálculo jurídico; persistencia pendiente |
 | 11 | PB-11 | Implementar acceso interno y autorización | HU-01; RF-001; RNF-001 | Must | 8 | PB-04 a PB-10 | Planificado para el último incremento funcional |
-| 12 | PB-12 | Adaptar interfaz a escritorio, tableta y móvil | RNF-007, RNF-008 | Must | 5 | PB-02, PB-04 a PB-11 | Preparado |
-| 13 | PB-13 | Automatizar escenarios Gherkin y puertas de CI | OE-04; RNF-003, RNF-006, RNF-009 | Must | 8 | PB-04 a PB-12 | CI existe; cobertura funcional pendiente |
+| 12 | PB-12 | Adaptar interfaz a escritorio, tableta y móvil | RNF-007, RNF-008 | Must | 5 | PB-02, PB-04 a PB-11 | Verificado para el estado temporal de #74; debe repetirse con los incrementos persistentes |
+| 13 | PB-13 | Automatizar escenarios Gherkin y puertas de CI | OE-04; RNF-003, RNF-006, RNF-009 | Must | 8 | PB-04 a PB-12 | CI y Playwright incorporados; cobertura persistente y por permisos pendiente |
 | 14 | PB-14 | Ejecutar aceptación y preparar release trazable | OE-04; RNF-004, RNF-005, RNF-010 | Must | 5 | PB-13 | Preparado |
 
 **Tamaño relativo total:** 84 puntos. No se usa este total para afirmar avance

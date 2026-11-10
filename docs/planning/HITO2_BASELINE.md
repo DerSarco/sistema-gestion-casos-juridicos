@@ -77,3 +77,11 @@ CI y evidencia enlazada.
 El umbral del Hito 2 se alcanza al acumular al menos 60 % mediante paquetes
 completos. No se redondean paquetes parciales ni se sustituye evidencia funcional
 por horas trabajadas.
+
+### Evidencia temporal posterior
+
+El issue #74 agrega comportamiento en memoria, validaciones, accesibilidad y
+pruebas de navegador sobre las ocho vistas. Esta evidencia reduce riesgo de
+interfaz, pero no modifica el **0 % funcional aceptado**: ningún paquete cuenta
+hasta conectar persistencia, autorización en servidor, trazabilidad y aceptación
+según la Definition of Done anterior.

@@ -1,10 +1,10 @@
 # Matriz de trazabilidad del MVP
 
-**Versión:** 0.7
+**Versión:** 0.8
 
-**Fecha:** 2026-11-08
+**Fecha:** 2026-11-09
 
-**Issues de revisión:** #61, #68, #70
+**Issues de revisión:** #61, #68, #70, #74
 
 ## Criterio
 
@@ -29,16 +29,16 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 
 | RF | Fuente | Verificación prevista | Estado real al 2026-10-22 |
 |---|---|---|---|
-| RF-001 | ALC-01; HU-01 | Acceso válido e inválido sin registro público | Especificado; implementación pendiente |
-| RF-002 | ALC-02; HU-08 | Registro y edición válidos e inválidos | Creación disponible en adaptadores temporal y Prisma; edición y conexión del flujo pendientes |
-| RF-003 | ALC-02; HU-07 | Búsqueda autorizada y estado sin resultados | Listado Prisma aislado por estudio; búsqueda persistente y autorización pendientes |
-| RF-004 | ALC-03; HU-03 | Alta y edición sin exigir antecedentes judiciales ausentes | Alta verificada en adaptador temporal; edición pendiente |
-| RF-005 | ALC-05; HU-03, HU-05 | Valores controlados y cancelación sin cambios | Implementado parcialmente con catálogos ficticios |
-| RF-006 | ALC-03; HU-04 | Consulta autorizada y actualización válida | Consulta parcial; edición y autorización pendientes |
+| RF-001 | ALC-01; HU-01 | Acceso válido e inválido sin registro público | Simulado en interfaz para demostración; autenticación y autorización reales pendientes |
+| RF-002 | ALC-02; HU-08 | Registro y edición válidos e inválidos | Flujo temporal en memoria y adaptador Prisma separados; conexión persistente pendiente |
+| RF-003 | ALC-02; HU-07 | Búsqueda autorizada y estado sin resultados | Búsqueda temporal y listado Prisma separados; autorización y conexión persistente pendientes |
+| RF-004 | ALC-03; HU-03 | Alta y edición sin exigir antecedentes judiciales ausentes | Alta y edición temporales verificadas; persistencia pendiente |
+| RF-005 | ALC-05; HU-03, HU-05 | Valores controlados y cancelación sin cambios | Flujo temporal verificable con catálogos ficticios no definitivos |
+| RF-006 | ALC-03; HU-04 | Consulta autorizada y actualización válida | Consulta temporal verificable; autorización y persistencia pendientes |
 | RF-007 | ALC-04; HU-03 | Asignación de un responsable vigente | Especificado; implementación pendiente |
-| RF-008 | ALC-06; HU-06 | Fecha manual válida sin cálculo de plazo | Especificado; implementación pendiente |
-| RF-009 | ALC-07; HU-04 a HU-06 | Historial cronológico no editable por usuarios comunes | Especificado; implementación pendiente |
-| RF-010 | ALC-08; HU-02 | Filtros combinables dentro del alcance autorizado | Especificado; implementación pendiente |
+| RF-008 | ALC-06; HU-06 | Fecha manual válida sin cálculo de plazo | Flujo temporal verificable; persistencia pendiente |
+| RF-009 | ALC-07; HU-04 a HU-06 | Historial cronológico no editable por usuarios comunes | Historial temporal verificable; auditoría persistente pendiente |
+| RF-010 | ALC-08; HU-02 | Filtros combinables dentro del alcance autorizado | Filtros temporales combinables; autorización persistente pendiente |
 | RF-011 | EXC-01, EXC-02 | Auditoría sin clientes, secretos ni tráfico OJV | Restricción especificada |
 
 ## Requisitos no funcionales
@@ -51,8 +51,8 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 | RNF-004 | Datos de prueba | Revisión de fixtures, BD, capturas y logs | Aplicado en datos actuales |
 | RNF-005 | Puerta de datos reales | Acta aprobada o bloqueo de uso real | Bloqueo vigente |
 | RNF-006 | Integridad | Caso activo incompleto rechazado | Implementado parcialmente |
-| RNF-007 | Responsividad | Ocho flujos en escritorio, tableta y móvil | Pendiente de validación |
-| RNF-008 | Formularios accesibles | Etiquetas y errores asociados | Pendiente de validación |
+| RNF-007 | Responsividad | Ocho flujos en escritorio, tableta y móvil | Verificado automáticamente en tres viewports para la interfaz temporal de #74 |
+| RNF-008 | Formularios accesibles | Etiquetas y errores asociados | Verificado en flujos críticos temporales; revisión posterior requerida al conectar persistencia |
 | RNF-009 | Calidad técnica | Build, tipos, lint y pruebas en CI | Pipeline disponible |
 | RNF-010 | Trazabilidad | Issue, etiqueta, milestone, PR y evidencia | Aplicado al proceso |
 
@@ -74,3 +74,4 @@ integrada y ejecutada.
 |---|---|---|---|---|
 | Adaptador Prisma de clientes | RF-002, RF-003; RD-001, RD-002 | Contrato asíncrono, aislamiento por estudio y mapeo de persistencia | #70 | Parcial; P1 conserva 0 % hasta completar su DoD |
 | Ocho pantallas de Stitch implementadas | HU-01 a HU-08; RNF-004, RNF-007, RNF-008 | Ocho rutas, navegación, revisión visual de escritorio y móvil, build y prueba estructural | #72 | Evidencia visual implementada; no suma porcentaje funcional sin persistencia y aceptación |
+| Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | Validaciones positivas y negativas, creación y edición en memoria, filtros, modales accesibles y Playwright en tres viewports | #74 | Evidencia de interacción y calidad; no suma porcentaje funcional sin persistencia, autorización y aceptación |
