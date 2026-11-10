@@ -74,4 +74,4 @@ integrada y ejecutada.
 |---|---|---|---|---|
 | Adaptador Prisma de clientes | RF-002, RF-003; RD-001, RD-002 | Contrato asíncrono, aislamiento por estudio y mapeo de persistencia | #70 | Parcial; P1 conserva 0 % hasta completar su DoD |
 | Ocho pantallas de Stitch implementadas | HU-01 a HU-08; RNF-004, RNF-007, RNF-008 | Ocho rutas, navegación, revisión visual de escritorio y móvil, build y prueba estructural | #72 | Evidencia visual implementada; no suma porcentaje funcional sin persistencia y aceptación |
-| Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | Validaciones positivas y negativas, creación y edición en memoria, filtros, modales accesibles y Playwright en tres viewports | #74 | Evidencia de interacción y calidad; no suma porcentaje funcional sin persistencia, autorización y aceptación |
+| Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | Validaciones positivas y negativas, creación y edición en memoria, filtros, modales accesibles y Playwright en tres viewports | PR #75, issue #74 | Evidencia de interacción y calidad; no suma porcentaje funcional sin persistencia, autorización y aceptación |
