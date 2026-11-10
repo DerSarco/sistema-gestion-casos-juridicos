@@ -1,8 +1,8 @@
 # Objetivos y medición del proyecto
 
-**Versión:** 1.0
+**Versión:** 1.1
 
-**Fecha:** 2026-10-22
+**Fecha:** 2026-11-09
 
 **Issue de origen:** #49
 
@@ -64,7 +64,7 @@ o de los errores del estudio.
 ### OE-03
 
 > **Implementar** las funciones priorizadas de clientes, casos, responsables,
-> estados, etapas, fechas relevantes e historial básico en un entorno de
+> participantes, estados, etapas, fechas relevantes e historial básico en un entorno de
 > preproducción con datos ficticios o anonimizados.
 
 | Elemento de medición | Definición |
@@ -90,7 +90,7 @@ o de los errores del estudio.
 ## Límites de interpretación
 
 - Los objetivos no comprometen dashboard, reportes, exportaciones, alertas
-  automáticas, anexo imprimible ni administración avanzada.
+  automáticas, anexo imprimible, eliminación física ni administración avanzada.
 - Calendar, OneDrive y Gemini permanecen diferidos.
 - La OJV no constituye una interfaz de software y el prototipo no calcula plazos
   judiciales definitivos.
