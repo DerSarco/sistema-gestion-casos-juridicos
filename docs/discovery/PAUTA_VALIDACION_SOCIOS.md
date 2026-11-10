@@ -1,4 +1,4 @@
-# Pauta breve de validación con los socios
+# Cuestionario breve de validación para los socios
 
 **Proyecto:** Sistema de gestión de casos jurídicos  
 **Caso de estudio:** Estudio Jurídico X  
@@ -8,22 +8,32 @@
 
 ## Propósito
 
-Esta pauta permite confirmar las decisiones indispensables antes de diseñar la
-base de datos y continuar el desarrollo. La conversación debería durar entre 30
-y 45 minutos.
+Este cuestionario permite confirmar las decisiones indispensables antes de
+diseñar la base de datos y continuar el desarrollo. Está preparado para ser
+respondido directamente en un Google Docs, de manera asincrónica y en el momento
+que resulte conveniente.
 
 No se deben registrar nombres de clientes, RUT, RIT, empresas, cuantías,
 credenciales ni antecedentes jurídicos identificables. Si se necesita un
 ejemplo, se utilizarán códigos ficticios como `Cliente 01` o `Caso 01`.
 
-## Registro de la sesión
+## Instrucciones para responder
+
+1. Marque las casillas que correspondan y escriba debajo de cada pregunta.
+2. Si no conoce una respuesta o desea revisarla con otra persona, marque el
+   estado como `Pendiente`.
+3. Puede responder el documento en varias ocasiones; no necesita completarlo de
+   una vez.
+4. No incluya ejemplos con datos reales de clientes o causas.
+5. Al finalizar, complete las tres prioridades y el estado general de revisión.
+
+## Identificación de la respuesta
 
 | Campo | Respuesta |
 |---|---|
-| Fecha | |
-| Participantes | Socio A / Socio B / ambos |
-| Modalidad | Presencial / remota |
-| Responsable del registro | Carlos Andrés Muñoz Bustamante |
+| Fecha de inicio | |
+| Socio que responde | Socio A / Socio B / ambos |
+| Fecha de última actualización | |
 | Observaciones generales | |
 
 Para cada respuesta se debe indicar si queda **confirmada** o **pendiente**. Una
@@ -262,7 +272,7 @@ que el sistema entregue valor?
 2.  
 3.  
 
-## Resumen posterior a la conversación
+## Resumen para revisar las respuestas
 
 | Decisión | Acuerdo | Estado | Responsable si queda pendiente |
 |---|---|---|---|
@@ -274,4 +284,6 @@ que el sistema entregue valor?
 - [ ] Las diferencias entre los socios quedaron registradas como pendientes.
 - [ ] Solo las decisiones confirmadas se trasladarán al SRS y al modelo.
 
-**Resultado de revisión:** Aprobada / aprobada con observaciones / pendiente
+**Estado general:** Completo / completo con observaciones / pendiente
+
+**Preguntas o comentarios para aclarar posteriormente:**
