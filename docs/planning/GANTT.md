@@ -22,7 +22,7 @@
 | W3 | 19–25 oct. | Rebaselinar objetivos, SRS, historias, modelos y planificación | 12 | W2 | `v0.3` documental | Periodo transcurrido; documentación integrada en `develop`, horas reales pendientes de consolidar |
 | W4 | 26 oct.–1 nov. | Cerrar contraste del prototipo, navegación, responsividad prevista y planificación | 12 | W3 | Puerta de definición y diseño `v0.4` | Evidencia visual integrada en #72; issues de contraste formal permanecen abiertos |
 | W5 | 2–8 nov. | Conectar persistencia y completar flujo de clientes | 12 | W4 | Inicio de construcción; incremento clientes | Adaptador Prisma parcial en #70 y flujo temporal en #74; conexión persistente pendiente |
-| W6 | 9–15 nov. | Completar registro, edición, búsqueda y filtrado de casos | 12 | W5 | Incremento casos I | #74 verifica interacción temporal; modelo refinado y persistencia continúan pendientes |
+| W6 | 9–15 nov. | Congelar SRS, trazabilidad, planificación y diagramas; preparar modelo refinado | 12 | W5 | Línea base integral #61 y #68 | #61 integrado; #68 en ejecución; #74 mantiene 0 % funcional aceptado |
 | W7 | 16–22 nov. | Construir ficha, estado, etapa, responsable e historial asociado | 12 | W6 | Incremento casos II | Planificado |
 | W8 | 23–29 nov. | Construir fechas relevantes e historial básico verificable | 12 | W7 | Seguimiento básico | Planificado |
 | W9 | 30 nov.–6 dic. | Implementar acceso, permisos y adaptación responsive; ejecutar calidad continua | 12 | W5–W8 | `v0.5` funcional | Planificado |
@@ -41,7 +41,7 @@ gantt
     Contraste y cierre de diseño         :active, d4, 2026-10-26, 7d
     section Construcción
     Persistencia y clientes              :c1, 2026-11-02, 7d
-    Registro y búsqueda de casos         :c2, after c1, 7d
+    Congelar baseline y preparar modelo  :active, c2, after c1, 7d
     Ficha, estado y responsable          :c3, after c2, 7d
     Fechas e historial                   :c4, after c3, 7d
     Acceso, permisos y responsive        :c5, after c4, 7d
@@ -59,7 +59,7 @@ desviación supera el umbral, se debe replanificar antes de iniciar o ampliar tr
 
 ## Dependencias críticas
 
-`Línea base → diseño validado → persistencia → clientes → casos → seguimiento →
+`Línea base integral → decisiones validadas → modelo → persistencia → clientes → casos → seguimiento →
 acceso y permisos → aceptación`.
 
 El acceso se implementa al final del incremento funcional por decisión expresa,
