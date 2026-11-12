@@ -1,13 +1,12 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import {
-  CatalogType,
-  PrismaClient,
-} from "../src/generated/prisma/client.ts";
+import { CatalogType, PrismaClient } from "../src/generated/prisma/client.ts";
 
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  throw new Error("DATABASE_URL es obligatoria para ejecutar el seed ficticio.");
+  throw new Error(
+    "DATABASE_URL es obligatoria para ejecutar el seed ficticio.",
+  );
 }
 
 const prisma = new PrismaClient({
@@ -55,6 +54,12 @@ const catalogDefinitions = [
   [CatalogType.PARTICIPATION_ROLE, "PRIMARY", "Responsable principal"],
   [CatalogType.PARTICIPATION_ROLE, "SUPPORT", "Apoyo operativo"],
   [CatalogType.DISMISSAL_GROUND, "FICTIONAL", "Causal ficticia"],
+  [CatalogType.DATE_TYPE, "LABOR", "Fecha laboral"],
+  [CatalogType.DATE_TYPE, "COMPARISON", "Comparendo"],
+  [CatalogType.DATE_TYPE, "FILING", "Presentación"],
+  [CatalogType.DATE_TYPE, "HEARING", "Audiencia"],
+  [CatalogType.DATE_TYPE, "FOLLOW_UP", "Seguimiento"],
+  [CatalogType.DATE_TYPE, "MANUAL_EXPIRY", "Caducidad manual"],
 ] as const;
 
 function catalogId(studyPrefix: "10000000" | "20000000", index: number) {
@@ -173,7 +178,9 @@ async function main() {
     where: { studyId: ids.studyA },
   });
   const value = (type: CatalogType, code: string) => {
-    const result = catalogsA.find((item) => item.type === type && item.code === code);
+    const result = catalogsA.find(
+      (item) => item.type === type && item.code === code,
+    );
     if (!result) throw new Error(`Catálogo ficticio ausente: ${type}/${code}`);
     return result.id;
   };

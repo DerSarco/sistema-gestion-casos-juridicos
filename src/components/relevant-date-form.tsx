@@ -1,124 +1,118 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useActionState, useState } from "react";
+import {
+  addRelevantDateAction,
+  type CaseLifecycleState,
+} from "@/app/casos/actions";
+import type { PersistentCase } from "@/modules/cases/domain/persistent-case";
 import { Modal } from "./modal";
-import { useSessionStore } from "./session-store";
 
-export function RelevantDateForm({ caseCode }: { caseCode: string }) {
-  const router = useRouter();
-  const { cases, clients, addRelevantDate } = useSessionStore();
-  const item = cases.find((entry) => entry.code === caseCode);
-  const client = clients.find(({ id }) => id === item?.clientId);
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [responsible, setResponsible] = useState("");
-  const [notes, setNotes] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  if (!item) return null;
-  function submit(event: FormEvent) {
-    event.preventDefault();
-    const next: Record<string, string> = {};
-    if (!name.trim()) next.name = "Ingrese el nombre de la fecha.";
-    if (!date) next.date = "Seleccione una fecha.";
-    if (!responsible) next.responsible = "Seleccione un responsable.";
-    setErrors(next);
-    if (Object.keys(next).length) return;
-    addRelevantDate(item!.id, {
-      name: name.trim(),
-      date,
-      time,
-      responsible,
-      notes: notes.trim(),
-    });
-    router.replace(`/casos/${caseCode}`);
-  }
+type Option = {
+  id: string;
+  name?: string;
+  displayName?: string;
+  code?: string;
+};
+
+export function RelevantDateForm({
+  legalCase,
+  types,
+  users,
+}: {
+  legalCase: PersistentCase;
+  types: Option[];
+  users: Option[];
+}) {
+  const [state, action, pending] = useActionState(addRelevantDateAction, {
+    status: "idle",
+  } as CaseLifecycleState);
+  const [typeId, setTypeId] = useState("");
+  const selectedType = types.find((item) => item.id === typeId);
+  const closeHref = `/casos/${legalCase.internalCode}`;
   return (
     <Modal
       title="Registrar fecha relevante"
-      subtitle={`${caseCode} · ${client?.name ?? "Cliente no disponible"}`}
-      closeHref={`/casos/${caseCode}`}
+      subtitle={`${legalCase.internalCode} · ${legalCase.clientName}`}
+      closeHref={closeHref}
     >
-      <form className="modal-body" onSubmit={submit} noValidate>
+      <form className="modal-body" action={action}>
+        <input type="hidden" name="caseId" value={legalCase.id} />
+        <input type="hidden" name="typeCode" value={selectedType?.code ?? ""} />
         <aside className="notice compact">
-          La fecha se registra manualmente y debe ser verificada por el usuario.
+          Registro manual sujeto a verificación profesional. El sistema no
+          calcula ni certifica plazos jurídicos.
         </aside>
-        {Object.keys(errors).length > 0 && (
+        {state.message && (
           <div className="error-summary" role="alert">
-            <strong>Revise los campos indicados</strong>
-            <span>{Object.values(errors)[0]}</span>
+            {state.message}
           </div>
         )}
         <label className="field">
           <span>
-            Nombre de la fecha <b>*</b>
-          </span>
-          <input
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            aria-invalid={Boolean(errors.name)}
-          />
-          {errors.name && <small className="field-error">{errors.name}</small>}
-        </label>
-        <div className="form-grid">
-          <label className="field">
-            <span>
-              Fecha <b>*</b>
-            </span>
-            <input
-              type="date"
-              value={date}
-              onChange={(event) => setDate(event.target.value)}
-              aria-invalid={Boolean(errors.date)}
-            />
-            {errors.date && (
-              <small className="field-error">{errors.date}</small>
-            )}
-          </label>
-          <label className="field">
-            <span>
-              Hora <em>Opcional</em>
-            </span>
-            <input
-              type="time"
-              value={time}
-              onChange={(event) => setTime(event.target.value)}
-            />
-          </label>
-        </div>
-        <label className="field">
-          <span>
-            Abogado responsable <b>*</b>
+            Tipo <b>*</b>
           </span>
           <select
-            value={responsible}
-            onChange={(event) => setResponsible(event.target.value)}
-            aria-invalid={Boolean(errors.responsible)}
+            name="typeId"
+            value={typeId}
+            onChange={(event) => setTypeId(event.target.value)}
           >
-            <option value="">Seleccionar responsable...</option>
-            <option>Abogado A</option>
-            <option>Abogado B</option>
+            <option value="">Seleccionar tipo…</option>
+            {types.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
           </select>
-          {errors.responsible && (
-            <small className="field-error">{errors.responsible}</small>
-          )}
+        </label>
+        <label className="field">
+          <span>
+            Título <b>*</b>
+          </span>
+          <input name="title" />
+        </label>
+        <label className="field">
+          <span>
+            Fecha y hora <b>*</b>
+          </span>
+          <input type="datetime-local" name="occursAt" />
+        </label>
+        <label className="field">
+          <span>
+            Responsable <b>*</b>
+          </span>
+          <select name="responsibleId">
+            <option value="">Seleccionar responsable…</option>
+            {users.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.displayName}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="field">
+          <span>
+            Fuente{" "}
+            {selectedType?.code === "MANUAL_EXPIRY" ? (
+              <b>*</b>
+            ) : (
+              <em>Opcional</em>
+            )}
+          </span>
+          <input name="source" placeholder="Documento o referencia manual" />
         </label>
         <label className="field">
           <span>
             Observación <em>Opcional</em>
           </span>
-          <textarea
-            value={notes}
-            onChange={(event) => setNotes(event.target.value)}
-          />
+          <textarea name="notes" />
         </label>
         <footer className="form-actions">
-          <Link replace className="button button-secondary" href={`/casos/${caseCode}`}>
+          <Link replace className="button button-secondary" href={closeHref}>
             Cancelar
           </Link>
-          <button className="button button-primary" type="submit">
-            Guardar fecha
+          <button className="button button-primary" disabled={pending}>
+            {pending ? "Guardando…" : "Guardar fecha"}
           </button>
         </footer>
       </form>

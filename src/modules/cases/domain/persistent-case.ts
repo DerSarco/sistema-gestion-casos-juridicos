@@ -15,6 +15,15 @@ export type PersistentCase = {
   responsibleId: string;
   responsible: string;
   participants: Array<{ id: string; name: string; role: string }>;
+  relevantDates: Array<{
+    id: string;
+    type: string;
+    title: string;
+    occursAt: string;
+    responsible: string;
+    source: string | null;
+    notes: string | null;
+  }>;
   court: string | null;
   rit: string | null;
   judicialRole: string | null;
