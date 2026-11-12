@@ -189,6 +189,11 @@ tbody tr:hover { background: #f8fafc; }
 
 body { overflow-x: hidden; }
 .clear-filters { border: 0; background: transparent; color: var(--teal); font: inherit; font-weight: 700; cursor: pointer; margin: 0 0 12px; text-decoration: underline; }
+.client-filters { grid-template-columns: minmax(260px, 620px) minmax(170px, 220px); }
+.client-actions { display: grid; gap: .55rem; min-width: 210px; }
+.lifecycle-form { display: grid; grid-template-columns: minmax(120px, 1fr) auto; gap: .4rem; align-items: center; }
+.lifecycle-form input { min-height: 34px; padding: .35rem .5rem; border: 1px solid var(--border); border-radius: 6px; }
+.lifecycle-form small { grid-column: 1 / -1; }
 .empty-state { display: grid; justify-items: center; gap: 10px; padding: 42px 20px; text-align: center; }
 .empty-state strong { font-size: 1.08rem; }
 .field-error { color: #9f1239; font-weight: 700; }

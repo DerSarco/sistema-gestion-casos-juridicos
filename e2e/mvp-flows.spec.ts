@@ -12,7 +12,7 @@ test("MVP-01 valida acceso de demostración y navega", async ({ page }) => {
   await expect(page).toHaveURL(/\/casos$/);
 });
 
-test("MVP-07 y MVP-08 buscan, validan, crean y editan sin duplicar", async ({ page }) => {
+test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async ({ page }) => {
   await page.goto("/clientes");
   await page.getByPlaceholder(/Buscar por nombre/).fill("inexistente");
   await expect(page.getByText("No se encontraron clientes")).toBeVisible();
@@ -20,18 +20,24 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan sin duplicar", async ({ pa
   await page.getByRole("link", { name: "+ Nuevo cliente" }).click();
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.locator(".error-summary")).toContainText("Revise los campos");
-  await page.getByLabel(/Nombre del cliente/).fill("Cliente 05");
+  await page.getByLabel(/Nombre completo/).fill("Cliente 05");
+  await page.getByLabel(/RUT/).fill("555555555");
   await page.getByRole("textbox", { name: /Correo electrónico/ }).fill("cliente05@ejemplo.cl");
   await page.getByRole("textbox", { name: /Teléfono/ }).fill("+56 9 1111 2222");
+  await page.getByLabel(/Origen o materia/).fill("Consulta laboral ficticia");
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.getByText("Cliente 05", { exact: true })).toBeVisible();
-  await expect(page.getByText("Mostrando 5 de 5 clientes")).toBeVisible();
+  await expect(page.getByText("Mostrando 2 de 2 clientes")).toBeVisible();
   const row = page.getByRole("row").filter({ hasText: "Cliente 05" });
   await row.getByRole("link", { name: /Editar/ }).click();
-  await page.getByLabel(/Nombre del cliente/).fill("Cliente 05 actualizado");
+  await page.getByLabel(/Nombre completo/).fill("Cliente 05 actualizado");
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.getByText("Cliente 05 actualizado")).toBeVisible();
-  await expect(page.getByText("Mostrando 5 de 5 clientes")).toBeVisible();
+  await expect(page.getByText("Mostrando 2 de 2 clientes")).toBeVisible();
+  const updatedRow = page.getByRole("row").filter({ hasText: "Cliente 05 actualizado" });
+  await updatedRow.getByPlaceholder("Motivo del cambio").fill("Cierre operativo ficticio");
+  await updatedRow.getByRole("button", { name: "Desactivar" }).click();
+  await expect(updatedRow.getByText("Inactivo", { exact: true })).toBeVisible();
 });
 
 test("MVP-02 a MVP-06 completan caso, filtros, estado, fecha y cancelación", async ({ page }) => {

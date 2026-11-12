@@ -78,7 +78,7 @@ integrada y ejecutada.
 
 | Incremento | Requisitos | Pruebas | PR | Estado para el porcentaje |
 |---|---|---|---|---|
-| Adaptador Prisma de clientes | RF-002, RF-003; RD-001, RD-002 | Contrato asíncrono, aislamiento por estudio y mapeo de persistencia | #70 | Parcial; P1 conserva 0 % hasta completar su DoD |
+| Incremento persistente de clientes | RF-002, RF-003, RF-009; RNF-001, RNF-003, RNF-004, RNF-008; RD-001, RD-002, RD-006, RD-007 | Alta, edición, búsqueda, advertencia, ciclo reversible, autorización en servidor y auditoría mediante adaptador Prisma aislado por estudio | #80 | En implementación; P1 conserva 0 % hasta integrar PR, ejecutar PostgreSQL/Playwright y completar su DoD |
 | Ocho pantallas de Stitch implementadas | HU-01 a HU-08; RNF-004, RNF-007, RNF-008 | Ocho rutas, navegación, revisión visual de escritorio y móvil, build y prueba estructural | #72 | Evidencia visual implementada; no suma porcentaje funcional sin persistencia y aceptación |
 | Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | 16 pruebas unitarias y 7 Playwright: validaciones, creación y edición en memoria, filtros, modales accesibles y tres viewports | PR #75, issue #74 | Evidencia temporal integrada; mantiene 0 % funcional aceptado sin persistencia, autorización y aceptación |
 

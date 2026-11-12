@@ -3,62 +3,35 @@ import { InMemoryClientRepository } from "@/infrastructure/memory/in-memory-clie
 import { fictionalClients } from "@/fixtures/clients";
 import { RegisterClient } from "./register-client";
 
-const createUseCase = (repository = new InMemoryClientRepository()) =>
-  new RegisterClient(
-    repository,
-    () => "10000000-0000-4000-8000-000000000099",
-    () => "2026-10-16T18:00:00.000Z",
-  );
+const actorId = "10000000-0000-4000-8000-000000000201";
+const createUseCase = (repository = new InMemoryClientRepository()) => new RegisterClient(repository);
+const validInput = { displayName: "Cliente 03", rut: "333333333", phone: "+56933333333", email: "CLIENTE03@EXAMPLE.TEST", originMatter: "Consulta laboral" };
 
 describe("RegisterClient", () => {
-  it("registra una ficha ficticia válida", async () => {
-    const repository = new InMemoryClientRepository();
-    const result = await createUseCase(repository).execute({
-      displayName: "  Cliente 03  ",
-      email: "CLIENTE03@EXAMPLE.TEST",
-    });
-
+  it("registra y normaliza una ficha ficticia válida", async () => {
+    const repository = new InMemoryClientRepository([], () => "10000000-0000-4000-8000-000000000099", () => "2026-10-16T18:00:00.000Z");
+    const result = await createUseCase(repository).execute(validInput, { actorId });
     expect(result.status).toBe("created");
-    await expect(repository.list()).resolves.toEqual([
-      expect.objectContaining({
-        displayName: "Cliente 03",
-        email: "cliente03@example.test",
-      }),
-    ]);
+    await expect(repository.list()).resolves.toEqual([expect.objectContaining({ displayName: "Cliente 03", email: "cliente03@example.test" })]);
   });
 
   it("rechaza datos inválidos sin persistir", async () => {
     const repository = new InMemoryClientRepository();
-    const result = await createUseCase(repository).execute({
-      displayName: "A",
-      email: "correo-invalido",
-    });
-
+    const result = await createUseCase(repository).execute({ ...validInput, displayName: "A", rut: "x" }, { actorId });
     expect(result.status).toBe("invalid");
     await expect(repository.list()).resolves.toHaveLength(0);
   });
 
-  it("informa una coincidencia sin fusionar automáticamente", async () => {
+  it("advierte coincidencia por nombre y origen sin fusionar", async () => {
     const repository = new InMemoryClientRepository(fictionalClients);
-    const result = await createUseCase(repository).execute({
-      displayName: "Otra etiqueta",
-      email: "cliente01@example.test",
-    });
-
+    const result = await createUseCase(repository).execute({ ...validInput, displayName: "Cliente 01", originMatter: "Consulta laboral" }, { actorId });
     expect(result.status).toBe("potential-match");
     await expect(repository.list()).resolves.toHaveLength(2);
   });
 
-  it("permite confirmar una ficha separada después de advertir", async () => {
+  it("permite continuar después de confirmar la advertencia", async () => {
     const repository = new InMemoryClientRepository(fictionalClients);
-    const result = await createUseCase(repository).execute(
-      {
-        displayName: "Cliente 01",
-        phone: "+56999999999",
-      },
-      { confirmPotentialMatch: true },
-    );
-
+    const result = await createUseCase(repository).execute({ ...validInput, displayName: "Cliente 01", originMatter: "Consulta laboral" }, { actorId, confirmPotentialMatch: true });
     expect(result.status).toBe("created");
     await expect(repository.list()).resolves.toHaveLength(3);
   });

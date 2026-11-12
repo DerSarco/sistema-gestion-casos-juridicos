@@ -1,24 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useActionState, useMemo, useState } from "react";
+import { changeClientStatusAction, initialLifecycleState } from "@/app/clientes/actions";
+import type { Client } from "@/modules/clients/domain/client";
 import { Icon } from "./icons";
 import { PageHeading } from "./page-heading";
-import { useSessionStore } from "./session-store";
 
-export function ClientsScreen() {
-  const { clients, cases } = useSessionStore();
+function LifecycleForm({ client }: { client: Client }) {
+  const [state, action, pending] = useActionState(changeClientStatusAction, initialLifecycleState);
+  const target = client.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+  return <form action={action} className="lifecycle-form">
+    <input type="hidden" name="clientId" value={client.id} /><input type="hidden" name="targetStatus" value={target} />
+    <label className="sr-only" htmlFor={`reason-${client.id}`}>Motivo</label><input id={`reason-${client.id}`} name="reason" placeholder="Motivo del cambio" minLength={5} required />
+    <button className="table-link" type="submit" disabled={pending}>{pending ? "Procesando…" : target === "INACTIVE" ? "Desactivar" : "Reactivar"}</button>
+    {state.message && <small className="field-error" role="alert">{state.message}</small>}
+  </form>;
+}
+
+export function ClientsScreen({ clients }: { clients: Client[] }) {
   const [query, setQuery] = useState("");
-  const filtered = useMemo(() => clients.filter((item) => `${item.name} ${item.email} ${item.phone}`.toLowerCase().includes(query.toLowerCase())), [clients, query]);
+  const [status, setStatus] = useState<"ALL" | "ACTIVE" | "INACTIVE">("ALL");
+  const filtered = useMemo(() => clients.filter((item) => `${item.displayName} ${item.rutNormalized} ${item.email ?? ""} ${item.phone} ${item.originMatter}`.toLowerCase().includes(query.toLowerCase()) && (status === "ALL" || item.status === status)), [clients, query, status]);
   return <>
-    <PageHeading title="Clientes" subtitle="Directorio interno de clientes del estudio" action={<Link className="button button-primary" href="/clientes/nuevo">+ Nuevo cliente</Link>} />
-    <label className="search-field search-field-wide"><Icon name="search" /><span className="sr-only">Buscar clientes</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por nombre, correo o teléfono..." /></label>
-    {query && <button className="clear-filters" type="button" onClick={() => setQuery("")}>Limpiar búsqueda</button>}
+    <PageHeading title="Clientes" subtitle="Directorio persistente del estudio" action={<Link className="button button-primary" href="/clientes/nuevo">+ Nuevo cliente</Link>} />
+    <div className="filters client-filters"><label className="search-field"><Icon name="search" /><span className="sr-only">Buscar clientes</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por nombre, RUT, contacto u origen..." /></label><select aria-label="Filtrar por actividad" value={status} onChange={(event) => setStatus(event.target.value as typeof status)}><option value="ALL">Todos los estados</option><option value="ACTIVE">Activos</option><option value="INACTIVE">Inactivos</option></select></div>
+    {(query || status !== "ALL") && <button className="clear-filters" type="button" onClick={() => { setQuery(""); setStatus("ALL"); }}>Limpiar filtros</button>}
     <section className="table-card" aria-label="Listado de clientes" aria-live="polite">
-      {filtered.length === 0 ? <div className="empty-state"><strong>No se encontraron clientes</strong><span>Revise el criterio ingresado o limpie la búsqueda.</span><button className="button button-secondary" onClick={() => setQuery("")}>Limpiar búsqueda</button></div> : <>
-        <div className="table-scroll"><table><thead><tr><th>Código</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>Casos asociados</th><th>Acción</th></tr></thead><tbody>{filtered.map((item) => { const count = cases.filter(({ clientId }) => clientId === item.id).length; return <tr key={item.id}><td className="mono">{item.code}</td><td><strong>{item.name}</strong></td><td>{item.email}</td><td>{item.phone}</td><td><span className="tag">{count} {count === 1 ? "caso" : "casos"}</span></td><td><Link className="table-link" href={`/clientes/nuevo?cliente=${item.code}`}>Editar <Icon name="chevron" size={14} /></Link></td></tr>; })}</tbody></table></div>
-        <footer className="table-footer"><span>Mostrando {filtered.length} de {clients.length} clientes</span><span className="pagination"><button disabled>‹</button><button className="current">1</button><button disabled>›</button></span></footer>
-      </>}
+      {filtered.length === 0 ? <div className="empty-state"><strong>No se encontraron clientes</strong><span>Revise los filtros o registre una nueva ficha.</span></div> : <div className="table-scroll"><table><thead><tr><th>Cliente</th><th>RUT</th><th>Contacto</th><th>Origen</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>{filtered.map((item) => <tr key={item.id}><td><strong>{item.displayName}</strong></td><td className="mono">{item.rutNormalized}</td><td>{item.email ?? "Sin correo"}<br />{item.phone}</td><td>{item.originMatter}</td><td><span className={`status ${item.status === "ACTIVE" ? "status-activo" : "status-cerrado"}`}>{item.status === "ACTIVE" ? "Activo" : "Inactivo"}</span></td><td><div className="client-actions"><Link className="table-link" href={`/clientes/nuevo?cliente=${item.id}`}>Editar <Icon name="chevron" size={14} /></Link><LifecycleForm client={item} /></div></td></tr>)}</tbody></table></div>}
+      <footer className="table-footer"><span>Mostrando {filtered.length} de {clients.length} clientes</span></footer>
     </section>
   </>;
 }
