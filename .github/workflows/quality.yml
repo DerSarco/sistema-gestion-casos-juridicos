@@ -25,7 +25,7 @@ jobs:
         env:
           POSTGRES_DB: sistema_test
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
         options: >-
@@ -65,7 +65,7 @@ jobs:
       - name: Verify migrations, fictional seed and database constraints
         run: pnpm test:db
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sistema_test?schema=public
+          DATABASE_URL: postgresql://postgres@localhost:5432/sistema_test?schema=public
 
       - name: Run browser tests
         run: pnpm test:e2e
