@@ -48,7 +48,7 @@ describe("PrismaClientRepository", () => {
     );
   });
 
-  it("persiste la pertenencia al estudio y los datos del dominio", async () => {
+  it("rechaza escrituras con la ficha temporal incompleta", async () => {
     const create = vi.fn().mockResolvedValue({});
     const repository = new PrismaClientRepository(
       databaseWith({ create }),
@@ -63,14 +63,9 @@ describe("PrismaClientRepository", () => {
       createdAt: "2026-11-08T13:00:00.000Z",
     };
 
-    await repository.save(client);
-
-    expect(create).toHaveBeenCalledWith({
-      data: {
-        ...client,
-        studyId,
-        createdAt: new Date(client.createdAt),
-      },
-    });
+    await expect(repository.save(client)).rejects.toThrow(
+      "La escritura persistente de clientes se habilitará en el issue #80",
+    );
+    expect(create).not.toHaveBeenCalled();
   });
 });
