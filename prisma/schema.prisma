@@ -17,32 +17,43 @@ enum ClientStatus {
   INACTIVE
 }
 
-enum CaseStatus {
+enum ClientType {
+  PERSON
+  ORGANIZATION
+}
+
+enum CaseLifecycleStatus {
   DRAFT
   ACTIVE
-  CLOSED
   ARCHIVED
 }
 
 enum CatalogType {
   MATTER
+  CASE_NATURE
+  CASE_STATUS
   STAGE
-  PRIORITY
-  MILESTONE_TYPE
+  PROCEDURE
+  DATE_TYPE
+  PARTICIPATION_ROLE
+  DISMISSAL_GROUND
 }
 
 model Study {
-  id            String         @id @default(uuid()) @db.Uuid
-  name          String
-  active        Boolean        @default(true)
-  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt     DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
-  users         User[]
-  roles         Role[]
-  clients       Client[]
-  cases         LegalCase[]
-  catalogValues CatalogValue[]
-  auditEvents   AuditEvent[]
+  id                 String              @id @default(uuid()) @db.Uuid
+  name               String
+  active             Boolean             @default(true)
+  createdAt          DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+  users              User[]
+  roles              Role[]
+  clients            Client[]
+  cases              LegalCase[]
+  catalogValues      CatalogValue[]
+  caseParticipations CaseParticipation[]
+  laborCaseData      LaborCaseData[]
+  relevantDates      RelevantDate[]
+  auditEvents        AuditEvent[]
 
   @@map("studies")
 }
@@ -59,130 +70,202 @@ model Role {
   users       User[]
 
   @@unique([studyId, name])
+  @@unique([id, studyId])
   @@index([studyId, active])
   @@map("roles")
 }
 
 model User {
-  id               String       @id @default(uuid()) @db.Uuid
-  studyId          String       @map("study_id") @db.Uuid
-  roleId           String       @map("role_id") @db.Uuid
-  displayName      String       @map("display_name")
-  accessIdentifier String       @map("access_identifier")
-  status           UserStatus   @default(ACTIVE)
-  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt        DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
-  study            Study        @relation(fields: [studyId], references: [id], onDelete: Restrict)
-  role             Role         @relation(fields: [roleId], references: [id], onDelete: Restrict)
-  assignments      Assignment[] @relation("AssignmentResponsible")
-  assignedBy       Assignment[] @relation("AssignmentActor")
-  auditEvents      AuditEvent[]
+  id                     String              @id @default(uuid()) @db.Uuid
+  studyId                String              @map("study_id") @db.Uuid
+  roleId                 String              @map("role_id") @db.Uuid
+  displayName            String              @map("display_name")
+  accessIdentifier       String              @map("access_identifier")
+  status                 UserStatus          @default(ACTIVE)
+  createdAt              DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt              DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+  study                  Study               @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  role                   Role                @relation(fields: [roleId, studyId], references: [id, studyId], onDelete: Restrict)
+  participations         CaseParticipation[] @relation("ParticipationUser")
+  assignedParticipations CaseParticipation[] @relation("ParticipationActor")
+  responsibleDates       RelevantDate[]
+  changedClients         Client[]            @relation("ClientLifecycleActor")
+  changedCases           LegalCase[]         @relation("CaseLifecycleActor")
+  auditEvents            AuditEvent[]
 
   @@unique([studyId, accessIdentifier])
+  @@unique([id, studyId])
   @@index([studyId, status])
   @@map("users")
 }
 
 model Client {
-  id          String       @id @default(uuid()) @db.Uuid
-  studyId     String       @map("study_id") @db.Uuid
-  displayName String       @map("display_name")
-  email       String?
-  phone       String?
-  status      ClientStatus @default(ACTIVE)
-  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
-  study       Study        @relation(fields: [studyId], references: [id], onDelete: Restrict)
-  cases       LegalCase[]
+  id                String       @id @default(uuid()) @db.Uuid
+  studyId           String       @map("study_id") @db.Uuid
+  type              ClientType   @default(PERSON)
+  displayName       String       @map("display_name")
+  rutNormalized     String       @map("rut_normalized")
+  phone             String
+  email             String?
+  originMatter      String       @map("origin_matter")
+  status            ClientStatus @default(ACTIVE)
+  statusChangedAt   DateTime?    @map("status_changed_at") @db.Timestamptz(3)
+  statusChangedById String?      @map("status_changed_by_id") @db.Uuid
+  statusReason      String?      @map("status_reason")
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  study             Study        @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  statusChangedBy   User?        @relation("ClientLifecycleActor", fields: [statusChangedById, studyId], references: [id, studyId], onDelete: Restrict)
+  cases             LegalCase[]
 
+  @@unique([id, studyId])
   @@index([studyId, displayName])
+  @@index([studyId, rutNormalized])
   @@index([studyId, email])
+  @@index([studyId, status])
   @@map("clients")
 }
 
 model CatalogValue {
-  id          String      @id @default(uuid()) @db.Uuid
-  studyId     String      @map("study_id") @db.Uuid
-  type        CatalogType
-  code        String
-  name        String
-  description String?
-  sortOrder   Int         @default(0) @map("sort_order")
-  active      Boolean     @default(true)
-  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
-  study       Study       @relation(fields: [studyId], references: [id], onDelete: Restrict)
-  matterCases LegalCase[] @relation("CaseMatter")
-  stageCases  LegalCase[] @relation("CaseStage")
-  milestones  Milestone[]
+  id                 String              @id @default(uuid()) @db.Uuid
+  studyId            String              @map("study_id") @db.Uuid
+  type               CatalogType
+  code               String
+  name               String
+  description        String?
+  sortOrder          Int                 @default(0) @map("sort_order")
+  active             Boolean             @default(true)
+  createdAt          DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+  study              Study               @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  matterCases        LegalCase[]         @relation("CaseMatter")
+  natureCases        LegalCase[]         @relation("CaseNature")
+  statusCases        LegalCase[]         @relation("CaseBusinessStatus")
+  stageCases         LegalCase[]         @relation("CaseStage")
+  procedureCases     LegalCase[]         @relation("CaseProcedure")
+  participationRoles CaseParticipation[]
+  dateTypes          RelevantDate[]
+  dismissalCases     LaborCaseData[]     @relation("DismissalGround")
 
   @@unique([studyId, type, code])
+  @@unique([id, studyId])
   @@index([studyId, type, active])
   @@map("catalog_values")
 }
 
 model LegalCase {
-  id           String       @id @default(uuid()) @db.Uuid
-  studyId      String       @map("study_id") @db.Uuid
-  clientId     String       @map("client_id") @db.Uuid
-  matterId     String       @map("matter_id") @db.Uuid
-  stageId      String       @map("stage_id") @db.Uuid
-  internalCode String       @map("internal_code")
-  title        String
-  status       CaseStatus   @default(DRAFT)
-  court        String?
-  ritRol       String?      @map("rit_rol")
-  notes        String?
-  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
-  study        Study        @relation(fields: [studyId], references: [id], onDelete: Restrict)
-  client       Client       @relation(fields: [clientId], references: [id], onDelete: Restrict)
-  matter       CatalogValue @relation("CaseMatter", fields: [matterId], references: [id], onDelete: Restrict)
-  stage        CatalogValue @relation("CaseStage", fields: [stageId], references: [id], onDelete: Restrict)
-  assignments  Assignment[]
-  milestones   Milestone[]
-  auditEvents  AuditEvent[]
+  id                   String              @id @default(uuid()) @db.Uuid
+  studyId              String              @map("study_id") @db.Uuid
+  clientId             String              @map("client_id") @db.Uuid
+  matterId             String              @map("matter_id") @db.Uuid
+  natureId             String              @map("nature_id") @db.Uuid
+  statusId             String              @map("status_id") @db.Uuid
+  stageId              String              @map("stage_id") @db.Uuid
+  procedureId          String?             @map("procedure_id") @db.Uuid
+  internalCode         String              @map("internal_code")
+  title                String
+  lifecycleStatus      CaseLifecycleStatus @default(DRAFT) @map("lifecycle_status")
+  court                String?
+  rit                  String?
+  judicialRole         String?             @map("judicial_role")
+  notes                String?
+  lifecycleChangedAt   DateTime?           @map("lifecycle_changed_at") @db.Timestamptz(3)
+  lifecycleChangedById String?             @map("lifecycle_changed_by_id") @db.Uuid
+  lifecycleReason      String?             @map("lifecycle_reason")
+  createdAt            DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+  study                Study               @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  client               Client              @relation(fields: [clientId, studyId], references: [id, studyId], onDelete: Restrict)
+  matter               CatalogValue        @relation("CaseMatter", fields: [matterId, studyId], references: [id, studyId], onDelete: Restrict)
+  nature               CatalogValue        @relation("CaseNature", fields: [natureId, studyId], references: [id, studyId], onDelete: Restrict)
+  businessStatus       CatalogValue        @relation("CaseBusinessStatus", fields: [statusId, studyId], references: [id, studyId], onDelete: Restrict)
+  stage                CatalogValue        @relation("CaseStage", fields: [stageId, studyId], references: [id, studyId], onDelete: Restrict)
+  procedure            CatalogValue?       @relation("CaseProcedure", fields: [procedureId, studyId], references: [id, studyId], onDelete: Restrict)
+  lifecycleChangedBy   User?               @relation("CaseLifecycleActor", fields: [lifecycleChangedById, studyId], references: [id, studyId], onDelete: Restrict)
+  laborData            LaborCaseData?
+  participations       CaseParticipation[]
+  relevantDates        RelevantDate[]
+  auditEvents          AuditEvent[]
 
   @@unique([studyId, internalCode])
-  @@index([studyId, status, stageId])
-  @@index([clientId])
+  @@unique([id, studyId])
+  @@index([studyId, lifecycleStatus, stageId])
+  @@index([studyId, statusId, stageId])
+  @@index([clientId, studyId])
   @@map("legal_cases")
 }
 
-model Assignment {
-  id            String    @id @default(uuid()) @db.Uuid
-  caseId        String    @map("case_id") @db.Uuid
-  responsibleId String    @map("responsible_id") @db.Uuid
-  assignedById  String    @map("assigned_by_id") @db.Uuid
-  startedAt     DateTime  @default(now()) @map("started_at") @db.Timestamptz(3)
-  endedAt       DateTime? @map("ended_at") @db.Timestamptz(3)
-  primary       Boolean   @default(true)
-  reason        String?
-  legalCase     LegalCase @relation(fields: [caseId], references: [id], onDelete: Restrict)
-  responsible   User      @relation("AssignmentResponsible", fields: [responsibleId], references: [id], onDelete: Restrict)
-  assignedBy    User      @relation("AssignmentActor", fields: [assignedById], references: [id], onDelete: Restrict)
+model LaborCaseData {
+  id                     String        @id @default(uuid()) @db.Uuid
+  studyId                String        @map("study_id") @db.Uuid
+  caseId                 String        @map("case_id") @db.Uuid
+  employerOrCounterparty String?       @map("employer_or_counterparty")
+  employmentStartDate    DateTime?     @map("employment_start_date") @db.Date
+  dismissalDate          DateTime?     @map("dismissal_date") @db.Date
+  dismissalGroundId      String?       @map("dismissal_ground_id") @db.Uuid
+  collectiveOrganization String?       @map("collective_organization")
+  collectiveActionType   String?       @map("collective_action_type")
+  storeOrBranch          String?       @map("store_or_branch")
+  severanceDetails       String?       @map("severance_details")
+  amount                 Decimal?      @db.Decimal(14, 2)
+  createdAt              DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt              DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  study                  Study         @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  legalCase              LegalCase     @relation(fields: [caseId, studyId], references: [id, studyId], onDelete: Restrict)
+  dismissalGround        CatalogValue? @relation("DismissalGround", fields: [dismissalGroundId, studyId], references: [id, studyId], onDelete: Restrict)
 
-  @@index([caseId, endedAt])
-  @@index([responsibleId, endedAt])
-  @@map("assignments")
+  @@unique([id, studyId])
+  @@unique([caseId, studyId])
+  @@index([studyId, dismissalDate])
+  @@map("labor_case_data")
 }
 
-model Milestone {
-  id          String       @id @default(uuid()) @db.Uuid
-  caseId      String       @map("case_id") @db.Uuid
-  typeId      String       @map("type_id") @db.Uuid
-  title       String
-  occursAt    DateTime     @map("occurs_at") @db.Timestamptz(3)
-  timezone    String       @default("America/Santiago")
-  completedAt DateTime?    @map("completed_at") @db.Timestamptz(3)
-  notes       String?
-  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
-  legalCase   LegalCase    @relation(fields: [caseId], references: [id], onDelete: Restrict)
-  type        CatalogValue @relation(fields: [typeId], references: [id], onDelete: Restrict)
+model CaseParticipation {
+  id            String       @id @default(uuid()) @db.Uuid
+  studyId       String       @map("study_id") @db.Uuid
+  caseId        String       @map("case_id") @db.Uuid
+  participantId String       @map("participant_id") @db.Uuid
+  roleId        String       @map("role_id") @db.Uuid
+  assignedById  String       @map("assigned_by_id") @db.Uuid
+  startedAt     DateTime     @default(now()) @map("started_at") @db.Timestamptz(3)
+  endedAt       DateTime?    @map("ended_at") @db.Timestamptz(3)
+  primary       Boolean      @default(false)
+  reason        String?
+  study         Study        @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  legalCase     LegalCase    @relation(fields: [caseId, studyId], references: [id, studyId], onDelete: Restrict)
+  participant   User         @relation("ParticipationUser", fields: [participantId, studyId], references: [id, studyId], onDelete: Restrict)
+  role          CatalogValue @relation(fields: [roleId, studyId], references: [id, studyId], onDelete: Restrict)
+  assignedBy    User         @relation("ParticipationActor", fields: [assignedById, studyId], references: [id, studyId], onDelete: Restrict)
 
-  @@index([caseId, occursAt])
-  @@map("milestones")
+  @@unique([id, studyId])
+  @@index([caseId, studyId, endedAt])
+  @@index([participantId, studyId, endedAt])
+  @@map("case_participations")
+}
+
+model RelevantDate {
+  id            String       @id @default(uuid()) @db.Uuid
+  studyId       String       @map("study_id") @db.Uuid
+  caseId        String       @map("case_id") @db.Uuid
+  typeId        String       @map("type_id") @db.Uuid
+  responsibleId String       @map("responsible_id") @db.Uuid
+  title         String
+  occursAt      DateTime     @map("occurs_at") @db.Timestamptz(3)
+  timezone      String       @default("America/Santiago")
+  source        String?
+  notes         String?
+  verifiedAt    DateTime?    @map("verified_at") @db.Timestamptz(3)
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  study         Study        @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  legalCase     LegalCase    @relation(fields: [caseId, studyId], references: [id, studyId], onDelete: Restrict)
+  type          CatalogValue @relation(fields: [typeId, studyId], references: [id, studyId], onDelete: Restrict)
+  responsible   User         @relation(fields: [responsibleId, studyId], references: [id, studyId], onDelete: Restrict)
+
+  @@unique([id, studyId])
+  @@index([caseId, studyId, occursAt])
+  @@index([responsibleId, studyId, occursAt])
+  @@map("relevant_dates")
 }
 
 model AuditEvent {
@@ -193,14 +276,15 @@ model AuditEvent {
   entityType     String     @map("entity_type")
   entityId       String     @map("entity_id") @db.Uuid
   action         String
+  reason         String?
   protectedValue Json?      @map("protected_value")
   occurredAt     DateTime   @default(now()) @map("occurred_at") @db.Timestamptz(3)
   study          Study      @relation(fields: [studyId], references: [id], onDelete: Restrict)
-  legalCase      LegalCase? @relation(fields: [caseId], references: [id], onDelete: Restrict)
-  actor          User?      @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  legalCase      LegalCase? @relation(fields: [caseId, studyId], references: [id, studyId], onDelete: Restrict)
+  actor          User?      @relation(fields: [actorId, studyId], references: [id, studyId], onDelete: Restrict)
 
   @@index([studyId, occurredAt])
-  @@index([caseId, occurredAt])
+  @@index([caseId, studyId, occurredAt])
   @@index([entityType, entityId, occurredAt])
   @@map("audit_events")
 }

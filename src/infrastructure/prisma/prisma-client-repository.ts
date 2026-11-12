@@ -32,17 +32,10 @@ export class PrismaClientRepository implements ClientRepository {
   }
 
   async save(client: Client): Promise<void> {
-    await this.database.client.create({
-      data: {
-        id: client.id,
-        studyId: this.studyId,
-        displayName: client.displayName,
-        email: client.email,
-        phone: client.phone,
-        status: client.status,
-        createdAt: new Date(client.createdAt),
-      },
-    });
+    void client;
+    throw new Error(
+      "La escritura persistente de clientes se habilitará en el issue #80 con RUT, origen y autorización.",
+    );
   }
 }
 

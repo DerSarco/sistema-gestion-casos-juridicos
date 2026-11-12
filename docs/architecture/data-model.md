@@ -8,10 +8,11 @@
 
 ## Estado y propósito
 
-Este documento define el modelo objetivo que debe implementarse en PostgreSQL y
-Prisma. Todavía no acredita una migración aplicada: el esquema y la migración
-existentes corresponden a una base inicial y deben alinearse en una iteración
-posterior del mismo issue.
+Este documento define el modelo objetivo implementado en `prisma/schema.prisma`.
+La migración incremental `20261111233000_data_model_v2` alinea una base de
+preproducción vacía con este diseño, pero todavía no acredita su aplicación en
+un entorno PostgreSQL ni incluye el seed ficticio. Esas evidencias se completan
+en iteraciones posteriores del mismo issue.
 
 El modelo representa casos laborales generales. El despido es una materia
 posible, no la entidad raíz. La planilla operativa sensible se utilizó únicamente
@@ -111,15 +112,17 @@ clasificación, comparendo, distribución ni redacción.
 Los valores permiten construir el seed de pruebas, pero su redacción final y las
 transiciones admitidas deben conservarse como configuración versionada.
 
-## Estrategia de implementación posterior
+## Estado de implementación
 
-1. Alinear `prisma/schema.prisma` con este diseño sin reescribir silenciosamente
-   la migración histórica.
-2. Crear una migración incremental reproducible para PostgreSQL.
-3. Incorporar un seed exclusivamente ficticio y reconocible como tal.
-4. Probar aislamiento por estudio, referencias, campos condicionales, único
+1. [x] Alinear `prisma/schema.prisma` con este diseño sin reescribir
+   silenciosamente la migración histórica.
+2. [x] Crear una migración incremental versionada para PostgreSQL.
+3. [ ] Aplicar la migración en una base PostgreSQL vacía de prueba y documentar
+   su resultado.
+4. [ ] Incorporar un seed exclusivamente ficticio y reconocible como tal.
+5. [ ] Probar aislamiento por estudio, referencias, campos condicionales, único
    responsable principal vigente y ciclos reversibles.
-5. Documentar aplicación y reversión en un entorno de prueba autorizado.
+6. [ ] Documentar aplicación y reversión en un entorno de prueba autorizado.
 
-Hasta completar esos pasos, este documento y el diagrama asociado representan
-el diseño aprobado, no una capacidad implementada.
+Hasta completar los pasos pendientes, el esquema constituye un contrato técnico
+versionado, no una capacidad funcional aceptada ni persistencia operativa.
