@@ -11,6 +11,11 @@ export default async function ClientsPage() {
   const actor = await getServerActor();
   const clients = await createPrismaClientRepository(actor.studyId).list();
   return (
-    <AppShell active="clients"><ClientsScreen clients={clients} /></AppShell>
+    <AppShell active="clients">
+      <ClientsScreen
+        clients={clients}
+        canManageLifecycle={actor.role === "Socio"}
+      />
+    </AppShell>
   );
 }

@@ -2,7 +2,7 @@
 
 **Línea base de alcance:** SRS 1.6 del 2026-11-11
 
-**Última actualización de estado:** 2026-11-11, issue #78
+**Última actualización de estado:** 2026-11-12, issue #85
 
 ## Escala
 
@@ -22,9 +22,9 @@ v0.2.0, pero no aceptación de la historia completa.
 | 8 | PB-08 | Consultar ficha, historial y ciclo de archivo reversible | HU-04; RF-004, RF-006, RF-009 | Must | 5 | PB-06 | Consulta e historial temporales; archivo, persistencia y autorización pendientes |
 | 9 | PB-09 | Cambiar estado o etapa y cerrar anticipadamente con historial | HU-05; RF-005, RF-009 | Must | 5 | PB-08 | Flujo validado en #78; implementación persistente pendiente |
 | 10 | PB-10 | Registrar manualmente una fecha relevante | HU-06; RF-008, RF-009, RF-011 | Must | 5 | PB-08 | Flujo temporal verificable sin cálculo jurídico; persistencia pendiente |
-| 11 | PB-11 | Implementar acceso interno y autorización | HU-01; RF-001; RNF-001 | Must | 8 | PB-04 a PB-10 | Planificado para el último incremento funcional |
-| 12 | PB-12 | Adaptar interfaz a escritorio, tableta y móvil | RNF-007, RNF-008 | Must | 5 | PB-02, PB-04 a PB-11 | Verificado para el estado temporal de #74; debe repetirse con los incrementos persistentes |
-| 13 | PB-13 | Automatizar escenarios Gherkin y puertas de CI | OE-04; RNF-003, RNF-006, RNF-009 | Must | 8 | PB-04 a PB-12 | CI y Playwright incorporados; cobertura persistente y por permisos pendiente |
+| 11 | PB-11 | Implementar acceso interno y autorización | HU-01; RF-001; RNF-001 | Must | 8 | PB-04 a PB-10 | Implementado y verificado en #85 para cuatro perfiles |
+| 12 | PB-12 | Adaptar interfaz a escritorio, tableta y móvil | RNF-007, RNF-008 | Must | 5 | PB-02, PB-04 a PB-11 | Verificado sobre los flujos persistentes en tres viewports |
+| 13 | PB-13 | Automatizar escenarios Gherkin y puertas de CI | OE-04; RNF-003, RNF-006, RNF-009 | Must | 8 | PB-04 a PB-12 | CI, PostgreSQL y 15 Playwright cubren persistencia, permisos y responsividad |
 | 14 | PB-14 | Ejecutar aceptación y preparar release trazable | OE-04; RNF-004, RNF-005, RNF-010 | Must | 5 | PB-13 | Preparado |
 
 **Tamaño relativo total:** 84 puntos. No se usa este total para afirmar avance

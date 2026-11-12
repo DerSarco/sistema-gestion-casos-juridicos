@@ -5,6 +5,7 @@ import { redirect, RedirectType } from "next/navigation";
 import {
   getServerActor,
   requirePartner,
+  requireSelfAssignment,
 } from "@/infrastructure/auth/server-actor";
 import { createPrismaCaseRepository } from "@/infrastructure/prisma/prisma-case-repository";
 import {
@@ -53,8 +54,23 @@ export async function saveCaseAction(
   if (Object.keys(errors).length)
     return { status: "invalid", errors, values: input };
   try {
-    const saved = await createPrismaCaseRepository(actor.studyId).save(
-      String(data.get("caseId") ?? "") || null,
+    const repository = createPrismaCaseRepository(actor.studyId);
+    const caseId = String(data.get("caseId") ?? "") || null;
+    const current = caseId ? await repository.findByIdOrCode(caseId) : null;
+    if (caseId && !current)
+      return {
+        status: "error",
+        message: "El caso no está disponible.",
+        values: input,
+      };
+    if (actor.role !== "Socio") {
+      const unchanged = current && current.responsibleId === input.responsibleId && current.participants.map((item) => item.id).sort().join(",") === [...input.participantIds].sort().join(",");
+      if (!current) requireSelfAssignment(actor, input.responsibleId, input.participantIds);
+      if (current && !unchanged)
+        return { status: "error", message: "Solo un Socio puede distribuir o reasignar el caso.", values: input };
+    }
+    const saved = await repository.save(
+      caseId,
       input,
       actor.id,
     );

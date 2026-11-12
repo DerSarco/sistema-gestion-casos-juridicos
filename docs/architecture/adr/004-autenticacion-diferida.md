@@ -1,6 +1,6 @@
 # ADR-004: Autenticación diferida sin seguridad simulada
 
-- **Estado:** aceptada para la secuencia de desarrollo
+- **Estado:** completada en el milestone v0.5
 - **Fecha:** 2026-10-16
 - **Decisores:** equipo del proyecto
 
@@ -24,3 +24,17 @@ registro público de usuarios.
 El incremento permite validar interacción y dominio, pero no puede exponerse a
 usuarios no controlados ni procesar datos reales. Las pruebas funcionales no se
 interpretarán como pruebas de autorización.
+
+## Resultado del issue #85
+
+El milestone v0.5 sustituyó los actores ficticios implícitos por cuentas internas
+activas para Socio, Abogado, Asistente y Procurador. La aplicación usa una sesión
+firmada, `HttpOnly`, con duración limitada y valida en cada solicitud que usuario,
+estudio y perfil continúen activos. No existe registro público ni selector de rol.
+
+Las credenciales del entorno de demostración y la clave de firma se inyectan como
+variables de entorno; no se almacenan en el repositorio. Las operaciones elevadas
+de distribución y ciclo de vida se verifican en servidor, además de ocultarse en
+la interfaz cuando no corresponden. Esta implementación sigue siendo de
+preproducción: no autoriza el uso de datos reales ni reemplaza la puerta jurídica,
+técnica y organizacional de la versión 1.

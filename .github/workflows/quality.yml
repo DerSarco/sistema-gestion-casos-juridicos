@@ -53,6 +53,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Create ephemeral authentication values
+        run: |
+          echo "SESSION_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+          echo "DEMO_LOGIN_PASSWORD=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
+
       - name: Run lint
         run: pnpm lint
 

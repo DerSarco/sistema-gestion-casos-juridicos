@@ -14,8 +14,12 @@ type Option = {
 export function PersistentCaseForm({
   current,
   options,
+  actorId,
+  canDistribute,
 }: {
   current: PersistentCase | null;
+  actorId: string;
+  canDistribute: boolean;
   options: {
     clients: Option[];
     matters: Option[];
@@ -37,6 +41,10 @@ export function PersistentCaseForm({
     state.values?.participantIds ??
     current?.participants.map((participant) => participant.id) ??
     [];
+  const fixedResponsibleId = current?.responsibleId ?? actorId;
+  const responsibleUsers = canDistribute
+    ? options.users
+    : options.users.filter((item) => item.id === fixedResponsibleId);
   return (
     <div className="form-page">
       <PageHeading
@@ -217,30 +225,41 @@ export function PersistentCaseForm({
             defaultValue={value("responsibleId", current?.responsibleId)}
           >
             <option value="">Seleccionar responsable…</option>
-            {options.users.map((item) => (
+            {responsibleUsers.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.displayName}
               </option>
             ))}
           </select>
         </label>
-        <fieldset className="form-section">
-          <legend>Participantes de apoyo</legend>
-          <p className="muted">
-            Opcional. El responsable principal no debe seleccionarse nuevamente.
-          </p>
-          {options.users.map((item) => (
-            <label className="checkbox" key={item.id}>
-              <input
-                type="checkbox"
-                name="participantIds"
-                value={item.id}
-                defaultChecked={selectedParticipants.includes(item.id)}
-              />
-              <span>{item.displayName}</span>
-            </label>
-          ))}
-        </fieldset>
+        {canDistribute ? (
+          <fieldset className="form-section">
+            <legend>Participantes de apoyo</legend>
+            <p className="muted">
+              Opcional. El responsable principal no debe seleccionarse nuevamente.
+            </p>
+            {options.users.map((item) => (
+              <label className="checkbox" key={item.id}>
+                <input
+                  type="checkbox"
+                  name="participantIds"
+                  value={item.id}
+                  defaultChecked={selectedParticipants.includes(item.id)}
+                />
+                <span>{item.displayName}</span>
+              </label>
+            ))}
+          </fieldset>
+        ) : (
+          selectedParticipants.map((participantId) => (
+            <input
+              key={participantId}
+              type="hidden"
+              name="participantIds"
+              value={participantId}
+            />
+          ))
+        )}
         <aside className="notice">
           <strong>Registro manual interno</strong>
           <span>Sin conexión, sincronización ni credenciales de la OJV.</span>

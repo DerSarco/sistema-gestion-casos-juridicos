@@ -41,13 +41,18 @@ Requisitos: Node.js 24 y pnpm 11.
 
 ```bash
 pnpm install --frozen-lockfile
+export DATABASE_URL='postgresql://usuario:clave@localhost:5432/sistema?schema=public'
+export SESSION_SECRET="$(openssl rand -hex 32)"
+export DEMO_LOGIN_PASSWORD="$(openssl rand -hex 24)"
 pnpm dev
 ```
 
-La aplicación queda disponible en `http://localhost:3000`. El incremento v0.2
-usa únicamente fixtures ficticios y todavía no implementa autenticación ni
-autorización. Por ello no debe exponerse públicamente ni utilizarse con datos
-reales.
+La aplicación queda disponible en `http://localhost:3000`. Las cuentas internas
+ficticias se crean con el seed y utilizan la contraseña temporal definida fuera
+del repositorio en `DEMO_LOGIN_PASSWORD`. `SESSION_SECRET` debe contener al menos
+32 caracteres. Ninguna de estas variables debe versionarse ni compartirse en
+issues, capturas o registros. El entorno sigue siendo de preproducción y no debe
+utilizar datos reales.
 
 Antes de abrir un pull request se deben ejecutar:
 
@@ -86,9 +91,9 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 
 ## Estado
 
-La versión v0.2 incorpora la especificación revisada, arquitectura, diagramas,
-esquema PostgreSQL, verificación automática y flujos funcionales de clientes y
-casos sobre memoria temporal con datos ficticios. La autenticación y la
-autorización se completarán en el último incremento funcional del MVP; la
-versión actual no debe desplegarse como sistema productivo ni utilizar datos
-reales.
+El MVP incorpora persistencia PostgreSQL, clientes, casos, distribución, etapas,
+fechas, historial y acceso interno con los perfiles Socio, Abogado, Asistente y
+Procurador. La autorización se verifica en servidor y las operaciones de ciclo
+de vida quedan restringidas al perfil Socio. El sistema no debe desplegarse como
+producto ni utilizar datos reales hasta completar la validación técnica,
+jurídica y organizacional definida para la versión 1.

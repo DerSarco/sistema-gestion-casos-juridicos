@@ -1,8 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useActionState } from "react";
+import { loginAction, type LoginState } from "@/app/login-actions";
 export function LoginForm() {
-  const router = useRouter(); const [email, setEmail] = useState("abogado@estudio.cl"); const [password, setPassword] = useState("demostracion"); const [errors, setErrors] = useState<Record<string, string>>({});
-  function submit(event: FormEvent) { event.preventDefault(); const next: Record<string, string> = {}; if (!email.trim()) next.email = "Ingrese el correo electrónico."; else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Ingrese un correo electrónico válido."; if (!password) next.password = "Ingrese la contraseña de demostración."; setErrors(next); if (!Object.keys(next).length) router.push("/casos"); }
-  return <form className="stack-lg" onSubmit={submit} noValidate>{Object.keys(errors).length > 0 && <div className="error-summary" role="alert"><strong>No se pudo continuar</strong><span>{Object.values(errors)[0]}</span></div>}<label className="field"><span>Correo electrónico</span><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" aria-invalid={Boolean(errors.email)} />{errors.email && <small className="field-error">{errors.email}</small>}</label><label className="field"><span>Contraseña</span><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" aria-invalid={Boolean(errors.password)} />{errors.password && <small className="field-error">{errors.password}</small>}</label><button className="button button-primary button-block" type="submit">Ingresar</button></form>;
+  const [state, action, pending] = useActionState(loginAction, { status: "idle" } as LoginState);
+  return <form className="stack-lg" action={action} noValidate>{state.message && <div className="error-summary" role="alert"><strong>No se pudo continuar</strong><span>{state.message}</span></div>}<label className="field"><span>Correo electrónico</span><input name="identifier" type="email" defaultValue={state.identifier ?? ""} autoComplete="username" /></label><label className="field"><span>Contraseña</span><input name="password" type="password" autoComplete="current-password" /></label><button className="button button-primary button-block" disabled={pending}>{pending ? "Ingresando…" : "Ingresar"}</button></form>;
 }
