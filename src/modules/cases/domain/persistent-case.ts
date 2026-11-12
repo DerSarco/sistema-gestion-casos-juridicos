@@ -14,6 +14,7 @@ export type PersistentCase = {
   lifecycleStatus: CaseLifecycle;
   responsibleId: string;
   responsible: string;
+  participants: Array<{ id: string; name: string; role: string }>;
   court: string | null;
   rit: string | null;
   judicialRole: string | null;
@@ -23,6 +24,8 @@ export type PersistentCase = {
   dismissalDate: string | null;
   collectiveOrganization: string | null;
   collectiveActionType: string | null;
+  severanceDetails: string | null;
+  amount: string | null;
   lifecycleReason: string | null;
   createdAt: string;
   updatedAt: string;
@@ -34,6 +37,7 @@ export type PersistentCaseInput = {
   stageId: string;
   title: string;
   responsibleId: string;
+  participantIds: string[];
   court: string;
   rit: string;
   judicialRole: string;
@@ -43,6 +47,8 @@ export type PersistentCaseInput = {
   dismissalDate: string;
   collectiveOrganization: string;
   collectiveActionType: string;
+  severanceDetails: string;
+  amount: string;
 };
 
 export type CaseValidationErrors = Partial<
@@ -52,12 +58,18 @@ export type CaseValidationErrors = Partial<
 export function normalizePersistentCaseInput(
   input: PersistentCaseInput,
 ): PersistentCaseInput {
-  return Object.fromEntries(
-    Object.entries(input).map(([key, value]) => [
-      key,
-      value.trim().replace(/\s+/g, " "),
-    ]),
-  ) as PersistentCaseInput;
+  return {
+    ...input,
+    ...Object.fromEntries(
+      Object.entries(input)
+        .filter(([, value]) => typeof value === "string")
+        .map(([key, value]) => [
+          key,
+          (value as string).trim().replace(/\s+/g, " "),
+        ]),
+    ),
+    participantIds: [...new Set(input.participantIds.filter(Boolean))],
+  };
 }
 
 export function validatePersistentCaseInput(
@@ -71,6 +83,9 @@ export function validatePersistentCaseInput(
     errors.title = "Ingresa un título de entre 3 y 160 caracteres.";
   if (!input.responsibleId)
     errors.responsibleId = "Selecciona un responsable principal.";
+  if (input.participantIds.includes(input.responsibleId))
+    errors.participantIds =
+      "El responsable principal no debe repetirse como participante de apoyo.";
   if (input.court.length > 120)
     errors.court = "El tribunal no puede superar 120 caracteres.";
   if (input.rit.length > 60)
@@ -101,6 +116,15 @@ export function validateLaborFields(
     )
       errors.dismissalDate =
         "La fecha de despido no puede ser anterior al inicio laboral.";
+    if (
+      input.amount &&
+      (!/^\d+(?:[.,]\d{1,2})?$/.test(input.amount) ||
+        Number(input.amount.replace(",", ".")) < 0)
+    )
+      errors.amount = "Ingresa una cuantía válida igual o superior a cero.";
+    if (input.severanceDetails.length > 500)
+      errors.severanceDetails =
+        "El detalle de finiquito no puede superar 500 caracteres.";
   }
   if (matterCode === "COLLECTIVE") {
     if (!input.collectiveOrganization)

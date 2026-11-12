@@ -74,6 +74,16 @@ export function PersistentCaseDetail({
                 <dd>{legalCase.responsible}</dd>
               </div>
               <div>
+                <dt>Participantes de apoyo</dt>
+                <dd>
+                  {legalCase.participants.length
+                    ? legalCase.participants
+                        .map((participant) => participant.name)
+                        .join(", ")
+                    : "Sin participantes adicionales"}
+                </dd>
+              </div>
+              <div>
                 <dt>Etapa</dt>
                 <dd>{legalCase.stage}</dd>
               </div>
@@ -99,6 +109,14 @@ export function PersistentCaseDetail({
                     <div>
                       <dt>Fecha de despido</dt>
                       <dd>{legalCase.dismissalDate}</dd>
+                    </div>
+                    <div>
+                      <dt>Finiquito</dt>
+                      <dd>{legalCase.severanceDetails || "No registrado"}</dd>
+                    </div>
+                    <div>
+                      <dt>Cuantía referencial</dt>
+                      <dd>{legalCase.amount || "No registrada"}</dd>
                     </div>
                   </>
                 )}

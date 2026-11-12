@@ -22,8 +22,11 @@ const includeCase = {
   matter: { select: { name: true, code: true } },
   stage: { select: { name: true } },
   participations: {
-    where: { primary: true, endedAt: null },
-    include: { participant: { select: { displayName: true } } },
+    where: { endedAt: null },
+    include: {
+      participant: { select: { displayName: true } },
+      role: { select: { name: true } },
+    },
   },
   laborData: true,
 } as const;
@@ -51,7 +54,7 @@ export class PrismaCaseRepository {
   }
 
   private map(record: NonNullable<CaseRecord>): PersistentCase {
-    const primary = record.participations[0];
+    const primary = record.participations.find((item) => item.primary);
     return {
       id: record.id,
       internalCode: record.internalCode,
@@ -66,6 +69,13 @@ export class PrismaCaseRepository {
       lifecycleStatus: record.lifecycleStatus,
       responsibleId: primary?.participantId ?? "",
       responsible: primary?.participant.displayName ?? "Sin responsable",
+      participants: record.participations
+        .filter((item) => !item.primary)
+        .map((item) => ({
+          id: item.participantId,
+          name: item.participant.displayName,
+          role: item.role.name,
+        })),
       court: record.court,
       rit: record.rit,
       judicialRole: record.judicialRole,
@@ -78,6 +88,8 @@ export class PrismaCaseRepository {
         record.laborData?.dismissalDate?.toISOString().slice(0, 10) ?? null,
       collectiveOrganization: record.laborData?.collectiveOrganization ?? null,
       collectiveActionType: record.laborData?.collectiveActionType ?? null,
+      severanceDetails: record.laborData?.severanceDetails ?? null,
+      amount: record.laborData?.amount?.toString() ?? null,
       lifecycleReason: record.lifecycleReason,
       createdAt: record.createdAt.toISOString(),
       updatedAt: record.updatedAt.toISOString(),
@@ -141,6 +153,16 @@ export class PrismaCaseRepository {
       throw new Error("La materia o etapa no pertenece al estudio.");
     if (!options.users.some((item) => item.id === input.responsibleId))
       throw new Error("El responsable no pertenece al estudio.");
+    if (
+      input.participantIds.some(
+        (participantId) =>
+          participantId === input.responsibleId ||
+          !options.users.some((item) => item.id === participantId),
+      )
+    )
+      throw new Error(
+        "Los participantes deben ser usuarios activos del mismo estudio y distintos del responsable.",
+      );
     const laborErrors = validateLaborFields(input, matter.code);
     const firstLaborError = Object.values(laborErrors)[0];
     if (firstLaborError) throw new Error(firstLaborError);
@@ -152,6 +174,13 @@ export class PrismaCaseRepository {
             studyId: this.studyId,
             type: CatalogType.CASE_NATURE,
             code: "INDIVIDUAL",
+          },
+        }),
+        tx.catalogValue.findFirstOrThrow({
+          where: {
+            studyId: this.studyId,
+            type: CatalogType.PARTICIPATION_ROLE,
+            code: "SUPPORT",
           },
         }),
         tx.catalogValue.findFirstOrThrow({
@@ -189,7 +218,7 @@ export class PrismaCaseRepository {
               ...common,
               studyId: this.studyId,
               natureId: defaults[0].id,
-              statusId: defaults[1].id,
+              statusId: defaults[2].id,
               lifecycleStatus: "ACTIVE",
               internalCode: `CASO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
             },
@@ -210,6 +239,8 @@ export class PrismaCaseRepository {
             : null,
           collectiveOrganization: input.collectiveOrganization || null,
           collectiveActionType: input.collectiveActionType || null,
+          severanceDetails: input.severanceDetails || null,
+          amount: input.amount ? input.amount.replace(",", ".") : null,
         },
         update: {
           employerOrCounterparty: input.employerOrCounterparty || null,
@@ -221,13 +252,14 @@ export class PrismaCaseRepository {
             : null,
           collectiveOrganization: input.collectiveOrganization || null,
           collectiveActionType: input.collectiveActionType || null,
+          severanceDetails: input.severanceDetails || null,
+          amount: input.amount ? input.amount.replace(",", ".") : null,
         },
       });
       await tx.caseParticipation.updateMany({
         where: {
           caseId: legalCase.id,
           studyId: this.studyId,
-          primary: true,
           endedAt: null,
         },
         data: {
@@ -240,11 +272,23 @@ export class PrismaCaseRepository {
           studyId: this.studyId,
           caseId: legalCase.id,
           participantId: input.responsibleId,
-          roleId: defaults[2].id,
+          roleId: defaults[3].id,
           assignedById: actorId,
           primary: true,
         },
       });
+      if (input.participantIds.length) {
+        await tx.caseParticipation.createMany({
+          data: input.participantIds.map((participantId) => ({
+            studyId: this.studyId,
+            caseId: legalCase.id,
+            participantId,
+            roleId: defaults[1].id,
+            assignedById: actorId,
+            primary: false,
+          })),
+        });
+      }
       await tx.auditEvent.create({
         data: {
           studyId: this.studyId,

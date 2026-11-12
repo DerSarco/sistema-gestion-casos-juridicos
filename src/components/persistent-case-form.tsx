@@ -33,6 +33,10 @@ export function PersistentCaseForm({
     key: keyof NonNullable<CaseFormState["values"]>,
     fallback = "",
   ) => state.values?.[key] ?? fallback;
+  const selectedParticipants =
+    state.values?.participantIds ??
+    current?.participants.map((participant) => participant.id) ??
+    [];
   return (
     <div className="form-page">
       <PageHeading
@@ -141,6 +145,32 @@ export function PersistentCaseForm({
                 />
               </label>
             </div>
+            <div className="form-grid">
+              <label className="field">
+                <span>
+                  Finiquito <em>Opcional</em>
+                </span>
+                <input
+                  name="severanceDetails"
+                  defaultValue={value(
+                    "severanceDetails",
+                    current?.severanceDetails ?? "",
+                  )}
+                />
+              </label>
+              <label className="field">
+                <span>
+                  Cuantía referencial <em>Opcional</em>
+                </span>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  name="amount"
+                  defaultValue={value("amount", current?.amount ?? "")}
+                />
+              </label>
+            </div>
           </fieldset>
         )}
         {matterCode === "COLLECTIVE" && (
@@ -194,6 +224,23 @@ export function PersistentCaseForm({
             ))}
           </select>
         </label>
+        <fieldset className="form-section">
+          <legend>Participantes de apoyo</legend>
+          <p className="muted">
+            Opcional. El responsable principal no debe seleccionarse nuevamente.
+          </p>
+          {options.users.map((item) => (
+            <label className="checkbox" key={item.id}>
+              <input
+                type="checkbox"
+                name="participantIds"
+                value={item.id}
+                defaultChecked={selectedParticipants.includes(item.id)}
+              />
+              <span>{item.displayName}</span>
+            </label>
+          ))}
+        </fieldset>
         <aside className="notice">
           <strong>Registro manual interno</strong>
           <span>Sin conexión, sincronización ni credenciales de la OJV.</span>

@@ -28,6 +28,7 @@ function formInput(data: FormData): PersistentCaseInput {
     stageId: String(data.get("stageId") ?? ""),
     title: String(data.get("title") ?? ""),
     responsibleId: String(data.get("responsibleId") ?? ""),
+    participantIds: data.getAll("participantIds").map(String),
     court: String(data.get("court") ?? ""),
     rit: String(data.get("rit") ?? ""),
     judicialRole: String(data.get("judicialRole") ?? ""),
@@ -37,6 +38,8 @@ function formInput(data: FormData): PersistentCaseInput {
     dismissalDate: String(data.get("dismissalDate") ?? ""),
     collectiveOrganization: String(data.get("collectiveOrganization") ?? ""),
     collectiveActionType: String(data.get("collectiveActionType") ?? ""),
+    severanceDetails: String(data.get("severanceDetails") ?? ""),
+    amount: String(data.get("amount") ?? ""),
   };
 }
 

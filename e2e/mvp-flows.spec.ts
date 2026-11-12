@@ -17,6 +17,9 @@ test("MVP-01 valida acceso de demostración y navega", async ({ page }) => {
 test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async ({
   page,
 }) => {
+  const suffix = String(Date.now()).slice(-6);
+  const clientName = `Cliente E2E ${suffix}`;
+  const updatedClientName = `${clientName} actualizado`;
   await page.goto("/clientes");
   await page.getByPlaceholder(/Buscar por nombre/).fill("inexistente");
   await expect(page.getByText("No se encontraron clientes")).toBeVisible();
@@ -26,25 +29,25 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   await expect(page.locator(".error-summary")).toContainText(
     "Revise el formulario",
   );
-  await page.getByLabel(/Nombre completo/).fill("Cliente 05");
-  await page.getByLabel(/RUT/).fill("555555555");
+  await page.getByLabel(/Nombre completo/).fill(clientName);
+  await page.getByLabel(/RUT/).fill(`555${suffix}`);
   await page
     .getByRole("textbox", { name: /Correo electrónico/ })
     .fill("cliente05@ejemplo.cl");
   await page.getByRole("textbox", { name: /Teléfono/ }).fill("+56 9 1111 2222");
   await page.getByLabel(/Origen o materia/).fill("Consulta laboral ficticia");
   await page.getByRole("button", { name: "Guardar cliente" }).click();
-  await expect(page.getByText("Cliente 05", { exact: true })).toBeVisible();
+  await expect(page.getByText(clientName, { exact: true })).toBeVisible();
   await expect(page.getByText(/Mostrando \d+ de \d+ clientes/)).toBeVisible();
-  const row = page.getByRole("row").filter({ hasText: "Cliente 05" });
+  const row = page.getByRole("row").filter({ hasText: clientName });
   await row.getByRole("link", { name: /Editar/ }).click();
-  await page.getByLabel(/Nombre completo/).fill("Cliente 05 actualizado");
+  await page.getByLabel(/Nombre completo/).fill(updatedClientName);
   await page.getByRole("button", { name: "Guardar cliente" }).click();
-  await expect(page.getByText("Cliente 05 actualizado")).toBeVisible();
+  await expect(page.getByText(updatedClientName)).toBeVisible();
   await expect(page.getByText(/Mostrando \d+ de \d+ clientes/)).toBeVisible();
   const updatedRow = page
     .getByRole("row")
-    .filter({ hasText: "Cliente 05 actualizado" });
+    .filter({ hasText: updatedClientName });
   await updatedRow
     .getByPlaceholder("Motivo del cambio")
     .fill("Cierre operativo ficticio");
@@ -76,8 +79,12 @@ test("P2 crea, edita y archiva un caso persistente", async ({ page }) => {
   await page
     .getByLabel(/Responsable principal/)
     .selectOption({ label: "Abogado Ficticio A" });
+  await page.getByRole("checkbox", { name: "Socio Ficticio A" }).check();
   await page.getByRole("button", { name: "Guardar caso" }).click();
   await expect(page.getByRole("heading", { name: /^CASO-/ })).toBeVisible();
+  await expect(
+    page.getByRole("main").getByText("Socio Ficticio A", { exact: true }),
+  ).toBeVisible();
   await page.locator("a:visible", { hasText: "Editar caso" }).click();
   const editForm = page.locator("form");
   await editForm.getByLabel(/^Título/).fill("Caso temporal actualizado");
