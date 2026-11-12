@@ -158,6 +158,7 @@ tbody tr:hover { background: #f8fafc; }
 @media (max-width: 700px) {
   body { font-size: 14px; }
   .app-shell { display: block; padding-bottom: 70px; }
+  .workspace { width: 100%; max-width: 100vw; overflow-x: clip; }
   .sidebar { position: fixed; inset: auto 0 0; z-index: 8; width: auto; height: 66px; display: grid; grid-template-columns: 1fr 1fr; padding: .45rem .75rem; box-shadow: 0 -5px 20px rgb(15 41 66 / 12%); }
   .sidebar-brand, .logout { display: none; }
   .sidebar nav { display: contents; }
@@ -169,10 +170,10 @@ tbody tr:hover { background: #f8fafc; }
   .content { padding: 1.5rem 1rem 2.5rem; }
   .page-heading, .case-header { align-items: stretch; flex-direction: column; }
   .page-heading .button { width: 100%; }
-  .filters { display: flex; overflow-x: auto; padding-bottom: .35rem; }
+  .filters { display: grid; grid-template-columns: minmax(0, 1fr); overflow: visible; padding-bottom: .35rem; }
   .client-filters { width: 100%; }
-  .filters .search-field { min-width: 100%; }
-  .filters select { min-width: 155px; }
+  .filters .search-field { min-width: 0; }
+  .filters select { width: 100%; min-width: 0; }
   .form-grid, .facts { grid-template-columns: 1fr; }
   .form-card { padding: 1.1rem; }
   .form-actions { flex-direction: column-reverse; }
