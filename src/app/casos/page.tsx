@@ -1,8 +1,12 @@
 import { AppShell } from "@/components/app-shell";
-import { CasesScreen } from "@/components/cases-screen";
+import { PersistentCasesScreen } from "@/components/persistent-cases-screen";
+import { getServerActor } from "@/infrastructure/auth/server-actor";
+import { createPrismaCaseRepository } from "@/infrastructure/prisma/prisma-case-repository";
+import { connection } from "next/server";
 
-export default function CasesPage() {
-  return (
-    <AppShell active="cases"><CasesScreen /></AppShell>
-  );
+export const instant = false;
+
+export default async function CasesPage() {
+  await connection(); const actor = await getServerActor(); const cases = await createPrismaCaseRepository(actor.studyId).list();
+  return <AppShell active="cases"><PersistentCasesScreen cases={cases} /></AppShell>;
 }

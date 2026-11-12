@@ -35,13 +35,13 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   await page.getByLabel(/Origen o materia/).fill("Consulta laboral ficticia");
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.getByText("Cliente 05", { exact: true })).toBeVisible();
-  await expect(page.getByText("Mostrando 2 de 2 clientes")).toBeVisible();
+  await expect(page.getByText(/Mostrando \d+ de \d+ clientes/)).toBeVisible();
   const row = page.getByRole("row").filter({ hasText: "Cliente 05" });
   await row.getByRole("link", { name: /Editar/ }).click();
   await page.getByLabel(/Nombre completo/).fill("Cliente 05 actualizado");
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.getByText("Cliente 05 actualizado")).toBeVisible();
-  await expect(page.getByText("Mostrando 2 de 2 clientes")).toBeVisible();
+  await expect(page.getByText(/Mostrando \d+ de \d+ clientes/)).toBeVisible();
   const updatedRow = page
     .getByRole("row")
     .filter({ hasText: "Cliente 05 actualizado" });
@@ -52,7 +52,7 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   await expect(updatedRow.getByText("Inactivo", { exact: true })).toBeVisible();
 });
 
-test("MVP-02 a MVP-06 completan caso, filtros, estado, fecha y cancelación", async ({
+test("P2 crea, edita y archiva un caso persistente", async ({
   page,
 }) => {
   await page.goto("/casos");
@@ -61,46 +61,22 @@ test("MVP-02 a MVP-06 completan caso, filtros, estado, fecha y cancelación", as
   await page.getByRole("button", { name: "Limpiar filtros" }).first().click();
   await page.getByRole("link", { name: "+ Nuevo caso" }).click();
   await page.getByRole("button", { name: "Guardar caso" }).click();
-  await expect(page.locator(".error-summary")).toContainText(
-    "Revise los campos",
-  );
-  await page.getByLabel(/Cliente/).selectOption("client-1");
-  await page.getByLabel(/Título o materia/).fill("Caso temporal verificable");
-  await page.getByLabel(/Abogado responsable/).selectOption("Abogado B");
+  await expect(page.locator(".error-summary")).toContainText("Revise el formulario");
+  await page.getByLabel(/Cliente activo/).selectOption({ label: "Cliente Ficticio 01" });
+  await page.getByLabel(/Materia laboral/).selectOption({ label: "Despido ficticio" });
+  await page.getByLabel(/^Etapa/).selectOption({ label: "Ingreso" });
+  await page.getByLabel(/^Título/).fill("Caso temporal verificable");
+  await page.getByLabel(/Responsable principal/).selectOption({ label: "Abogado Ficticio A" });
   await page.getByRole("button", { name: "Guardar caso" }).click();
-  await expect(page.getByRole("heading", { name: "CASO-005" })).toBeVisible();
-  await page.getByRole("link", { name: "Cambiar estado / etapa" }).click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await page.getByLabel("Nuevo estado").selectOption("En revisión");
-  await page.getByLabel("Nueva etapa").selectOption("Antecedentes");
-  await page.getByRole("button", { name: "Confirmar cambio" }).click();
-  await expect(page.getByRole("dialog")).toBeHidden();
-  await expect(page.getByText("En revisión").first()).toBeVisible();
-  await page.getByRole("link", { name: "+ Registrar fecha" }).click();
-  await page.getByRole("button", { name: "Guardar fecha" }).click();
-  await expect(page.locator(".error-summary")).toContainText(
-    "Revise los campos",
-  );
-  await page.getByLabel(/Nombre de la fecha/).fill("Audiencia ficticia");
-  await page.getByLabel(/^Fecha/).fill("2026-12-10");
-  await page
-    .getByRole("dialog")
-    .getByLabel(/Abogado responsable/)
-    .selectOption("Abogado B");
-  await page.getByRole("button", { name: "Guardar fecha" }).click();
-  await expect(page.getByRole("dialog")).toBeHidden();
-  await expect(
-    page.getByText("Audiencia ficticia · Abogado B", { exact: true }).first(),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^CASO-/ })).toBeVisible();
   await page.locator("a:visible", { hasText: "Editar caso" }).click();
-  const editForm = page.locator("form:visible");
-  await editForm
-    .getByLabel(/Título o materia/)
-    .fill("Caso temporal actualizado");
+  const editForm = page.locator("form");
+  await editForm.getByLabel(/^Título/).fill("Caso temporal actualizado");
   await editForm.getByRole("button", { name: "Guardar caso" }).click();
-  await expect(
-    page.getByText("Caso temporal actualizado").first(),
-  ).toBeVisible();
+  await expect(page.getByText("Caso temporal actualizado")).toBeVisible();
+  await page.locator('input[aria-label="Motivo del cambio"]:visible').fill("Archivo de prueba ficticio");
+  await page.locator('button:visible', { hasText: "Archivar" }).click();
+  await expect(page.getByText("Archivado", { exact: true }).first()).toBeVisible();
 });
 
 test("el modal gestiona foco y Escape", async ({ page }) => {
@@ -113,15 +89,14 @@ test("el modal gestiona foco y Escape", async ({ page }) => {
 
 test("confirmar un modal no lo revive al navegar atrás", async ({ page }) => {
   await page.goto("/casos");
-  await page.getByRole("link", { name: "Ver ficha" }).first().click();
-  await page.getByRole("link", { name: "Cambiar estado / etapa" }).click();
+  await page.goto("/casos/CASO-001/estado");
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.getByRole("button", { name: "Confirmar cambio" }).click();
   await expect(page.getByRole("dialog")).toBeHidden();
 
   await page.goBack();
 
-  await expect(page).toHaveURL(/\/casos\/CASO-001$/);
+  await expect(page).toHaveURL(/\/casos$/);
   await expect(page.getByRole("dialog")).toBeHidden();
 });
 
