@@ -15,15 +15,15 @@
 1. Acceso interno sin registro público.
 2. Listados y búsquedas de clientes y casos autorizados.
 3. Formularios reutilizables para cliente y caso, con ciclo de vida reversible.
-4. Ficha de caso con responsable, participantes, prioridad, estado, etapa y subetapa.
-5. Cambio manual de estado, etapa o subetapa entre valores controlados.
+4. Ficha de caso con responsable, participantes, estado, etapa, procedimiento y próxima fecha.
+5. Cambio manual de estado o etapa entre valores controlados, incluida la alternativa monitoria.
 6. Registro manual de fechas, sin cálculo jurídico automático.
 7. Historial básico de acciones críticas.
 8. Datos ficticios o anonimizados durante todo el proyecto.
 
 El flujo reconoce ingreso, clasificación, comparendo, distribución, redacción,
 seguimiento judicial y cierre. Las transiciones, excepciones y permisos exactos
-permanecen pendientes de validación con los socios.
+fueron validados operativamente mediante el issue #78.
 
 ### Versión 1 posterior al MVP
 

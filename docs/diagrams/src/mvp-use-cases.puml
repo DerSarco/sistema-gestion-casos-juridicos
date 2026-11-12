@@ -3,7 +3,7 @@ skinparam backgroundColor white
 skinparam shadowing false
 skinparam packageStyle rectangle
 left to right direction
-title Casos de uso del MVP priorizado — 2026-11-09
+title Casos de uso del MVP priorizado — 2026-11-11
 
 actor "Socio\nACT-01" as Partner
 actor "Abogado\nACT-02" as Lawyer
@@ -20,7 +20,7 @@ rectangle "Sistema interno — MVP" {
   usecase "CU-001\nAcceder a la plataforma" as CU001
   usecase "CU-003\nRegistrar, mantener y gestionar\nestado de clientes" as CU003
   usecase "CU-004\nRegistrar, mantener y gestionar\narchivo de casos" as CU004
-  usecase "CU-005\nAsignar responsable,\nparticipantes y prioridad" as CU005
+  usecase "CU-005\nAsignar responsable\ny participantes" as CU005
   usecase "CU-006\nRegistrar fecha relevante" as CU006
   usecase "CU-007\nConsultar historial básico" as CU007
   usecase "CU-008\nBuscar clientes y casos" as CU008
@@ -46,9 +46,8 @@ note bottom of CU013
 end note
 
 note left of User
-  Las operaciones efectivas dependen
-  de la matriz de permisos pendiente.
-  Desactivar, reactivar, archivar o restaurar
-  exige permiso elevado y auditoría.
+  Los cuatro perfiles realizan operaciones habituales.
+  Solo Socio distribuye o reasigna, desactiva o reactiva
+  clientes y archiva o reabre casos; exige motivo y auditoría.
 end note
 @enduml

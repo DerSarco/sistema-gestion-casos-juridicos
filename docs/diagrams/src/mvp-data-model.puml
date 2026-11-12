@@ -3,7 +3,7 @@ skinparam backgroundColor white
 skinparam shadowing false
 skinparam classAttributeIconSize 0
 hide methods
-title Modelo de datos reducido del MVP — 2026-11-09
+title Modelo de datos reducido del MVP — 2026-11-11
 
 class Estudio <<ED-01>> {
   id: UUID
@@ -17,9 +17,12 @@ class Usuario <<ED-02>> {
 }
 class Cliente <<ED-04>> {
   id: UUID
-  nombre: String
+  nombreCompleto: String
+  rut: String
+  origenMateria: String
   email?: String
-  telefono?: String
+  telefono: String
+  fechaDespido?: Date
   activo: Boolean
   motivoCambio?: String
 }
@@ -29,8 +32,7 @@ class Caso <<ED-05>> {
   materia: String
   estado: String
   etapa: String
-  subetapa?: String
-  prioridad: String
+  procedimiento?: String
   archivado: Boolean
   informacionLaboral?: Json
   tribunal?: String
@@ -70,13 +72,16 @@ Caso "1" *-- "0..*" EventoHistorial
 EventoHistorial "0..*" --> "0..1" Usuario : actor
 
 note right of Caso
-  Siete etapas principales; subetapas, estados y
-  prioridades usan catálogos pendientes de validación.
+  Nueve etapas principales y audiencia única
+  para el procedimiento monitorio.
+  La operación se ordena por etapa y próxima fecha;
+  no existe prioridad manual en el MVP.
   Tribunal y RIT/ROL admiten ausencia.
   El archivo es reversible y conserva relaciones.
 end note
 note left of Cliente
   La desactivación es reversible.
+  Solo Socio puede cambiar su estado con motivo.
   No existe eliminación física en el MVP.
 end note
 note bottom of FechaRelevante
@@ -84,6 +89,6 @@ note bottom of FechaRelevante
   judiciales definitivos ni crea alertas automáticas.
 end note
 note bottom of EventoHistorial
-  Historial básico aditivo para cambios priorizados.
+  Historial básico aditivo para acciones críticas validadas.
 end note
 @enduml

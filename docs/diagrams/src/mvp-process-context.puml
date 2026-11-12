@@ -3,7 +3,7 @@ skinparam backgroundColor white
 skinparam shadowing false
 skinparam packageStyle rectangle
 left to right direction
-title Proceso y contexto del MVP priorizado — 2026-11-09
+title Proceso y contexto del MVP priorizado — 2026-11-11
 
 actor "Usuario interno\nautorizado" as User
 
@@ -14,13 +14,22 @@ rectangle "Sistema interno — MVP" as System {
   rectangle "4. Distribución" as Distribute
   rectangle "5. Redacción" as Draft
   rectangle "6. Seguimiento\njudicial" as Track
-  rectangle "7. Cierre" as Close
+  rectangle "7. Audiencia\npreparatoria" as Prep
+  rectangle "8. Juicio o\nconciliación" as Trial
+  rectangle "Audiencia única\nprocedimiento monitorio" as Single
+  rectangle "9. Cierre" as Close
   Intake --> Classify
   Classify --> Hearing
   Hearing --> Distribute
   Distribute --> Draft
   Draft --> Track
-  Track --> Close
+  Track --> Prep
+  Prep --> Trial
+  Track --> Single
+  Trial --> Close
+  Single --> Close
+  Hearing --> Close : cierre anticipado
+  Prep --> Close : cierre anticipado
 }
 
 User --> System : opera según su rol
@@ -31,9 +40,9 @@ rectangle "Fuera del sistema" as External {
 User --> OJV : profesional autorizado\nrealiza tramitación manual
 
 note bottom of System
-  Perfiles: socio administrador (ACT-01), abogado (ACT-02)
-  asistente (ACT-03) y procurador (ACT-04), sujetos a autorización.
-  Transiciones, excepciones y distribución formal pendientes de validación.
+  Perfiles: socio administrador (ACT-01), abogado (ACT-02),
+  asistente (ACT-03) y procurador (ACT-04).
+  Solo Socio ejecuta distribución y acciones elevadas.
   Datos ficticios o anonimizados durante el proyecto.
   Ciclos de vida reversibles; sin eliminación física.
 end note

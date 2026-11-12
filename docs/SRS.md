@@ -2,9 +2,9 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 1.5
+**Versión del documento:** 1.6
 
-**Estado:** Revisado internamente; pendiente de validación externa
+**Estado:** Reglas operativas validadas; aceptación final pendiente
 
 **Estructura de referencia:** IEEE Std 830-1998
 
@@ -27,6 +27,7 @@
 | 1.3 | 2026-10-22 | Reducción de la línea base normativa a diez RF, diez RNF y siete requisitos de datos del MVP | Equipo del proyecto |
 | 1.4 | 2026-10-27 | Normalización continua de identificadores: once RF, diez RNF y siete requisitos de datos, sin cambio de alcance | Equipo del proyecto |
 | 1.5 | 2026-11-09 | Refinamiento con cuatro perfiles, siete etapas y ciclos de vida reversibles, sin aumentar la línea base normativa | Equipo del proyecto |
+| 1.6 | 2026-11-11 | Consolidación anonimizada de permisos, campos, flujo, fechas, cierre y conservación validados con el estudio | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -47,8 +48,9 @@ Las exclusiones `EXC-01` a `EXC-10` continúan vigentes.
 
 No reemplazará la Oficina Judicial Virtual, no mantendrá comunicación técnica
 con ella ni automatizará la estrategia jurídica. El alcance detallado se define
-mediante requisitos trazables y conserva como asuntos abiertos únicamente las
-decisiones que requieren validación externa.
+mediante requisitos trazables. Las decisiones operativas validadas se incorporan
+en esta versión; las puertas jurídicas, técnicas y organizacionales para usar
+datos reales permanecen abiertas.
 
 #### 1.2.1 Objetivos vigentes
 
@@ -118,10 +120,10 @@ almacenamiento documental.
 | ALC-01 | Permitir acceso interno controlado. | Cada usuario opera con una identidad y permisos; no existe registro público. La implementación técnica se completa al final del incremento funcional. |
 | ALC-02 | Registrar, mantener, desactivar y reactivar clientes con sus datos de contacto autorizados. | La información mínima permanece vinculada con sus casos; la desactivación es reversible, requiere permiso elevado y no elimina físicamente el registro. |
 | ALC-03 | Registrar, mantener, archivar y reactivar casos con un identificador interno, estado, etapa y responsable. | Cada caso activo posee los datos obligatorios; el archivo es reversible y conserva relaciones e historial. |
-| ALC-04 | Asignar un responsable principal, participantes y prioridad. | El caso identifica al responsable y los apoyos autorizados; cada asignación o cambio queda trazado. El responsable formal de la distribución permanece pendiente de validación. |
-| ALC-05 | Usar etapas, subetapas y estados controlados. | El flujo reconoce ingreso, clasificación, comparendo, distribución, redacción, seguimiento judicial y cierre. Los catálogos y transiciones exactas permanecen configurables y pendientes de validación. |
-| ALC-06 | Registrar fechas relevantes, responsables y observaciones operativas. | Se admiten fechas laborales, comparendos, audiencias, seguimiento y referencias manuales de caducidad, sin calcular plazos jurídicos definitivos. |
-| ALC-07 | Mantener historial de cambios críticos. | Cambios de ciclo de vida, asignación, prioridad, etapa, estado y fecha conservan usuario, momento y valores relevantes. |
+| ALC-04 | Asignar un responsable principal y participantes. | El responsable principal es un socio o abogado; el procurador puede participar en gestiones de apoyo. Distribuir o reasignar corresponde exclusivamente al perfil Socio y cada acción queda trazada. |
+| ALC-05 | Usar etapas y estados controlados. | El flujo reconoce ingreso, clasificación, comparendo, distribución, redacción, seguimiento judicial, audiencia preparatoria, juicio o conciliación y cierre. El procedimiento monitorio puede utilizar audiencia única y el caso puede cerrarse anticipadamente en los hitos validados. |
+| ALC-06 | Registrar fechas relevantes, responsables y observaciones operativas. | Se admiten fechas laborales, solicitud y realización de comparendo, presentación, audiencia única o preparatoria y juicio, además de referencias manuales de caducidad, sin calcular plazos jurídicos definitivos. |
+| ALC-07 | Mantener historial de cambios críticos. | Cambios de ciclo de vida, asignación, etapa, estado y fecha conservan usuario, momento, motivo cuando corresponda y valores relevantes. |
 | ALC-08 | Buscar y consultar información autorizada. | El usuario localiza clientes o casos por sus atributos operativos sin acceder a registros fuera de sus permisos. |
 
 Las capacidades históricas `ALC-09` a `ALC-14` quedan fuera del MVP. La consulta
@@ -156,8 +158,8 @@ proyecto.
 El MVP considera cuatro perfiles humanos internos. Los servicios externos se
 documentan solo como contexto o evolución futura. Los permisos descritos
 constituyen una base funcional
-para elaborar los requisitos y casos de uso; su detalle deberá validarse con los
-socios propietarios antes de cerrar la especificación.
+para elaborar los requisitos y casos de uso. La matriz de esta versión incorpora
+las decisiones operativas validadas con el estudio.
 
 #### 2.3.1 Actores humanos internos
 
@@ -170,9 +172,10 @@ durante el levantamiento y la aceptación.
 Responsabilidades previstas:
 
 - consultar, registrar y actualizar clientes y casos según sus permisos;
-- asignar el abogado responsable al registrar o actualizar un caso;
+- distribuir, asignar o reasignar al responsable principal;
 - actualizar estados y etapas mediante los valores predefinidos;
 - registrar fechas relevantes y consultar el historial básico;
+- desactivar o reactivar clientes y archivar o reabrir casos con motivo;
 - validar los flujos prioritarios durante la aceptación.
 
 Este perfil no puede eliminar o alterar silenciosamente el historial de acciones
@@ -180,18 +183,19 @@ críticas. Las operaciones administrativas también deben quedar trazadas.
 
 ##### ACT-02: Abogado
 
-Usuario interno responsable de consultar y gestionar los casos que le hayan sido
-asignados o para los cuales posea autorización.
+Usuario interno responsable de consultar y gestionar la operación cotidiana de
+clientes y casos dentro del estudio.
 
 Responsabilidades previstas:
 
-- consultar sus casos, responsables, estados y fechas relevantes;
+- consultar clientes y casos, responsables, estados y fechas relevantes;
+- registrar y editar clientes y casos;
 - actualizar información operativa dentro de los permisos definidos;
 - registrar observaciones, cambios de estado y fechas autorizadas;
 - consultar el historial básico de los casos permitidos.
 
-El abogado no obtiene por este rol facultades para administrar usuarios o
-consultar información ajena a su autorización.
+El abogado no obtiene por este rol facultades para administrar usuarios ni para
+ejecutar acciones elevadas reservadas al Socio.
 
 ##### ACT-03: Secretaria o asistente
 
@@ -202,29 +206,28 @@ Responsabilidades previstas:
 
 - registrar clientes y casos con los datos mínimos autorizados;
 - actualizar datos de contacto y antecedentes operativos permitidos;
-- asignar al abogado responsable cuando posea autorización;
 - registrar estados, etapas y fechas relevantes dentro de sus atribuciones;
-- consultar clientes, casos e historial básico según su alcance.
+- consultar clientes, casos e historial básico dentro del estudio.
 
 Este perfil no aprueba el contenido jurídico de documentos ni adquiere acceso
 general por el solo hecho de registrar información.
 
 ##### ACT-04: Procurador
 
-Usuario interno que apoya las gestiones operativas y el seguimiento de los casos
-que le hayan sido asignados o autorizados.
+Usuario interno que apoya las gestiones operativas y el seguimiento cotidiano de
+clientes y casos.
 
 Responsabilidades previstas:
 
-- consultar casos y fechas dentro de su alcance;
+- registrar y editar clientes y casos;
+- consultar clientes, casos y fechas dentro del estudio;
 - registrar actuaciones, observaciones y fechas autorizadas;
-- participar en comparendos, seguimiento judicial u otras etapas según la
-  distribución validada;
+- participar en entrevistas, recolección de documentos, comparendos, seguimiento
+  judicial u otras gestiones de apoyo;
 - consultar el historial básico necesario para ejecutar sus tareas.
 
-El procurador no administra usuarios, catálogos ni clientes y no obtiene acceso
-general a todos los casos. Sus permisos exactos requieren validación con los
-socios.
+El procurador no administra usuarios o catálogos ni ejecuta acciones elevadas
+reservadas al Socio.
 
 #### 2.3.2 Sistemas y servicios externos
 
@@ -262,17 +265,20 @@ un portal de clientes ni la gestión del anexo de información y autorización.
 
 | Capacidad | ACT-01 Administrador | ACT-02 Abogado | ACT-03 Asistente | ACT-04 Procurador |
 |---|---|---|---|---|
-| Consultar clientes y casos autorizados | Previsto | Según autorización | Según autorización | Casos autorizados |
-| Registrar clientes y casos | Previsto | Según autorización | Previsto | No previsto |
-| Actualizar información operativa | Previsto | Casos autorizados | Campos autorizados | Campos autorizados |
-| Asignar responsable o participantes | Previsto | No previsto | Según autorización | No previsto |
-| Desactivar clientes o archivar casos | Permiso elevado por validar | No previsto | No previsto | No previsto |
-| Consultar historial de cambios | Previsto | Casos autorizados | Según autorización | Casos autorizados |
+| Consultar clientes y casos del estudio | Permitido | Permitido | Permitido | Permitido |
+| Registrar y editar clientes y casos | Permitido | Permitido | Permitido | Permitido |
+| Cambiar etapa o estado | Permitido | Permitido | Permitido | Permitido |
+| Registrar fechas relevantes | Permitido | Permitido | Permitido | Permitido |
+| Distribuir o reasignar responsable | Permitido; exige motivo | No permitido | No permitido | No permitido |
+| Desactivar o reactivar clientes | Permitido; exige motivo | No permitido | No permitido | No permitido |
+| Archivar o reabrir casos | Permitido; exige motivo | No permitido | No permitido | No permitido |
+| Consultar historial de cambios | Permitido | Permitido | Permitido | Permitido |
 | Eliminar o alterar historial crítico | No permitido | No permitido | No permitido | No permitido |
 
-La matriz expresa responsabilidades previstas y no sustituye la matriz detallada
-de permisos. Las celdas marcadas como `Según autorización` deben resolverse antes
-de implementar el control de acceso.
+La matriz constituye la base funcional de autorización del MVP. Todas las
+operaciones siguen limitadas al estudio de la sesión y se verifican en el
+servidor. El acceso cotidiano de los cuatro perfiles no habilita administración
+de usuarios, catálogos ni acciones elevadas.
 
 #### 2.3.5 Características y necesidades comunes
 
@@ -307,9 +313,9 @@ de implementar el control de acceso.
 
 | ID | Supuesto | Estado | Condición de validación | Efecto si no se cumple |
 |---|---|---|---|---|
-| SUP-01 | Los perfiles iniciales socio, abogado, asistente y procurador cubren las funciones internas prioritarias. | Confirmado para la estructura general; permisos pendientes | Revisión de la matriz detallada de permisos con los socios. | Ajustar permisos y casos de uso antes de implementar autorización. |
+| SUP-01 | Los perfiles iniciales socio, abogado, asistente y procurador cubren las funciones internas prioritarias. | Confirmado | Decisión operativa consolidada el 2026-11-11. | Registrar mediante control de cambios cualquier excepción posterior. |
 | SUP-02 | Los usuarios de prueba dispondrán de navegador actualizado y conexión a internet durante la aceptación. | Supuesto de trabajo | Confirmación previa a la sesión de prueba. | Preparar alternativa local o reprogramar las pruebas dependientes de servicios remotos. |
-| SUP-03 | Los socios podrán validar catálogos, campos mínimos, permisos y flujos prioritarios. | Confirmado como compromiso del proceso, fechas por coordinar | Registro de revisiones y decisiones en issues o minutas anonimizadas. | Mantener los elementos afectados en estado propuesto y no tratarlos como aceptados. |
+| SUP-03 | Los socios podrán validar catálogos, campos mínimos, permisos y flujos prioritarios. | Cumplido para la línea base operativa | Síntesis anonimizada y trazabilidad del issue #78. | Aplicar control de cambios si aparece una excepción posterior. |
 | SUP-04 | Podrían existir cuentas de prueba para evaluar Calendar y OneDrive en una iteración futura. | Diferido | Nuevo issue y evaluación de proveedor. | No afecta el MVP. |
 | SUP-05 | Una prueba futura de Gemini utilizaría exclusivamente antecedentes ficticios o anonimizados. | Diferido | Nuevo issue y revisión de privacidad. | No afecta el MVP. |
 | SUP-06 | El volumen y concurrencia requeridos serán compatibles con un estudio pequeño. | No medido | Levantamiento de usuarios simultáneos, volumen de casos y crecimiento esperado. | Ajustar requisitos de rendimiento, arquitectura y pruebas de carga. |
@@ -322,7 +328,7 @@ que afecte una decisión irreversible.
 
 | ID | Dependencia | Uso previsto | Comportamiento ante indisponibilidad |
 |---|---|---|---|
-| DEP-01 | Participación de los socios propietarios | Validar requisitos, reglas operativas, prototipos y aceptación. | Registrar la validación como pendiente y no asumir aprobación. |
+| DEP-01 | Participación de los socios propietarios | Las reglas operativas fueron validadas; la aceptación funcional final permanece pendiente. | Conservar evidencia anonimizada y no confundir validación de reglas con aceptación del producto. |
 | DEP-02 | Google Calendar | Diferido; no se usa en el MVP. | No afecta el funcionamiento del MVP. |
 | DEP-03 | OneDrive | Diferido; no se usa en el MVP. | No afecta el funcionamiento del MVP. |
 | DEP-04 | Gemini API | Diferido; no se usa en el MVP. | No afecta el funcionamiento del MVP. |
@@ -377,15 +383,15 @@ restricción obligatoria de independencia respecto de la OJV.
 | ID | Requisito del MVP | Criterio verificable | Historias |
 |---|---|---|---|
 | RF-001 | Permitir el inicio de sesión de cuentas internas activas, sin registro público. | Una cuenta válida accede; credenciales inválidas son rechazadas sin revelar si la cuenta existe. | HU-01 |
-| RF-002 | Registrar, editar, desactivar y reactivar clientes mediante el formulario o listado existente. | Los datos inválidos impiden guardar; solo un perfil elevado autorizado puede cambiar reversiblemente el estado activo y cada cambio registra actor, momento y motivo, sin eliminación física. | HU-08 |
-| RF-003 | Buscar clientes por nombre, dato de contacto autorizado o estado de actividad. | Solo se muestran coincidencias dentro del alcance; un cliente inactivo se identifica claramente y no puede seleccionarse para un caso nuevo. | HU-07 |
-| RF-004 | Registrar, editar, archivar y reactivar una ficha de caso vinculada con un cliente activo. | El caso conserva identificador y relaciones; tribunal, RIT o ROL pueden quedar vacíos; el archivo es reversible, autorizado y no elimina físicamente la ficha. | HU-03, HU-04 |
-| RF-005 | Mantener estado, etapa y subetapa mediante valores controlados. | El flujo reconoce las siete etapas operativas; un cambio confirmado queda en el historial y cancelar no altera valores. Los catálogos y transiciones exactas se validarán con los socios. | HU-03, HU-05 |
-| RF-006 | Consultar la ficha consolidada de un caso autorizado, incluido su estado activo o archivado. | La ficha presenta cliente, responsable, participantes, prioridad, estado, etapa, fechas e historial básico sin revelar casos no autorizados. | HU-04 |
-| RF-007 | Asignar un responsable principal, participantes con rol y prioridad al caso. | Todo caso activo posee responsable; cada asignación o cambio registra ejecutor y momento. El responsable formal de distribución se mantiene pendiente de validación. | HU-03 |
+| RF-002 | Registrar, editar, desactivar y reactivar clientes mediante el formulario o listado existente. | Nombre completo, teléfono, origen o materia y RUT son obligatorios; correo es opcional y fecha de despido se exige cuando corresponda. Solo Socio cambia reversiblemente el estado activo con actor, momento y motivo, sin eliminación física. | HU-08 |
+| RF-003 | Buscar clientes por nombre, origen, dato de contacto autorizado o estado de actividad y advertir posibles coincidencias. | Una coincidencia de nombre y origen genera advertencia sin bloquear ni fusionar, porque un cliente puede poseer varias gestiones; un cliente inactivo se identifica claramente y no puede seleccionarse para un caso nuevo. | HU-07, HU-08 |
+| RF-004 | Registrar, editar, archivar y reactivar una ficha de caso vinculada con un cliente activo. | El caso conserva identificador y relaciones; en materia laboral exige empresa, fecha de ingreso y fecha de despido; tribunal, RIT, ROL, tienda, finiquito y cuantía pueden quedar vacíos. Solo Socio archiva o reactiva con motivo y sin eliminación física. | HU-03, HU-04 |
+| RF-005 | Mantener estado y etapa mediante valores controlados. | El flujo reconoce las nueve etapas validadas, la alternativa de audiencia única y cierres anticipados en comparendo, audiencia o juicio; un cambio confirmado queda en el historial y cancelar no altera valores. | HU-03, HU-05 |
+| RF-006 | Consultar la ficha consolidada de un caso autorizado, incluido su estado activo o archivado. | La ficha presenta cliente, responsable, participantes, estado, etapa, procedimiento, fechas e historial básico dentro del estudio. | HU-04 |
+| RF-007 | Asignar un responsable principal y participantes con rol operativo. | Todo caso activo posee como responsable a un socio o abogado; el procurador puede participar en gestiones de apoyo. Solo Socio distribuye o reasigna y la acción registra ejecutor, momento y motivo. | HU-03 |
 | RF-008 | Registrar manualmente una fecha relevante con tipo, responsable, fuente u observación opcional. | La ficha distingue fechas laborales, comparendos, audiencias, seguimiento y referencias de caducidad sin calcular ni declarar plazos judiciales definitivos. | HU-06 |
-| RF-009 | Consultar el historial básico cronológico del caso y de sus acciones críticas. | Cambios de ciclo de vida, estado, etapa, responsable, participantes, prioridad y fechas muestran acción, usuario y momento; un usuario común no los edita. | HU-04 a HU-06, HU-08 |
-| RF-010 | Buscar y filtrar casos por identificador, cliente, responsable, estado, etapa, subetapa, prioridad o condición de archivo. | Los filtros pueden combinarse y limpiarse sin mostrar casos fuera del alcance autorizado. | HU-02 |
+| RF-009 | Consultar el historial básico cronológico del caso y de sus acciones críticas. | Ingreso, asignación, presentación y cambios de ciclo de vida, estado, etapa, responsable, participantes y fechas muestran acción, usuario, momento, motivo y valores relevantes; un usuario común no los edita. | HU-04 a HU-06, HU-08 |
+| RF-010 | Buscar y filtrar casos por identificador, cliente, responsable, estado, etapa, procedimiento, próxima fecha o condición de archivo. | Los filtros pueden combinarse y limpiarse; el orden operativo utiliza etapa y próxima fecha, sin catálogo manual de prioridad. | HU-02 |
 | RF-011 | Mantener independencia técnica respecto de la OJV y las credenciales judiciales. | La revisión de arquitectura, código, configuración y tráfico confirma que el sistema no consulta, obtiene, envía ni sincroniza información con la OJV y no solicita ni almacena credenciales judiciales. | HU-06; EXC-01, EXC-02 |
 
 #### 3.2.1 Restricción funcional obligatoria
@@ -404,7 +410,7 @@ capacidad o explotación productiva en obligaciones de la iteración académica.
 |---|---|---|---|
 | RNF-001 | Toda lectura o modificación protegida debe autorizarse en el servidor; desactivar, reactivar, archivar o restaurar exige permiso elevado validado. | El 100 % de los escenarios negativos definidos para los cuatro perfiles es rechazado sin revelar ni modificar el recurso. | Pruebas de integración y navegador. |
 | RNF-002 | Los secretos no deben almacenarse en código, Git, respuestas ni registros de aplicación. | Cero secretos detectados; las variables se documentan solo por nombre. | GitGuardian y revisión de configuración. |
-| RNF-003 | Las acciones críticas deben generar historial no editable por usuarios comunes. | El 100 % de cambios de ciclo de vida, estado, etapa, responsable, participantes, prioridad y fecha registra usuario, momento, acción y valores relevantes. | Pruebas de integración y revisión del historial. |
+| RNF-003 | Las acciones críticas deben generar historial no editable por usuarios comunes. | El 100 % de cambios de ciclo de vida, estado, etapa, responsable, participantes y fecha registra usuario, momento, acción, motivo cuando corresponda y valores relevantes. | Pruebas de integración y revisión del historial. |
 | RNF-004 | Construcción, pruebas, demostración y aceptación deben usar datos ficticios o anonimizados. | Cero datos reales identificables en base, capturas, fixtures, logs y repositorio. | Revisión previa a cada demostración. |
 | RNF-005 | El uso de datos reales debe permanecer bloqueado hasta una aprobación jurídica, técnica y organizacional. | Sin la lista y acta aprobadas, el entorno continúa en preproducción con datos ficticios o anonimizados. | Revisión documental de la puerta de datos reales. |
 | RNF-006 | Un caso activo debe conservar cliente, estado, etapa y responsable. | Todos los intentos incompletos son rechazados sin dejar un caso activo parcial. | Pruebas unitarias y de integración. |
@@ -432,7 +438,7 @@ a cada comportamiento.
 |---|---|---|---|---|---|
 | RN-001 | Pertenencia al estudio | Todo usuario, cliente, caso y registro operativo debe pertenecer al estudio que lo administra. | ALC-01, ALC-02, ALC-03 | Vigente | La versión 1 se valida con un estudio; cualquier aislamiento entre varios estudios debe verificarse técnicamente antes de habilitarse. |
 | RN-002 | Usuario identificable | Toda acción autenticada debe asociarse con un usuario interno identificable y un rol vigente. | ACT-01, ACT-02, ACT-03, ACT-04 | Vigente | Las acciones automatizadas, si existen, deben identificarse como servicio y no atribuirse a una persona. |
-| RN-003 | Mínimo privilegio | Un usuario solo puede consultar o modificar información autorizada por su rol y por el alcance asignado. | Restricciones generales; matriz inicial de responsabilidades | Vigente | La matriz detallada de permisos permanece pendiente de validación. |
+| RN-003 | Autorización validada | Los cuatro perfiles pueden consultar, registrar y editar clientes y casos, cambiar estado o etapa y registrar fechas dentro del estudio. Solo Socio ejecuta acciones elevadas. | Validación operativa #78; matriz de responsabilidades | Vigente | Toda operación se valida en el servidor y permanece limitada al estudio de la sesión. |
 | RN-004 | Administración restringida | Solo el perfil autorizado de socio propietario o administrador puede administrar usuarios, roles y catálogos. | ACT-01; matriz inicial de responsabilidades | Propuesta | Debe validarse si existirá más de un administrador y cómo se recuperará el acceso. |
 
 #### 3.4.2 Clientes y datos de contacto
@@ -441,9 +447,9 @@ a cada comportamiento.
 |---|---|---|---|---|---|
 | RN-005 | Identificador interno del cliente | Cada cliente debe poseer un identificador interno único dentro del estudio. | ALC-02; necesidad de trazabilidad cliente–caso | Vigente | El identificador interno no sustituye documentos oficiales ni debe exponer datos sensibles innecesarios. |
 | RN-006 | Relación cliente–caso | Cada caso debe vincularse con un cliente y un cliente puede relacionarse con uno o más casos. | ALC-02, ALC-03 | Vigente | Los casos con múltiples personas relacionadas requieren una regla adicional antes de implementarse. |
-| RN-007 | Datos mínimos de contacto | Un cliente solo puede considerarse habilitado para el flujo operativo cuando posee los datos mínimos definidos por el estudio. | Hallazgo sobre campos incompletos y pérdida histórica de contactos | Propuesta | Los campos obligatorios y las excepciones deben validarse con los socios y documentarse en #6. |
-| RN-008 | Actualización trazable de contacto | Los cambios en datos de contacto deben conservar fecha y usuario responsable. | ALC-02, ALC-07 | Propuesta | Debe definirse qué valores anteriores se conservan y durante cuánto tiempo. |
-| RN-020 | Ciclo de vida del cliente | La baja operativa se representa mediante desactivación reversible; no existe eliminación física de clientes en el MVP. | ALC-02; RF-002 | Vigente | Solo un perfil elevado validado puede desactivar o reactivar; debe registrar actor, momento y motivo. |
+| RN-007 | Datos mínimos del cliente | Un cliente requiere nombre completo, teléfono, origen o materia y RUT; el correo es opcional y la fecha de despido se exige cuando corresponda a la materia. | Validación operativa #78; hallazgo sobre campos incompletos | Vigente | El RUT responde a la identificación necesaria para la tramitación judicial y debe protegerse como dato confidencial. |
+| RN-008 | Actualización y coincidencia trazables | Los cambios de contacto conservan fecha y usuario; una coincidencia por nombre y origen genera advertencia sin fusionar ni bloquear automáticamente. | Validación operativa #78; ALC-02, ALC-07 | Vigente | Un cliente puede mantener más de una gestión de materias distintas. |
+| RN-020 | Ciclo de vida del cliente | La baja operativa se representa mediante desactivación reversible; no existe eliminación física de clientes en el MVP. | ALC-02; RF-002; validación #78 | Vigente | Solo Socio puede desactivar o reactivar y debe registrar actor, momento y motivo. |
 | RN-021 | Uso de clientes inactivos | Un cliente inactivo permanece visible en consultas históricas, pero no puede seleccionarse para registrar un caso nuevo. | RF-002, RF-003, RF-004 | Vigente | La continuidad de casos ya existentes no rompe su relación histórica con el cliente. |
 
 #### 3.4.3 Casos, estados y asignaciones
@@ -451,20 +457,20 @@ a cada comportamiento.
 | ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
 |---|---|---|---|---|---|
 | RN-009 | Identificador interno del caso | Cada caso debe poseer un identificador interno único dentro del estudio. | ALC-03 | Vigente | El identificador interno es independiente de un eventual RIT o ROL. |
-| RN-010 | Datos obligatorios del caso activo | Todo caso activo debe tener al menos cliente, estado, etapa y responsable vigente. | ALC-03; métrica del proyecto | Vigente | Los campos adicionales y las condiciones para estados no activos deben definirse en #4 y #6. |
-| RN-011 | Catálogos controlados | Los estados, subetapas, prioridades y tipos de causa deben seleccionarse desde catálogos autorizados; las etapas principales son ingreso, clasificación, comparendo, distribución, redacción, seguimiento judicial y cierre. | ALC-05; EP-02; EP-03 | Vigente en estructura | Los valores complementarios, transiciones y responsables de mantenerlos requieren validación. |
+| RN-010 | Datos obligatorios del caso activo | Todo caso activo debe tener cliente, estado, etapa y responsable vigente; una causa laboral exige empresa, fecha de ingreso y fecha de despido. | ALC-03; validación operativa #78 | Vigente | Tienda o sucursal, finiquito y cuantía son accesorios; otros campos dependen de la materia. |
+| RN-011 | Flujo y estados controlados | Las etapas son ingreso, clasificación, comparendo, distribución, redacción, seguimiento judicial, audiencia preparatoria, juicio o conciliación y cierre. Los estados son ingresado, pendiente de comparendo, pendiente de distribución, en redacción, presentado, judicializado y cerrado. | ALC-05; validación operativa #78 | Vigente | El procedimiento monitorio usa audiencia única; no se utiliza un catálogo manual de prioridad en el MVP. |
 | RN-012 | Identificadores judiciales no inventados | El RIT, ROL, tribunal u otro antecedente judicial se registra solo cuando está disponible; su ausencia inicial no autoriza completar valores ficticios. | Flujo observado; separación respecto de la OJV | Vigente | La obligatoriedad dependerá de la etapa y debe precisarse en los requisitos funcionales. |
-| RN-013 | Responsable y participantes | Cada caso activo debe tener un responsable principal vigente y puede incluir participantes con un rol operativo autorizado. | ALC-04; problema de asignación y trazabilidad | Vigente en estructura | Los roles permitidos y el responsable formal de distribución quedan pendientes de validación. |
-| RN-014 | Ciclo de vida del caso | El retiro operativo se representa mediante cierre o archivo reversible; no existe eliminación física de casos en el MVP. | ALC-03; RF-004, RF-006 | Vigente | Archivo y reactivación requieren permiso elevado, actor, momento y motivo; las reglas exactas de cierre deben validarse. |
+| RN-013 | Responsable y participantes | Cada caso activo tiene como responsable principal vigente a un socio o abogado; el procurador puede participar en entrevistas, recolección de documentos y otras gestiones de apoyo. | ALC-04; validación operativa #78 | Vigente | Solo Socio distribuye o reasigna y debe registrar motivo. |
+| RN-014 | Ciclo de vida del caso | Cierre y archivo representan la misma condición reversible; se produce por acuerdo o sentencia y pago, y puede ocurrir anticipadamente en comparendo, audiencia o juicio. | ALC-03; RF-004, RF-006; validación #78 | Vigente | Solo Socio archiva o reabre con actor, momento y motivo; no existe eliminación física en el MVP. |
 
 #### 3.4.4 Fechas, seguimiento e historial
 
 | ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
 |---|---|---|---|---|---|
-| RN-015 | Tipo de fecha | Toda fecha de seguimiento debe indicar si corresponde a una referencia judicial o a un control interno. | ALC-06; exclusión EXC-03 | Vigente | Los tipos exactos y campos obligatorios deben validarse. |
-| RN-016 | Responsabilidad sobre la fecha | Toda fecha que requiera seguimiento debe asociarse con un responsable definido. | ALC-06 | Propuesta | Debe acordarse si el responsable corresponde al caso, a la fecha o a ambos. |
+| RN-015 | Tipo de fecha | El sistema admite fecha de ingreso laboral, despido, solicitud y realización de comparendo, presentación de demanda, audiencia única o preparatoria y juicio. | ALC-06; validación operativa #78 | Vigente | Una referencia de caducidad se ingresa manualmente y no constituye cómputo jurídico. |
+| RN-016 | Responsabilidad y visibilidad de la fecha | Toda fecha de seguimiento se asocia con un responsable y puede utilizarse para ordenar el trabajo por proximidad. | ALC-06; validación operativa #78 | Vigente | El MVP no envía alertas automáticas ni certifica el vencimiento de un plazo jurídico. |
 | RN-017 | Sin determinación jurídica automática | El sistema puede registrar y mostrar fechas, pero no determina de forma definitiva plazos judiciales ni reemplaza la revisión profesional. | EXC-03 | Vigente | No admite excepciones dentro de la versión 1. |
-| RN-018 | Registro de cambios críticos | Toda acción definida como crítica debe conservar usuario, fecha, tipo de acción y valores relevantes del cambio. | ALC-07 | Vigente | El catálogo de acciones críticas debe completarse en #4. |
+| RN-018 | Registro de cambios críticos | Ingreso, asignación y presentación de demanda, además de cambios de responsable, etapa, estado, fechas, ciclo de vida y participantes, conservan usuario, fecha, acción, motivo cuando corresponda y valores relevantes. | ALC-07; validación operativa #78 | Vigente | La evidencia se protege según su sensibilidad y no se expone íntegramente en listados. |
 | RN-019 | Protección del historial | Los usuarios comunes no pueden eliminar ni alterar silenciosamente las entradas del historial. | ACT-01, ACT-02, ACT-03, ACT-04; restricciones generales | Vigente | Las correcciones administrativas deben generar una nueva evidencia trazable. |
 
 #### 3.4.5 Restricción respecto de la OJV
@@ -473,19 +479,16 @@ a cada comportamiento.
 |---|---|---|---|---|---|
 | RN-030 | Independencia absoluta de la OJV | La plataforma no consulta, obtiene, envía ni sincroniza información con la OJV y no almacena credenciales judiciales. | EXC-01, EXC-02 | Vigente | No admite excepciones dentro de la versión 1. |
 
-#### 3.4.6 Asuntos abiertos de las reglas
+#### 3.4.6 Estado de las decisiones operativas
 
-| ID | Asunto | Acción requerida | Issue relacionado |
-|---|---|---|---|
-| AR-01 | Campos mínimos de clientes y casos. | Validar obligatoriedad, formato y excepciones con los socios. | #4, #6 |
-| AR-02 | Matriz detallada de permisos. | Definir acciones por rol, alcance de registros y operaciones administrativas. | #4, #5 |
-| AR-03 | Catálogos y transiciones. | Validar estados, etapas, tipos y cambios permitidos. | #4 |
-| AR-04 | Acciones críticas. | Acordar el catálogo de eventos que requieren historial detallado. | #4, #5 |
-| AR-05 | Conservación y eliminación. | Establecer periodos, responsables, bloqueo y eliminación autorizada. | #6 |
-| AR-06 | Exportaciones. | Definir formatos, campos, propósitos y evidencia de autorización. | #4, #6 |
-| AR-07 | Distribución, participantes y reasignaciones. | Validar responsable formal de distribución, roles participantes, motivo obligatorio y permisos para reasignar. | #4 |
-| AR-08 | Desactivación y archivo. | Confirmar qué perfil elevado puede desactivar o reactivar clientes y archivar o reactivar casos. | #4, #5 |
-| AR-09 | Etapas y excepciones. | Confirmar condiciones de transición, excepciones, subetapas, prioridades y reglas de cierre. | #4 |
+El issue #78 consolidó de forma anonimizada los campos mínimos, permisos,
+responsables, etapas, estados, fechas, acciones críticas, cierre y conservación
+operativa. Estas decisiones están incorporadas en las reglas anteriores.
+
+Permanecen fuera de esta validación operativa la política jurídica completa de
+conservación y eliminación, la habilitación para utilizar datos reales y las
+funciones diferidas de reportes y exportaciones. Ninguna de ellas puede
+implementarse implícitamente desde esta sección.
 
 ### 3.5 Requisitos de datos
 
@@ -512,17 +515,18 @@ de clasificación autoriza almacenarlas.
 | ED-01 | Estudio | Delimitar la organización responsable de los registros. | Identificador interno, nombre anonimizado o de prueba, estado, fechas de control. | Posee usuarios, clientes, casos y catálogos. | Interna; confidencial si identifica a la organización real. |
 | ED-02 | Usuario | Identificar a quien ejecuta acciones internas. | Identificador, nombre de prueba, identificador de acceso, estado y rol vigente. | Pertenece a un estudio; participa en asignaciones, cambios y revisiones. | Confidencial. |
 | ED-03 | Rol y permiso | Definir capacidades autorizadas. | Identificador, nombre, descripción, permisos y vigencia. | Se asigna a usuarios; controla operaciones. | Interna. |
-| ED-04 | Cliente | Mantener la ficha, contacto autorizado y ciclo de vida reversible. | Identificador interno, nombre o denominación, datos mínimos de contacto, estado activo, actor, momento y motivo de desactivación o reactivación. | Pertenece a un estudio; se relaciona con uno o más casos. | Confidencial. |
-| ED-05 | Caso | Mantener la ficha operativa única y su archivo reversible. | Identificador interno, cliente, materia, información laboral cuando corresponda, tribunal y RIT/ROL disponibles, estado, etapa, subetapa, prioridad, observaciones, condición de archivo y fechas de control. | Pertenece a un estudio y cliente; posee asignaciones, participantes, fechas e historial. | Confidencial. |
+| ED-04 | Cliente | Mantener la ficha, contacto autorizado y ciclo de vida reversible. | Identificador interno, nombre completo, teléfono, origen o materia, RUT, correo opcional, fecha de despido cuando corresponda, estado activo y evidencia del cambio de estado. | Pertenece a un estudio; se relaciona con uno o más casos. | Confidencial. |
+| ED-05 | Caso | Mantener la ficha operativa única y su archivo reversible. | Identificador interno, cliente, materia, empresa y fechas laborales cuando correspondan, tribunal y RIT/ROL disponibles, estado, etapa, procedimiento, observaciones, condición de archivo y fechas de control. | Pertenece a un estudio y cliente; posee asignaciones, participantes, fechas e historial. | Confidencial. |
 | ED-06 | Asignación o participación | Conservar responsabilidad y participación actual e histórica. | Caso, usuario, rol operativo, indicador de responsable principal, inicio, término, ejecutor y motivo cuando se defina. | Pertenece a un caso y referencia usuarios. | Confidencial. |
-| ED-07 | Catálogo | Normalizar materias, estados, etapas, prioridades y tipos de fecha. | Tipo de catálogo, código, nombre, descripción, orden y vigencia. | Sus valores son utilizados por casos y fechas. | Interna. |
+| ED-07 | Catálogo | Normalizar materias, estados, etapas, procedimientos y tipos de fecha. | Tipo de catálogo, código, nombre, descripción, orden y vigencia. | Sus valores son utilizados por casos y fechas. | Interna. |
 | ED-08 | Fecha o hito | Registrar seguimiento sin determinar automáticamente plazos jurídicos. | Caso, tipo, fecha, responsable, fuente, observación y verificación manual cuando corresponda. | Pertenece a un caso. | Confidencial. |
 | ED-09 | Evento de historial | Registrar acciones críticas y correcciones. | Estudio, caso o entidad afectada, actor, fecha, acción y valores relevantes protegidos. | Referencia usuario y registro afectado. | Confidencial. |
 
-Los datos de identificación oficial del cliente, campos de contacto obligatorios,
-materias, transiciones y valores de catálogo deben validarse con los socios antes
-de declararlos obligatorios. El SRS no exige almacenar un RUT u otro identificador
-oficial mientras su necesidad, finalidad y tratamiento no hayan sido aprobados.
+La validación operativa confirmó el uso del RUT para identificar al cliente en la
+tramitación judicial manual. Esta finalidad no autoriza publicación, uso con
+datos reales durante el proyecto académico ni acceso fuera de los permisos
+definidos. Las materias y ampliaciones futuras de catálogo requieren control de
+cambios.
 
 #### 3.5.3 Requisitos conceptuales de datos
 
@@ -539,15 +543,17 @@ oficial mientras su necesidad, finalidad y tratamiento no hayan sido aprobados.
 #### 3.5.4 Inventario de tratamiento para la puerta de datos reales
 
 Antes de utilizar datos reales se debe completar y aprobar un inventario por
-grupo de datos. En esta versión del SRS los plazos de conservación y la base
-aplicable permanecen sin definir; no deben suponerse.
+grupo de datos. Los socios solicitaron disponibilidad operativa durante seis
+meses después del cierre, pero este periodo no autoriza eliminación automática:
+la política definitiva permanece sujeta a revisión jurídica, técnica y
+organizacional.
 
 | Grupo | Finalidad propuesta | Acceso mínimo | Conservación | Estado previo a datos reales |
 |---|---|---|---|---|
-| Identidad y contacto de clientes | Vincular al cliente con sus casos y permitir contacto operativo autorizado. | Perfiles autorizados por función. | Periodo y evento de inicio pendientes de revisión jurídica y organizacional. | Pendiente de finalidad, campos mínimos, habilitación y procedimiento de derechos. |
-| Información operativa y jurídica del caso | Coordinar registro, asignación y seguimiento interno. | Usuario con caso o alcance autorizado. | Pendiente de matriz de conservación por estado y materia. | Pendiente de revisión jurídica, permisos y minimización. |
-| Historial y asignaciones | Acreditar responsabilidad y trazabilidad de cambios críticos. | Lectura autorizada; modificación directa prohibida a usuarios comunes. | Pendiente de regla de archivo, bloqueo y eliminación. | Pendiente de catálogo de acciones y periodo aprobado. |
-| Fechas relevantes | Apoyar seguimiento interno definido por profesionales. | Perfiles autorizados sobre el caso. | Pendiente de cierre, archivo y eliminación. | Pendiente de tipos, responsables y revisión de riesgo. |
+| Identidad y contacto de clientes | Vincular al cliente con sus casos y permitir contacto operativo autorizado. | Cuatro perfiles para operación cotidiana; acciones de ciclo de vida solo Socio. | Disponible al menos durante seis meses desde el cierre relacionado; destino posterior pendiente de revisión. | Finalidad y campos mínimos validados; habilitación, derechos y política final pendientes. |
+| Información operativa y jurídica del caso | Coordinar registro, asignación y seguimiento interno. | Cuatro perfiles dentro del estudio; archivo y reapertura solo Socio. | Disponible durante seis meses después del cierre; sin eliminación automática. | Pendiente de revisión jurídica y minimización previa al uso real. |
+| Historial y asignaciones | Acreditar responsabilidad y trazabilidad de cambios críticos. | Lectura interna; modificación directa prohibida a usuarios comunes. | Debe acompañar al caso durante su disponibilidad y preservar evidencia exigible; plazo final pendiente. | Catálogo operativo validado; conservación definitiva pendiente. |
+| Fechas relevantes | Apoyar seguimiento interno definido por profesionales. | Cuatro perfiles dentro del estudio. | Disponible con el caso durante seis meses después del cierre; destino posterior pendiente. | Tipos operativos validados; revisión de riesgo pendiente. |
 
 #### 3.5.5 Ciclo de vida y controles organizacionales
 
@@ -569,12 +575,7 @@ este diseño no equivale por sí sola a cumplimiento legal.
 
 | ID | Asunto | Decisión pendiente | Dependencia |
 |---|---|---|---|
-| AD-01 | Campos mínimos de cliente | Definir contacto obligatorio, identificadores y excepciones justificadas. | Validación con socios y revisión de minimización. |
-| AD-02 | Personas múltiples por caso | Determinar si un caso puede poseer más de un cliente o participantes con roles diferentes. | Validación del flujo y posterior modelo físico. |
-| AD-03 | Catálogos y transiciones | Aprobar materias, estados, etapas, prioridades, fechas y transiciones. | Prototipos y reglas operativas. |
-| AD-04 | Conservación | Definir periodos, eventos de inicio, bloqueo, respaldo y eliminación por grupo. | Revisión jurídica, técnica y organizacional. |
-| AD-05 | Historial de valores | Definir qué campos conservan valores anteriores y nivel de detalle permitido. | Privacidad, trazabilidad y capacidad. |
-| AD-06 | Permisos de ciclo de vida | Confirmar perfiles autorizados para desactivar, reactivar, archivar y restaurar. | Validación con socios y matriz de permisos. |
+| AD-04 | Conservación posterior al periodo operativo | Definir bloqueo, respaldo, anonimización o eliminación después de los seis meses solicitados. | Revisión jurídica, técnica y organizacional. |
 
 ### 3.6 Atributos del sistema
 
@@ -596,9 +597,9 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
 | Línea base del MVP | Objetivos, historias y alcance priorizado | #53, #61 | Ocho historias | Tres modelos `mvp-*` | Revisión documental y visual | Modelado; implementación no inferida |
-| 11 RF | Problema, alcance e historias Gherkin | #61 | HU-01 a HU-08 | Casos de uso y datos reducidos | Criterios definidos; ejecución pendiente | Especificado |
-| 10 RNF | Riesgos esenciales y plan de calidad | #61 | Transversal | Proceso y modelo reducido | Métodos definidos; ejecución pendiente | Especificado |
-| 7 RD | Privacidad, integridad y modelo reducido | #61 | HU-03, HU-04, HU-06, HU-08 | Modelo de datos del MVP | Criterios definidos; ejecución pendiente | Especificado |
+| 11 RF | Problema, alcance, historias Gherkin y validación operativa | #61, #78 | HU-01 a HU-08 | Casos de uso y datos reducidos | Reglas validadas; ejecución pendiente | Especificado |
+| 10 RNF | Riesgos esenciales, plan de calidad y permisos validados | #61, #78 | Transversal | Proceso y modelo reducido | Métodos definidos; ejecución pendiente | Especificado |
+| 7 RD | Privacidad, integridad y modelo reducido | #61, #78 | HU-03, HU-04, HU-06, HU-08 | Modelo de datos del MVP | Reglas operativas validadas; ejecución pendiente | Especificado |
 | Revisión IEEE 830-1998 | SRS 1.4 | #61, #66 | Todo el MVP | Modelos seleccionados | Lista de revisión documental | Revisado internamente |
 
 ## Anexos

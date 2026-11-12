@@ -19,8 +19,8 @@ El bloque completo ocupa aproximadamente 2 minutos y 50 segundos. En la
 presentación debe indicarse que el acceso está diseñado pero todavía no
 implementado, que la persistencia actual es temporal, que #74 mantiene 0 %
 funcional aceptado y que la OJV no es una integración. Los modelos reflejan
-cuatro perfiles, siete etapas y ciclos de vida reversibles sin imponer las
-transiciones ni permisos todavía pendientes de validación.
+cuatro perfiles, nueve etapas, la alternativa de audiencia única y ciclos de
+vida reversibles con los permisos operativos validados en #78.
 
 ## Diagramas de apoyo del MVP
 

@@ -1,8 +1,8 @@
 # Historias de usuario priorizadas del MVP
 
-**Versión:** 1.1
+**Versión:** 1.2
 
-**Fecha:** 2026-11-09
+**Fecha:** 2026-11-11
 
 **Issue de origen:** #51
 
@@ -44,9 +44,15 @@ Trazabilidad: `MVP-01`, RF-001, RNF-001, RNF-002, RNF-004.
 ```gherkin
 Escenario: Filtrar casos autorizados
   Dado que existen casos ficticios dentro del alcance del usuario
-  Cuando busca por identificador, cliente, responsable, estado, etapa, subetapa, prioridad o condición de archivo
+  Cuando busca por identificador, cliente, responsable, estado, etapa, procedimiento, próxima fecha o condición de archivo
   Entonces el sistema muestra únicamente las coincidencias autorizadas
   Y permite limpiar los filtros
+
+Escenario: Ordenar el trabajo sin prioridad subjetiva
+  Dado que existen varios casos autorizados
+  Cuando el usuario consulta el listado operativo
+  Entonces puede ordenarlo por etapa y próxima fecha relevante
+  Y el sistema no exige un nivel manual de prioridad
 
 Escenario: Búsqueda sin coincidencias
   Dado que no existe un caso autorizado que coincida
@@ -70,6 +76,12 @@ Escenario: Registrar un caso válido
   Cuando el usuario completa cliente, estado, etapa y responsable y guarda el formulario
   Entonces el sistema crea una ficha única vinculada con el cliente
   Y no exige tribunal, RIT o ROL antes de que estén disponibles
+
+Escenario: Validar antecedentes mínimos de una causa laboral
+  Dado que el usuario seleccionó una materia laboral
+  Cuando intenta activar el caso sin empresa, fecha de ingreso o fecha de despido
+  Entonces el sistema rechaza la activación
+  Y no exige tienda, finiquito o cuantía como datos mínimos
 
 Escenario: Rechazar un caso activo incompleto
   Dado que el formulario no tiene cliente, estado, etapa o responsable
@@ -98,7 +110,7 @@ Trazabilidad: `MVP-03`, RF-004, RF-005, RF-007, RNF-006, RNF-008.
 Escenario: Consultar una ficha autorizada
   Dado que existe un caso dentro del alcance del usuario
   Cuando abre su ficha
-  Entonces visualiza cliente, responsable, participantes, prioridad, estado, etapa, subetapa y fechas registradas
+  Entonces visualiza cliente, responsable, participantes, estado, etapa, procedimiento y fechas registradas
   Y puede acceder al historial básico del caso
 
 Escenario: Impedir una consulta no autorizada
@@ -106,14 +118,14 @@ Escenario: Impedir una consulta no autorizada
   Cuando intenta abrir su ficha
   Entonces el sistema rechaza la solicitud sin revelar sus datos
 
-Escenario: Archivar y reactivar un caso con permiso elevado
-  Dado que existe un caso autorizado y el usuario posee el permiso elevado requerido
+Escenario: Archivar y reactivar un caso como Socio
+  Dado que existe un caso autorizado y el usuario posee el perfil Socio
   Cuando confirma el archivo o la reactivación e indica un motivo
   Entonces el sistema cambia reversiblemente la condición del caso
   Y registra actor, momento, motivo y valores relevantes en el historial
 
-Escenario: Rechazar el archivo sin permiso elevado
-  Dado que el usuario no posee el permiso requerido
+Escenario: Rechazar el archivo para otros perfiles
+  Dado que el usuario posee perfil Abogado, Asistente o Procurador
   Cuando intenta archivar o reactivar un caso
   Entonces el sistema rechaza la operación sin modificar la ficha
 ```
@@ -130,10 +142,22 @@ Trazabilidad: `MVP-04`, RF-004, RF-006, RF-009, RNF-001, RNF-003.
 
 ```gherkin
 Escenario: Registrar un cambio válido
-  Dado que existe un caso y una transición configurada como permitida
+  Dado que existe un caso y una transición permitida entre las etapas validadas
   Cuando el usuario selecciona el nuevo estado o etapa y confirma
   Entonces el sistema actualiza el caso
   Y agrega el cambio al historial con usuario y fecha
+
+Escenario: Registrar el recorrido según procedimiento
+  Dado que el caso se encuentra judicializado
+  Cuando corresponde un procedimiento de aplicación general
+  Entonces el flujo permite audiencia preparatoria y juicio o conciliación
+  Pero cuando corresponde un procedimiento monitorio permite audiencia única
+
+Escenario: Cerrar anticipadamente un caso
+  Dado que existe acuerdo o sentencia y el pago fue registrado
+  Cuando un Socio confirma el cierre desde comparendo, audiencia o juicio e indica el motivo
+  Entonces el caso queda archivado de forma reversible
+  Y el historial conserva actor, momento y motivo
 
 Escenario: Cancelar el cambio
   Dado que el modal de cambio se encuentra abierto
@@ -157,6 +181,11 @@ Escenario: Registrar una fecha válida
   Cuando el usuario indica tipo, fecha, responsable y fuente u observación opcional
   Entonces el sistema incorpora la fecha a la ficha
   Y registra la acción en el historial
+
+Escenario: Registrar un tipo de fecha validado
+  Dado que el usuario registra una fecha laboral, de comparendo, de presentación o de audiencia
+  Cuando guarda un valor válido y su responsable
+  Entonces la fecha queda disponible para ordenar y apoyar el seguimiento interno
 
 Escenario: Evitar interpretación automática
   Dado que el usuario registra manualmente una referencia de caducidad
@@ -201,24 +230,24 @@ Trazabilidad: `MVP-07`, RF-003, RNF-001, RNF-007.
 ```gherkin
 Escenario: Registrar un cliente válido
   Dado que el usuario dispone de datos ficticios o anonimizados
-  Cuando completa los campos mínimos y guarda el formulario
+  Cuando completa nombre, teléfono, origen o materia y RUT y guarda el formulario
   Entonces el sistema asigna un identificador interno al cliente
-  Y deja sus datos disponibles en el listado
+  Y permite omitir el correo electrónico
 
 Escenario: Advertir una posible coincidencia
-  Dado que existe un cliente con datos coincidentes
+  Dado que existe un cliente con el mismo nombre y origen
   Cuando el usuario intenta registrar otro cliente
   Entonces el sistema advierte la posible duplicidad
-  Y no fusiona las fichas automáticamente
+  Y permite continuar sin fusionar las fichas automáticamente porque puede existir otra gestión
 
-Escenario: Desactivar y reactivar un cliente con permiso elevado
-  Dado que existe un cliente y el usuario posee el permiso elevado requerido
+Escenario: Desactivar y reactivar un cliente como Socio
+  Dado que existe un cliente y el usuario posee el perfil Socio
   Cuando confirma la desactivación o reactivación e indica un motivo
   Entonces el sistema cambia reversiblemente el estado del cliente
   Y registra actor, momento, motivo y valores relevantes en el historial
 
-Escenario: Rechazar la desactivación sin permiso elevado
-  Dado que el usuario no posee el permiso requerido
+Escenario: Rechazar la desactivación para otros perfiles
+  Dado que el usuario posee perfil Abogado, Asistente o Procurador
   Cuando intenta desactivar o reactivar un cliente
   Entonces el sistema rechaza la operación sin modificar la ficha
 ```
