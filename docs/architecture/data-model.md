@@ -10,9 +10,9 @@
 
 Este documento define el modelo objetivo implementado en `prisma/schema.prisma`.
 La migración incremental `20261111233000_data_model_v2` alinea una base de
-preproducción vacía con este diseño, pero todavía no acredita su aplicación en
-un entorno PostgreSQL ni incluye el seed ficticio. Esas evidencias se completan
-en iteraciones posteriores del mismo issue.
+preproducción vacía con este diseño. Su aplicación desde cero, el seed ficticio
+idempotente y las restricciones críticas se verifican automáticamente contra
+PostgreSQL 17 mediante `pnpm test:db`.
 
 El modelo representa casos laborales generales. El despido es una materia
 posible, no la entidad raíz. La planilla operativa sensible se utilizó únicamente
@@ -117,12 +117,13 @@ transiciones admitidas deben conservarse como configuración versionada.
 1. [x] Alinear `prisma/schema.prisma` con este diseño sin reescribir
    silenciosamente la migración histórica.
 2. [x] Crear una migración incremental versionada para PostgreSQL.
-3. [ ] Aplicar la migración en una base PostgreSQL vacía de prueba y documentar
+3. [x] Aplicar la migración en una base PostgreSQL vacía de prueba y documentar
    su resultado.
-4. [ ] Incorporar un seed exclusivamente ficticio y reconocible como tal.
-5. [ ] Probar aislamiento por estudio, referencias, campos condicionales, único
+4. [x] Incorporar un seed exclusivamente ficticio y reconocible como tal.
+5. [x] Probar aislamiento por estudio, referencias, restricciones laborales, único
    responsable principal vigente y ciclos reversibles.
-6. [ ] Documentar aplicación y reversión en un entorno de prueba autorizado.
+6. [x] Documentar aplicación y recuperación en un entorno de prueba autorizado.
 
-Hasta completar los pasos pendientes, el esquema constituye un contrato técnico
-versionado, no una capacidad funcional aceptada ni persistencia operativa.
+El esquema constituye un contrato técnico versionado y verificado. Esto no
+acredita todavía una capacidad funcional aceptada: los incrementos verticales
+de clientes y casos deben conectar servidor, persistencia, interfaz y permisos.

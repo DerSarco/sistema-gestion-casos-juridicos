@@ -87,9 +87,8 @@ ALTER TABLE "legal_cases" DROP CONSTRAINT "legal_cases_stage_id_fkey";
 DROP INDEX "legal_cases_study_id_status_stage_id_idx";
 DROP INDEX "legal_cases_client_id_idx";
 
-ALTER TABLE "legal_cases"
-  DROP COLUMN "status",
-  RENAME COLUMN "rit_rol" TO "judicial_role";
+ALTER TABLE "legal_cases" DROP COLUMN "status";
+ALTER TABLE "legal_cases" RENAME COLUMN "rit_rol" TO "judicial_role";
 
 ALTER TABLE "legal_cases"
   ADD COLUMN "nature_id" UUID NOT NULL,
