@@ -91,8 +91,26 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 900 }, { name: "
     for (const path of ["/", "/casos", "/casos/nuevo", "/casos/CASO-001", "/casos/CASO-001/estado", "/casos/CASO-001/fechas/nueva", "/clientes", "/clientes/nuevo"]) {
       await page.goto(path);
       await expect(page.locator("body")).toBeVisible();
-      const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
-      expect(overflow, `${path} presenta desborde horizontal`).toBe(false);
+      const overflow = await page.evaluate(() => ({
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: window.innerWidth,
+        elements: Array.from(document.querySelectorAll("body *"))
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              element: `${element.tagName.toLowerCase()}.${Array.from(element.classList).join(".")}`,
+              left: Math.round(rect.left),
+              right: Math.round(rect.right),
+              width: Math.round(rect.width),
+            };
+          })
+          .filter(({ left, right }) => left < -1 || right > window.innerWidth + 1)
+          .slice(0, 8),
+      }));
+      expect(
+        overflow.documentWidth,
+        `${path} presenta desborde horizontal: ${JSON.stringify(overflow)}`,
+      ).toBeLessThanOrEqual(overflow.viewportWidth + 1);
     }
   });
 }

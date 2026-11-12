@@ -74,7 +74,8 @@ h2 { font-size: 1.1rem; }
 .search-field-wide { max-width: 620px; margin-bottom: 1.25rem; }
 .filters select { min-height: 44px; padding: 0 .8rem; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--ink); }
 .table-card, .card, .form-card { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
-.table-scroll { overflow-x: auto; }
+.table-card { width: 100%; min-width: 0; max-width: 100%; overflow: hidden; }
+.table-scroll { width: 100%; min-width: 0; max-width: 100%; overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 1rem; border-bottom: 1px solid #e8ebf0; text-align: left; vertical-align: middle; }
 th { background: #f8fafc; color: #57606d; font-size: .73rem; letter-spacing: .045em; text-transform: uppercase; }
@@ -180,6 +181,9 @@ tbody tr:hover { background: #f8fafc; }
   .date-highlight { align-items: start; flex-wrap: wrap; }
   .date-highlight span { width: 100%; margin-left: 0; }
   .table-footer { align-items: start; flex-direction: column; }
+  .client-actions { width: 100%; min-width: 150px; }
+  .lifecycle-form { grid-template-columns: 1fr; }
+  .lifecycle-form .table-link { justify-self: start; }
   .login-page { padding: 1rem; }
   .login-card { padding: 1.5rem; }
   .modal { max-height: calc(100vh - 1rem); }
