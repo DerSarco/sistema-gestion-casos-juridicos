@@ -208,4 +208,15 @@ input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="
 
 @media (max-width: 700px) {
   .client-filters { grid-template-columns: minmax(0, 1fr); }
+  .clients-table, .clients-table tbody, .clients-table tr, .clients-table td { display: block; width: 100%; }
+  .clients-table thead { display: none; }
+  .clients-table tr { padding: .55rem 1rem; border-bottom: 1px solid #e8ebf0; }
+  .clients-table td { display: grid; grid-template-columns: minmax(90px, .35fr) minmax(0, 1fr); gap: .75rem; padding: .55rem 0; border: 0; overflow-wrap: anywhere; }
+  .clients-table td::before { color: #667085; font-size: .7rem; font-weight: 800; letter-spacing: .045em; text-transform: uppercase; }
+  .clients-table td:nth-child(1)::before { content: "Cliente"; }
+  .clients-table td:nth-child(2)::before { content: "RUT"; }
+  .clients-table td:nth-child(3)::before { content: "Contacto"; }
+  .clients-table td:nth-child(4)::before { content: "Origen"; }
+  .clients-table td:nth-child(5)::before { content: "Estado"; }
+  .clients-table td:nth-child(6)::before { content: "Acciones"; }
 }
