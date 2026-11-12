@@ -31,6 +31,7 @@ Este repositorio concentra:
 - [Planificación del MVP](docs/planning/README.md)
 - [Capturas verificadas del prototipo Stitch](docs/mockups/stitch/README.md)
 - [Arquitectura y decisiones técnicas](docs/architecture/README.md)
+- [Migraciones y pruebas PostgreSQL](docs/architecture/database-testing.md)
 - [Reglas de contribución](CONTRIBUTING.md)
 - [Diagramas UML](docs/diagrams/README.md)
 
@@ -56,6 +57,10 @@ pnpm typecheck
 pnpm test
 pnpm build
 ```
+
+Los cambios de base de datos requieren además una instancia PostgreSQL de prueba
+vacía y el procedimiento documentado en
+[`docs/architecture/database-testing.md`](docs/architecture/database-testing.md).
 
 El workflow `Quality` de GitHub Actions ejecuta las mismas comprobaciones para
 todo pull request dirigido a `develop` o `main`. Instala las dependencias desde
