@@ -52,21 +52,30 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   await expect(updatedRow.getByText("Inactivo", { exact: true })).toBeVisible();
 });
 
-test("P2 crea, edita y archiva un caso persistente", async ({
-  page,
-}) => {
+test("P2 crea, edita y archiva un caso persistente", async ({ page }) => {
   await page.goto("/casos");
   await page.getByPlaceholder(/Buscar por código/).fill("sin resultado");
   await expect(page.getByText("No se encontraron casos")).toBeVisible();
   await page.getByRole("button", { name: "Limpiar filtros" }).first().click();
   await page.getByRole("link", { name: "+ Nuevo caso" }).click();
   await page.getByRole("button", { name: "Guardar caso" }).click();
-  await expect(page.locator(".error-summary")).toContainText("Revise el formulario");
-  await page.getByLabel(/Cliente activo/).selectOption({ label: "Cliente Ficticio 01" });
-  await page.getByLabel(/Materia laboral/).selectOption({ label: "Despido ficticio" });
+  await expect(page.locator(".error-summary")).toContainText(
+    "Revise el formulario",
+  );
+  await page
+    .getByLabel(/Cliente activo/)
+    .selectOption({ label: "Cliente Ficticio 01" });
+  await page
+    .getByLabel(/Materia laboral/)
+    .selectOption({ label: "Despido ficticio" });
+  await page.getByLabel(/Empleador o contraparte/).fill("Empresa Ficticia SpA");
+  await page.getByLabel(/Inicio de relación laboral/).fill("2025-01-10");
+  await page.getByLabel(/Fecha de despido/).fill("2026-10-10");
   await page.getByLabel(/^Etapa/).selectOption({ label: "Ingreso" });
   await page.getByLabel(/^Título/).fill("Caso temporal verificable");
-  await page.getByLabel(/Responsable principal/).selectOption({ label: "Abogado Ficticio A" });
+  await page
+    .getByLabel(/Responsable principal/)
+    .selectOption({ label: "Abogado Ficticio A" });
   await page.getByRole("button", { name: "Guardar caso" }).click();
   await expect(page.getByRole("heading", { name: /^CASO-/ })).toBeVisible();
   await page.locator("a:visible", { hasText: "Editar caso" }).click();
@@ -74,9 +83,13 @@ test("P2 crea, edita y archiva un caso persistente", async ({
   await editForm.getByLabel(/^Título/).fill("Caso temporal actualizado");
   await editForm.getByRole("button", { name: "Guardar caso" }).click();
   await expect(page.getByText("Caso temporal actualizado")).toBeVisible();
-  await page.locator('input[aria-label="Motivo del cambio"]:visible').fill("Archivo de prueba ficticio");
-  await page.locator('button:visible', { hasText: "Archivar" }).click();
-  await expect(page.getByText("Archivado", { exact: true }).first()).toBeVisible();
+  await page
+    .locator('input[aria-label="Motivo del cambio"]:visible')
+    .fill("Archivo de prueba ficticio");
+  await page.locator("button:visible", { hasText: "Archivar" }).click();
+  await expect(
+    page.getByText("Archivado", { exact: true }).first(),
+  ).toBeVisible();
 });
 
 test("el modal gestiona foco y Escape", async ({ page }) => {

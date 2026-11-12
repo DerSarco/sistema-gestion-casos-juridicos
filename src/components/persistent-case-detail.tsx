@@ -40,7 +40,10 @@ export function PersistentCaseDetail({
           <p>{legalCase.title}</p>
         </div>
         <div className="button-row">
-          <Link className="button button-secondary" href={`/casos/${legalCase.internalCode}/estado`}>
+          <Link
+            className="button button-secondary"
+            href={`/casos/${legalCase.internalCode}/estado`}
+          >
             Cambiar etapa
           </Link>
           <Link
@@ -76,6 +79,44 @@ export function PersistentCaseDetail({
               </div>
             </dl>
           </section>
+          {(legalCase.matterCode === "DISMISSAL" ||
+            legalCase.matterCode === "COLLECTIVE") && (
+            <section className="card detail-card">
+              <header>
+                <h2>Antecedentes laborales</h2>
+              </header>
+              <dl className="facts">
+                {legalCase.matterCode === "DISMISSAL" && (
+                  <>
+                    <div>
+                      <dt>Empleador o contraparte</dt>
+                      <dd>{legalCase.employerOrCounterparty}</dd>
+                    </div>
+                    <div>
+                      <dt>Inicio laboral</dt>
+                      <dd>{legalCase.employmentStartDate}</dd>
+                    </div>
+                    <div>
+                      <dt>Fecha de despido</dt>
+                      <dd>{legalCase.dismissalDate}</dd>
+                    </div>
+                  </>
+                )}
+                {legalCase.matterCode === "COLLECTIVE" && (
+                  <>
+                    <div>
+                      <dt>Sindicato u organización</dt>
+                      <dd>{legalCase.collectiveOrganization}</dd>
+                    </div>
+                    <div>
+                      <dt>Tipo de gestión</dt>
+                      <dd>{legalCase.collectiveActionType}</dd>
+                    </div>
+                  </>
+                )}
+              </dl>
+            </section>
+          )}
           <section className="card detail-card">
             <header>
               <h2>Observaciones</h2>

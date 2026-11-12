@@ -32,6 +32,11 @@ function formInput(data: FormData): PersistentCaseInput {
     rit: String(data.get("rit") ?? ""),
     judicialRole: String(data.get("judicialRole") ?? ""),
     notes: String(data.get("notes") ?? ""),
+    employerOrCounterparty: String(data.get("employerOrCounterparty") ?? ""),
+    employmentStartDate: String(data.get("employmentStartDate") ?? ""),
+    dismissalDate: String(data.get("dismissalDate") ?? ""),
+    collectiveOrganization: String(data.get("collectiveOrganization") ?? ""),
+    collectiveActionType: String(data.get("collectiveActionType") ?? ""),
   };
 }
 
@@ -107,15 +112,34 @@ export async function changeCaseLifecycleAction(
   }
 }
 
-export async function changeCaseStageAction(_previous: CaseLifecycleState, data: FormData): Promise<CaseLifecycleState> {
+export async function changeCaseStageAction(
+  _previous: CaseLifecycleState,
+  data: FormData,
+): Promise<CaseLifecycleState> {
   try {
     const actor = await getServerActor();
-    const result = await createPrismaCaseRepository(actor.studyId).changeStage(String(data.get("caseId") ?? ""), String(data.get("stageId") ?? ""), String(data.get("reason") ?? "").trim(), actor.id);
-    if (!result) return { status: "error", message: "La etapa o el caso no pertenecen al estudio." };
-    revalidatePath("/casos"); revalidatePath(`/casos/${result.internalCode}`);
+    const result = await createPrismaCaseRepository(actor.studyId).changeStage(
+      String(data.get("caseId") ?? ""),
+      String(data.get("stageId") ?? ""),
+      String(data.get("reason") ?? "").trim(),
+      actor.id,
+    );
+    if (!result)
+      return {
+        status: "error",
+        message: "La etapa o el caso no pertenecen al estudio.",
+      };
+    revalidatePath("/casos");
+    revalidatePath(`/casos/${result.internalCode}`);
     redirect(`/casos/${result.internalCode}`, RedirectType.replace);
   } catch (error) {
     if (error && typeof error === "object" && "digest" in error) throw error;
-    return { status: "error", message: error instanceof Error ? error.message : "No fue posible cambiar la etapa." };
+    return {
+      status: "error",
+      message:
+        error instanceof Error
+          ? error.message
+          : "No fue posible cambiar la etapa.",
+    };
   }
 }

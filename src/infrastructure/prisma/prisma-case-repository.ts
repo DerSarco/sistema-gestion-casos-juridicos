@@ -1,5 +1,6 @@
 import { CatalogType, type PrismaClient } from "@/generated/prisma/client";
 import { getPrismaClient } from "@/infrastructure/prisma/prisma-client";
+import { validateLaborFields } from "@/modules/cases/domain/persistent-case";
 import type {
   CaseLifecycle,
   PersistentCase,
@@ -18,12 +19,13 @@ type Database = Pick<
 
 const includeCase = {
   client: { select: { displayName: true } },
-  matter: { select: { name: true } },
+  matter: { select: { name: true, code: true } },
   stage: { select: { name: true } },
   participations: {
     where: { primary: true, endedAt: null },
     include: { participant: { select: { displayName: true } } },
   },
+  laborData: true,
 } as const;
 
 type CaseRecord = Awaited<ReturnType<PrismaCaseRepository["findRecord"]>>;
@@ -57,6 +59,7 @@ export class PrismaCaseRepository {
       clientName: record.client.displayName,
       matterId: record.matterId,
       matter: record.matter.name,
+      matterCode: record.matter.code,
       stageId: record.stageId,
       stage: record.stage.name,
       title: record.title,
@@ -67,6 +70,14 @@ export class PrismaCaseRepository {
       rit: record.rit,
       judicialRole: record.judicialRole,
       notes: record.notes,
+      employerOrCounterparty: record.laborData?.employerOrCounterparty ?? null,
+      employmentStartDate:
+        record.laborData?.employmentStartDate?.toISOString().slice(0, 10) ??
+        null,
+      dismissalDate:
+        record.laborData?.dismissalDate?.toISOString().slice(0, 10) ?? null,
+      collectiveOrganization: record.laborData?.collectiveOrganization ?? null,
+      collectiveActionType: record.laborData?.collectiveActionType ?? null,
       lifecycleReason: record.lifecycleReason,
       createdAt: record.createdAt.toISOString(),
       updatedAt: record.updatedAt.toISOString(),
@@ -125,13 +136,14 @@ export class PrismaCaseRepository {
     const options = await this.formOptions();
     if (!options.clients.some((item) => item.id === input.clientId))
       throw new Error("El cliente no está activo o no pertenece al estudio.");
-    if (
-      !options.matters.some((item) => item.id === input.matterId) ||
-      !options.stages.some((item) => item.id === input.stageId)
-    )
+    const matter = options.matters.find((item) => item.id === input.matterId);
+    if (!matter || !options.stages.some((item) => item.id === input.stageId))
       throw new Error("La materia o etapa no pertenece al estudio.");
     if (!options.users.some((item) => item.id === input.responsibleId))
       throw new Error("El responsable no pertenece al estudio.");
+    const laborErrors = validateLaborFields(input, matter.code);
+    const firstLaborError = Object.values(laborErrors)[0];
+    if (firstLaborError) throw new Error(firstLaborError);
 
     const record = await this.database.$transaction(async (tx) => {
       const defaults = await Promise.all([
@@ -182,6 +194,35 @@ export class PrismaCaseRepository {
               internalCode: `CASO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
             },
           });
+      await tx.laborCaseData.upsert({
+        where: {
+          caseId_studyId: { caseId: legalCase.id, studyId: this.studyId },
+        },
+        create: {
+          studyId: this.studyId,
+          caseId: legalCase.id,
+          employerOrCounterparty: input.employerOrCounterparty || null,
+          employmentStartDate: input.employmentStartDate
+            ? new Date(`${input.employmentStartDate}T00:00:00.000Z`)
+            : null,
+          dismissalDate: input.dismissalDate
+            ? new Date(`${input.dismissalDate}T00:00:00.000Z`)
+            : null,
+          collectiveOrganization: input.collectiveOrganization || null,
+          collectiveActionType: input.collectiveActionType || null,
+        },
+        update: {
+          employerOrCounterparty: input.employerOrCounterparty || null,
+          employmentStartDate: input.employmentStartDate
+            ? new Date(`${input.employmentStartDate}T00:00:00.000Z`)
+            : null,
+          dismissalDate: input.dismissalDate
+            ? new Date(`${input.dismissalDate}T00:00:00.000Z`)
+            : null,
+          collectiveOrganization: input.collectiveOrganization || null,
+          collectiveActionType: input.collectiveActionType || null,
+        },
+      });
       await tx.caseParticipation.updateMany({
         where: {
           caseId: legalCase.id,
@@ -256,13 +297,39 @@ export class PrismaCaseRepository {
     return this.findByIdOrCode(current.id);
   }
 
-  async changeStage(id: string, stageId: string, reason: string, actorId: string): Promise<PersistentCase | null> {
+  async changeStage(
+    id: string,
+    stageId: string,
+    reason: string,
+    actorId: string,
+  ): Promise<PersistentCase | null> {
     const current = await this.findByIdOrCode(id);
-    const stage = await this.database.catalogValue.findFirst({ where: { id: stageId, studyId: this.studyId, type: CatalogType.STAGE, active: true } });
+    const stage = await this.database.catalogValue.findFirst({
+      where: {
+        id: stageId,
+        studyId: this.studyId,
+        type: CatalogType.STAGE,
+        active: true,
+      },
+    });
     if (!current || !stage) return null;
     await this.database.$transaction(async (tx) => {
-      await tx.legalCase.update({ where: { id_studyId: { id: current.id, studyId: this.studyId } }, data: { stageId } });
-      await tx.auditEvent.create({ data: { studyId: this.studyId, caseId: current.id, actorId, entityType: "LEGAL_CASE", entityId: current.id, action: "CASE_STAGE_CHANGED", reason: reason || null, protectedValue: { from: current.stageId, to: stageId } } });
+      await tx.legalCase.update({
+        where: { id_studyId: { id: current.id, studyId: this.studyId } },
+        data: { stageId },
+      });
+      await tx.auditEvent.create({
+        data: {
+          studyId: this.studyId,
+          caseId: current.id,
+          actorId,
+          entityType: "LEGAL_CASE",
+          entityId: current.id,
+          action: "CASE_STAGE_CHANGED",
+          reason: reason || null,
+          protectedValue: { from: current.stageId, to: stageId },
+        },
+      });
     });
     return this.findByIdOrCode(current.id);
   }
