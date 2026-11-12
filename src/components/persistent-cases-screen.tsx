@@ -8,16 +8,29 @@ import { PageHeading } from "./page-heading";
 export function PersistentCasesScreen({ cases }: { cases: PersistentCase[] }) {
   const [query, setQuery] = useState("");
   const [lifecycle, setLifecycle] = useState("ALL");
+  const [clientId, setClientId] = useState("ALL");
+  const [responsibleId, setResponsibleId] = useState("ALL");
+  const [stageId, setStageId] = useState("ALL");
+  const uniqueOptions = <K extends "clientId" | "responsibleId" | "stageId">(
+    key: K,
+    label: "clientName" | "responsible" | "stage",
+  ) =>
+    Array.from(
+      new Map(cases.map((item) => [item[key], item[label]])).entries(),
+    ).sort((left, right) => left[1].localeCompare(right[1], "es-CL"));
   const filtered = useMemo(
     () =>
       cases.filter(
         (item) =>
           (lifecycle === "ALL" || item.lifecycleStatus === lifecycle) &&
-          `${item.internalCode} ${item.clientName} ${item.title} ${item.matter}`
+          (clientId === "ALL" || item.clientId === clientId) &&
+          (responsibleId === "ALL" || item.responsibleId === responsibleId) &&
+          (stageId === "ALL" || item.stageId === stageId) &&
+          `${item.internalCode} ${item.clientName} ${item.title} ${item.matter} ${item.responsible}`
             .toLocaleLowerCase("es-CL")
             .includes(query.toLocaleLowerCase("es-CL")),
       ),
-    [cases, lifecycle, query],
+    [cases, clientId, lifecycle, query, responsibleId, stageId],
   );
   return (
     <>
@@ -30,7 +43,7 @@ export function PersistentCasesScreen({ cases }: { cases: PersistentCase[] }) {
           </Link>
         }
       />
-      <section className="filters client-filters">
+      <section className="filters">
         <label className="search-field">
           <Icon name="search" />
           <span className="sr-only">Buscar casos</span>
@@ -41,6 +54,42 @@ export function PersistentCasesScreen({ cases }: { cases: PersistentCase[] }) {
           />
         </label>
         <select
+          aria-label="Filtrar por cliente"
+          value={clientId}
+          onChange={(event) => setClientId(event.target.value)}
+        >
+          <option value="ALL">Todos los clientes</option>
+          {uniqueOptions("clientId", "clientName").map(([id, name]) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Filtrar por responsable"
+          value={responsibleId}
+          onChange={(event) => setResponsibleId(event.target.value)}
+        >
+          <option value="ALL">Todos los responsables</option>
+          {uniqueOptions("responsibleId", "responsible").map(([id, name]) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Filtrar por etapa"
+          value={stageId}
+          onChange={(event) => setStageId(event.target.value)}
+        >
+          <option value="ALL">Todas las etapas</option>
+          {uniqueOptions("stageId", "stage").map(([id, name]) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+        <select
           aria-label="Filtrar por ciclo"
           value={lifecycle}
           onChange={(event) => setLifecycle(event.target.value)}
@@ -50,12 +99,19 @@ export function PersistentCasesScreen({ cases }: { cases: PersistentCase[] }) {
           <option value="ARCHIVED">Archivados</option>
         </select>
       </section>
-      {(query || lifecycle !== "ALL") && (
+      {(query ||
+        lifecycle !== "ALL" ||
+        clientId !== "ALL" ||
+        responsibleId !== "ALL" ||
+        stageId !== "ALL") && (
         <button
           className="clear-filters"
           onClick={() => {
             setQuery("");
             setLifecycle("ALL");
+            setClientId("ALL");
+            setResponsibleId("ALL");
+            setStageId("ALL");
           }}
         >
           Limpiar filtros
@@ -100,9 +156,12 @@ export function PersistentCasesScreen({ cases }: { cases: PersistentCase[] }) {
                         </span>
                       </td>
                       <td>
-                  <Link className="button button-secondary" href={`/casos/${item.internalCode}`}>
-                    Ver ficha
-                  </Link>
+                        <Link
+                          className="button button-secondary"
+                          href={`/casos/${item.internalCode}`}
+                        >
+                          Ver ficha
+                        </Link>
                       </td>
                     </tr>
                   ))}
