@@ -36,6 +36,10 @@ const includeCase = {
     },
     orderBy: { occursAt: "asc" },
   },
+  auditEvents: {
+    include: { actor: { select: { displayName: true } } },
+    orderBy: { occurredAt: "desc" },
+  },
 } as const;
 
 type CaseRecord = Awaited<ReturnType<PrismaCaseRepository["findRecord"]>>;
@@ -91,6 +95,13 @@ export class PrismaCaseRepository {
         responsible: item.responsible.displayName,
         source: item.source,
         notes: item.notes,
+      })),
+      history: record.auditEvents.map((item) => ({
+        id: item.id,
+        action: item.action,
+        actor: item.actor?.displayName ?? "Sistema",
+        reason: item.reason,
+        occurredAt: item.occurredAt.toISOString(),
       })),
       court: record.court,
       rit: record.rit,
@@ -225,6 +236,7 @@ export class PrismaCaseRepository {
     input: PersistentCaseInput,
     actorId: string,
   ): Promise<PersistentCase> {
+    const previous = id ? await this.findByIdOrCode(id) : null;
     const options = await this.formOptions();
     if (!options.clients.some((item) => item.id === input.clientId))
       throw new Error("El cliente no está activo o no pertenece al estudio.");
@@ -380,6 +392,31 @@ export class PrismaCaseRepository {
           protectedValue: { lifecycleStatus: legalCase.lifecycleStatus },
         },
       });
+      const previousParticipants =
+        previous?.participants.map((item) => item.id).sort() ?? [];
+      const nextParticipants = [...input.participantIds].sort();
+      if (
+        previous &&
+        (previous.responsibleId !== input.responsibleId ||
+          previousParticipants.join(",") !== nextParticipants.join(","))
+      ) {
+        await tx.auditEvent.create({
+          data: {
+            studyId: this.studyId,
+            caseId: legalCase.id,
+            actorId,
+            entityType: "CASE_PARTICIPATION",
+            entityId: legalCase.id,
+            action: "CASE_ASSIGNMENT_CHANGED",
+            protectedValue: {
+              previousResponsibleId: previous.responsibleId,
+              nextResponsibleId: input.responsibleId,
+              previousParticipantCount: previousParticipants.length,
+              nextParticipantCount: nextParticipants.length,
+            },
+          },
+        });
+      }
       return legalCase;
     });
     const result = await this.findByIdOrCode(record.id);

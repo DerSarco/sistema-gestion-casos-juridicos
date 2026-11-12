@@ -22,6 +22,15 @@ export function PersistentCaseDetail({
         </section>
       </AppShell>
     );
+  const historyLabels: Record<string, string> = {
+    CASE_CREATED: "Caso registrado",
+    CASE_UPDATED: "Datos del caso actualizados",
+    CASE_ASSIGNMENT_CHANGED: "Distribución del caso actualizada",
+    CASE_STAGE_CHANGED: "Etapa modificada",
+    CASE_ARCHIVED: "Caso archivado",
+    CASE_REACTIVATED: "Caso reactivado",
+    RELEVANT_DATE_CREATED: "Fecha relevante registrada",
+  };
   return (
     <AppShell active="cases">
       <section className="case-header card">
@@ -94,6 +103,33 @@ export function PersistentCaseDetail({
                 <dd>{legalCase.stage}</dd>
               </div>
             </dl>
+          </section>
+          <section className="card detail-card">
+            <header>
+              <h2>Historial del caso</h2>
+            </header>
+            {legalCase.history.length ? (
+              <ol className="timeline" data-testid="case-history">
+                {legalCase.history.map((event) => (
+                  <li key={event.id}>
+                    <strong>
+                      {historyLabels[event.action] ?? "Acción registrada"}
+                    </strong>
+                    <time>
+                      {new Intl.DateTimeFormat("es-CL", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                        timeZone: "America/Santiago",
+                      }).format(new Date(event.occurredAt))}
+                    </time>
+                    <span>{event.actor}</span>
+                    {event.reason && <small>Motivo: {event.reason}</small>}
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p>Sin eventos registrados.</p>
+            )}
           </section>
           {(legalCase.matterCode === "DISMISSAL" ||
             legalCase.matterCode === "COLLECTIVE") && (

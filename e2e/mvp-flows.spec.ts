@@ -83,7 +83,7 @@ test("P2 crea, edita y archiva un caso persistente", async ({ page }) => {
   await page.getByRole("button", { name: "Guardar caso" }).click();
   await expect(page.getByRole("heading", { name: /^CASO-/ })).toBeVisible();
   await expect(
-    page.getByRole("main").getByText("Socio Ficticio A", { exact: true }),
+    page.getByRole("definition").filter({ hasText: "Socio Ficticio A" }),
   ).toBeVisible();
   await page.locator("a:visible", { hasText: "Editar caso" }).click();
   const editForm = page.locator("form");
@@ -164,6 +164,18 @@ test("confirmar un modal no lo revive al navegar atrás", async ({ page }) => {
 
   await expect(page).toHaveURL(/\/casos$/);
   await expect(page.getByRole("dialog")).toBeHidden();
+});
+
+test("P4 muestra historial y cancelar no agrega eventos", async ({ page }) => {
+  await page.goto("/casos/CASO-FICTICIO-001");
+  const history = page.getByTestId("case-history");
+  await expect(history).toBeVisible();
+  const before = await history.getByRole("listitem").count();
+  await page.getByRole("link", { name: "Cambiar etapa" }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.getByRole("link", { name: "Cancelar" }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await expect(history.getByRole("listitem")).toHaveCount(before);
 });
 
 for (const viewport of [
