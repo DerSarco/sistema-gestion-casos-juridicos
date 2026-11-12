@@ -1,29 +1,30 @@
 # Revisión de calidad del SRS
 
-**Documento revisado:** `docs/SRS.md`, versión 1.5
+**Documento revisado:** `docs/SRS.md`, versión 1.6
 
-**Fecha:** 2026-11-09
+**Fecha:** 2026-11-11
 
 **Referencia:** IEEE Std 830-1998
 
-**Alcance:** revisión interna; no constituye aprobación externa.
+**Alcance:** revisión posterior a la validación operativa del issue #78; no
+constituye autorización para usar datos reales ni aceptación final del producto.
 
 ## Resultado
 
 El SRS especifica el MVP que será diseñado, construido y aceptado en esta
 iteración: ocho historias, once RF —incluida la restricción `RF-011`—, diez RNF y
-siete requisitos conceptuales de datos. El refinamiento incorpora cuatro
-perfiles, siete etapas operativas y ciclos de vida reversibles para clientes y
-casos sin aumentar el catálogo normativo ni crear pantallas adicionales.
+siete requisitos conceptuales de datos. La validación incorpora cuatro perfiles,
+nueve etapas operativas, una alternativa de audiencia única, campos mínimos y
+ciclos de vida reversibles sin aumentar el catálogo normativo ni crear pantallas.
 
 ## Lista de revisión
 
 | Propiedad IEEE 830 | Evidencia | Resultado |
 |---|---|---|
 | Corrección | El alcance responde al registro y seguimiento inicial sin automatización judicial. | Cumple internamente. |
-| Ausencia de ambigüedad | Cada RF/RNF vigente posee criterio observable y las decisiones aún no validadas están identificadas como tales. | Cumple. |
+| Ausencia de ambigüedad | Cada RF/RNF vigente posee criterio observable; permisos, campos, flujo, fechas y cierre incorporan las decisiones de #78. | Cumple. |
 | Completitud | Las ocho historias y vistas están cubiertas por al menos un RF y un RNF. | Cumple. |
-| Consistencia | Objetivos, SRS, alcance y Gherkin usan la línea base refinada; diagramas, trazabilidad y planificación se congelarán en #68. | Cumple para #61; cierre integral pendiente de #68. |
+| Consistencia | SRS, alcance, Gherkin, diagramas, trazabilidad y planificación incorporan la validación #78 sin cambiar el denominador. | Cumple. |
 | Verificabilidad | Los criterios pueden convertirse en pruebas o revisión documental. | Cumple en diseño; ejecución pendiente. |
 | Modificabilidad | La evolución futura está separada del compromiso actual. | Cumple. |
 | Trazabilidad | Historia, vista, requisito, issue y evidencia prevista están relacionados. | Cumple para el MVP. |
@@ -36,8 +37,8 @@ casos sin aumentar el catálogo normativo ni crear pantallas adicionales.
 - 10 requisitos no funcionales.
 - 7 requisitos conceptuales de datos.
 - 1 objetivo general y 4 objetivos específicos medibles.
-- 4 perfiles internos y 7 etapas operativas, con permisos y transiciones
-  detalladas pendientes de validación con los socios.
+- 4 perfiles internos y 9 etapas operativas, con permisos, responsables,
+  alternativa monitoria y cierres anticipados definidos.
 
 ## Límites
 

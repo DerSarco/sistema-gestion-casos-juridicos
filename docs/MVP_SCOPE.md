@@ -1,8 +1,8 @@
 # Línea base del MVP priorizado
 
-**Versión:** 1.2
+**Versión:** 1.3
 
-**Fecha:** 2026-11-09
+**Fecha:** 2026-11-11
 
 **Issues de origen:** #50, #52 y #61
 
@@ -21,11 +21,12 @@ para el prototipo funcional académico actual.
 
 El MVP permitirá que personal interno autorizado registre y consulte clientes y
 casos, gestione su ciclo de vida reversible, asigne responsable y participantes,
-controle estado, etapa, subetapa y prioridad, registre fechas relevantes
-manualmente y consulte un historial básico. Reconoce cuatro perfiles —socio,
-abogado, asistente y procurador— y siete etapas —ingreso, clasificación,
-comparendo, distribución, redacción, seguimiento judicial y cierre— sin fijar
-todavía las transiciones, excepciones ni permisos que deben validar los socios.
+controle estado y etapa, registre fechas relevantes manualmente y consulte un
+historial básico. Reconoce cuatro perfiles —socio, abogado, asistente y
+procurador— y nueve etapas —ingreso, clasificación, comparendo, distribución,
+redacción, seguimiento judicial, audiencia preparatoria, juicio o conciliación y
+cierre— además de audiencia única para el procedimiento monitorio. Las reglas
+operativas fueron validadas mediante el issue #78.
 El acceso interno se representa en el prototipo y su implementación técnica se
 realiza al final del incremento funcional, sin habilitar registro público.
 
@@ -42,7 +43,7 @@ La interfaz comprometida contiene ocho vistas:
 
 La desactivación de clientes y el archivo de casos se ejecutan desde listados o
 fichas existentes; no agregan pantallas. Son operaciones reversibles, auditables,
-sin eliminación física y restringidas a permisos elevados que deben validarse.
+sin eliminación física y restringidas al perfil Socio.
 No se requieren pantallas independientes de detalle de cliente, edición,
 administración de catálogos, recuperación de contraseña, reportes ni servicios
 externos.
@@ -75,18 +76,27 @@ específica, consulta de carga de trabajo, reportes básicos y exportaciones
 autorizadas. Estas capacidades pertenecen al alcance general del producto, pero
 no forman parte de la aceptación ni del porcentaje funcional del MVP actual.
 
-## Decisiones pendientes de validación
+## Decisiones operativas validadas
 
-- matriz exacta de permisos para los cuatro perfiles;
-- responsable formal de la distribución y roles participantes;
-- catálogos de estados, subetapas, prioridades y tipos de fecha;
-- transiciones, excepciones y reglas de cierre;
-- obligatoriedad de empresa, tienda, despido, finiquito y cuantía;
-- perfiles autorizados para desactivar o reactivar clientes y archivar o
-  reactivar casos;
-- anticipación de alertas y reglas de conservación, anonimización y restauración.
-
-Estas decisiones no pueden convertirse en reglas rígidas antes de ser validadas.
+- Los cuatro perfiles pueden consultar, registrar y editar clientes y casos,
+  cambiar estado o etapa y registrar fechas dentro del estudio.
+- Solo Socio distribuye o reasigna, desactiva o reactiva clientes y archiva o
+  reabre casos; estas acciones exigen motivo y auditoría.
+- El responsable principal es un socio o abogado y el procurador participa en
+  gestiones de apoyo.
+- El cliente exige nombre completo, teléfono, origen o materia y RUT; el correo
+  es opcional y la fecha de despido se exige cuando corresponda.
+- Una causa laboral exige empresa, fecha de ingreso y fecha de despido; tienda,
+  finiquito y cuantía son accesorios.
+- El orden operativo utiliza etapa y próxima fecha, sin catálogo manual de
+  prioridad en el MVP.
+- La referencia de caducidad se ingresa manualmente y no constituye cálculo o
+  certificación de un plazo jurídico.
+- Cierre y archivo representan la misma condición reversible y pueden ocurrir
+  anticipadamente en los hitos acordados.
+- La disponibilidad operativa solicitada es de seis meses después del cierre;
+  no existe eliminación automática y el destino posterior requiere revisión
+  jurídica, técnica y organizacional.
 
 ## Funciones expresamente diferidas a evoluciones futuras
 

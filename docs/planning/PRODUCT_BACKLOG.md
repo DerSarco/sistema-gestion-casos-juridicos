@@ -1,8 +1,8 @@
 # Product Backlog priorizado
 
-**Línea base de alcance:** SRS 1.5 del 2026-11-09
+**Línea base de alcance:** SRS 1.6 del 2026-11-11
 
-**Última actualización de estado:** 2026-11-09, issue #74
+**Última actualización de estado:** 2026-11-11, issue #78
 
 ## Escala
 
@@ -17,10 +17,10 @@ v0.2.0, pero no aceptación de la historia completa.
 | 3 | PB-03 | Conectar persistencia PostgreSQL mediante adaptadores Prisma | RD-001 a RD-003 | Must | 8 | PB-01 | Adaptador de clientes implementado en #70; conexión del flujo y adaptador de casos pendientes |
 | 4 | PB-04 | Registrar, editar, desactivar o reactivar clientes | HU-08; RF-002, RF-009 | Must | 5 | PB-03 | Registro y edición temporales; ciclo reversible, conexión real y aceptación pendientes |
 | 5 | PB-05 | Buscar clientes autorizados y distinguir su actividad | HU-07; RF-003 | Must | 3 | PB-03, PB-04 | Búsqueda temporal; actividad, persistencia y autorización pendientes |
-| 6 | PB-06 | Registrar o editar casos con responsable, participantes y prioridad | HU-03; RF-004, RF-005, RF-007 | Must | 8 | PB-03, PB-04 | Registro y edición temporales; modelo refinado, persistencia y autorización pendientes |
+| 6 | PB-06 | Registrar o editar casos con responsable, participantes y flujo validado | HU-03; RF-004, RF-005, RF-007 | Must | 8 | PB-03, PB-04 | Reglas validadas; modelo definitivo, persistencia y autorización pendientes |
 | 7 | PB-07 | Buscar y filtrar casos autorizados | HU-02; RF-010 | Must | 3 | PB-06 | Filtros temporales verificables; autorización pendiente |
 | 8 | PB-08 | Consultar ficha, historial y ciclo de archivo reversible | HU-04; RF-004, RF-006, RF-009 | Must | 5 | PB-06 | Consulta e historial temporales; archivo, persistencia y autorización pendientes |
-| 9 | PB-09 | Cambiar estado, etapa o subetapa con historial | HU-05; RF-005, RF-009 | Must | 5 | PB-08 | Flujo temporal con catálogo ficticio; transiciones definitivas pendientes de validación |
+| 9 | PB-09 | Cambiar estado o etapa y cerrar anticipadamente con historial | HU-05; RF-005, RF-009 | Must | 5 | PB-08 | Flujo validado en #78; implementación persistente pendiente |
 | 10 | PB-10 | Registrar manualmente una fecha relevante | HU-06; RF-008, RF-009, RF-011 | Must | 5 | PB-08 | Flujo temporal verificable sin cálculo jurídico; persistencia pendiente |
 | 11 | PB-11 | Implementar acceso interno y autorización | HU-01; RF-001; RNF-001 | Must | 8 | PB-04 a PB-10 | Planificado para el último incremento funcional |
 | 12 | PB-12 | Adaptar interfaz a escritorio, tableta y móvil | RNF-007, RNF-008 | Must | 5 | PB-02, PB-04 a PB-11 | Verificado para el estado temporal de #74; debe repetirse con los incrementos persistentes |

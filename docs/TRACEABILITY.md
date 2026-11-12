@@ -1,10 +1,10 @@
 # Matriz de trazabilidad del MVP
 
-**Versión:** 0.9
+**Versión:** 1.0
 
-**Fecha:** 2026-11-09
+**Fecha:** 2026-11-11
 
-**Issues de revisión:** #61, #68, #70, #74
+**Issues de revisión:** #61, #68, #70, #74, #78
 
 ## Criterio
 
@@ -16,29 +16,29 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 
 | Historia | Vista | Resultado verificable | RF | RNF principales | Issue de diseño |
 |---|---|---|---|---|---|
-| HU-01 | MVP-01 Inicio de sesión | Acceso interno sin registro público | RF-001 | RNF-001, RNF-002, RNF-004 | #43 |
-| HU-02 | MVP-02 Casos | Buscar y filtrar casos autorizados por atributos operativos y condición de archivo | RF-010 | RNF-001, RNF-007 | #45 |
-| HU-03 | MVP-03 Formulario de caso | Registrar o editar caso con cliente activo, estado, etapa y responsable | RF-004, RF-005, RF-007 | RNF-006, RNF-008 | #45 |
-| HU-04 | MVP-04 Ficha del caso | Consultar ficha e historial; archivar o reactivar con permiso elevado | RF-004, RF-006, RF-009 | RNF-001, RNF-003 | #45 |
-| HU-05 | MVP-05 Estado o etapa | Confirmar o cancelar un cambio trazable | RF-005, RF-009 | RNF-003, RNF-008 | #42, #45 |
-| HU-06 | MVP-06 Fecha relevante | Registrar una fecha sin cálculo jurídico automático | RF-008, RF-009, RF-011 | RNF-003, RNF-004 | #46 |
-| HU-07 | MVP-07 Clientes | Buscar información mínima autorizada y distinguir actividad | RF-003 | RNF-001, RNF-007 | #44 |
-| HU-08 | MVP-08 Formulario de cliente | Registrar, editar, desactivar o reactivar con permiso elevado | RF-002, RF-009 | RNF-001, RNF-003, RNF-004, RNF-008 | #44 |
+| HU-01 | MVP-01 Inicio de sesión | Acceso interno sin registro público | RF-001 | RNF-001, RNF-002, RNF-004 | #85 |
+| HU-02 | MVP-02 Casos | Buscar y filtrar por atributos, procedimiento, próxima fecha y archivo; ordenar sin prioridad subjetiva | RF-010 | RNF-001, RNF-007 | #78, #82 |
+| HU-03 | MVP-03 Formulario de caso | Registrar o editar caso con mínimos generales y laborales validados | RF-004, RF-005, RF-007 | RNF-006, RNF-008 | #78, #81 |
+| HU-04 | MVP-04 Ficha del caso | Consultar ficha e historial; archivar o reactivar exclusivamente como Socio | RF-004, RF-006, RF-009 | RNF-001, RNF-003 | #81, #83 |
+| HU-05 | MVP-05 Estado o etapa | Aplicar el flujo validado, sus alternativas y cierre anticipado trazable | RF-005, RF-009 | RNF-003, RNF-008 | #78, #83 |
+| HU-06 | MVP-06 Fecha relevante | Registrar tipos validados y referencia manual sin cálculo jurídico automático | RF-008, RF-009, RF-011 | RNF-003, RNF-004 | #78, #84 |
+| HU-07 | MVP-07 Clientes | Buscar información mínima autorizada y distinguir actividad | RF-003 | RNF-001, RNF-007 | #80 |
+| HU-08 | MVP-08 Formulario de cliente | Aplicar campos mínimos, advertir coincidencia y reservar el ciclo de vida a Socio | RF-002, RF-003, RF-009 | RNF-001, RNF-003, RNF-004, RNF-008 | #78, #80 |
 
 ## Requisitos funcionales
 
-| RF | Fuente | Verificación prevista | Estado real al 2026-11-09 |
+| RF | Fuente | Verificación prevista | Estado real al 2026-11-11 |
 |---|---|---|---|
 | RF-001 | ALC-01; HU-01 | Acceso válido e inválido sin registro público | Simulado en interfaz para demostración; autenticación y autorización reales pendientes |
-| RF-002 | ALC-02; HU-08 | Registro, edición y ciclo reversible válidos; rechazo sin permiso | Registro y edición temporales; desactivación, permiso, auditoría y conexión persistente pendientes |
-| RF-003 | ALC-02; HU-07 | Búsqueda autorizada, actividad visible y estado sin resultados | Búsqueda temporal; filtro de actividad, autorización y conexión persistente pendientes |
-| RF-004 | ALC-03; HU-03, HU-04 | Alta y edición; archivo reversible sin eliminar relaciones | Alta y edición temporales; archivo, permiso y persistencia pendientes |
-| RF-005 | ALC-05; HU-03, HU-05 | Siete etapas, valores controlados y cancelación sin cambios | Flujo temporal con catálogo ficticio; subetapas y transiciones pendientes de validación |
+| RF-002 | ALC-02; HU-08; #78 | Campos mínimos validados y ciclo reversible exclusivo de Socio | Registro y edición temporales; desactivación, auditoría y persistencia pendientes |
+| RF-003 | ALC-02; HU-07, HU-08; #78 | Búsqueda, actividad y advertencia no bloqueante por nombre y origen | Búsqueda temporal; autorización, coincidencia y persistencia pendientes |
+| RF-004 | ALC-03; HU-03, HU-04; #78 | Mínimos laborales y archivo reversible exclusivo de Socio | Alta y edición temporales; reglas validadas aún sin persistencia ni autorización |
+| RF-005 | ALC-05; HU-03, HU-05; #78 | Nueve etapas, alternativa monitoria y cierre anticipado | Flujo temporal requiere alineación con catálogos validados y persistencia |
 | RF-006 | ALC-03; HU-04 | Consulta autorizada de ficha activa o archivada | Consulta temporal; ciclo de vida, autorización y persistencia pendientes |
-| RF-007 | ALC-04; HU-03 | Responsable, participantes y prioridad trazables | Responsable temporal; participantes, prioridad y persistencia pendientes |
-| RF-008 | ALC-06; HU-06 | Fecha manual válida sin cálculo de plazo | Flujo temporal verificable; persistencia pendiente |
-| RF-009 | ALC-07; HU-04 a HU-06, HU-08 | Historial cronológico de acciones críticas no editable | Historial temporal; auditoría persistente de ciclo de vida y permisos pendiente |
-| RF-010 | ALC-08; HU-02 | Filtros combinables, incluida condición de archivo | Filtros temporales; subetapa, prioridad, archivo y autorización persistente pendientes |
+| RF-007 | ALC-04; HU-03; #78 | Responsable socio o abogado, procurador de apoyo y distribución exclusiva de Socio | Responsable temporal; participantes, autorización y persistencia pendientes |
+| RF-008 | ALC-06; HU-06; #78 | Tipos validados y fecha manual sin cálculo de plazo | Flujo temporal verificable; catálogos y persistencia pendientes |
+| RF-009 | ALC-07; HU-04 a HU-06, HU-08; #78 | Historial de acciones validadas con motivo y valores relevantes | Historial temporal; auditoría persistente pendiente |
+| RF-010 | ALC-08; HU-02; #78 | Filtros combinables y orden por etapa y próxima fecha | Filtros temporales; procedimiento, archivo y autorización persistente pendientes |
 | RF-011 | EXC-01, EXC-02 | Auditoría sin clientes, secretos ni tráfico OJV | Restricción especificada |
 
 ## Requisitos no funcionales
@@ -47,7 +47,7 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 |---|---|---|---|
 | RNF-001 | Autorización | Matriz negativa por rol ejecutada en servidor | Especificado; implementación pendiente |
 | RNF-002 | Secretos | Escaneo de repositorio, respuestas y logs | CI con GitGuardian disponible |
-| RNF-003 | Historial | Ciclo de vida, asignación, prioridad, etapa y fecha generan evidencia | Especificado; implementación persistente pendiente |
+| RNF-003 | Historial | Ciclo de vida, asignación, etapa y fecha generan evidencia con motivo cuando corresponde | Regla validada; implementación persistente pendiente |
 | RNF-004 | Datos de prueba | Revisión de fixtures, BD, capturas y logs | Aplicado en datos actuales |
 | RNF-005 | Puerta de datos reales | Acta aprobada o bloqueo de uso real | Bloqueo vigente |
 | RNF-006 | Integridad | Caso activo incompleto rechazado | Implementado parcialmente |
@@ -64,9 +64,9 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 | `mvp-use-cases` | Mostrar las capacidades de las ocho historias | MVP |
 | `mvp-data-model` | Representar clientes, casos, asignación, fechas e historial | MVP |
 
-Los modelos MVP reflejan cuatro perfiles, siete etapas y ciclos de vida
-reversibles. Los permisos exactos, transiciones y excepciones continúan marcados
-como decisiones pendientes y no se representan como reglas ya aprobadas.
+Los modelos MVP reflejan cuatro perfiles, nueve etapas, la alternativa monitoria
+y ciclos de vida reversibles. Las decisiones de permisos, responsables y
+excepciones incorporadas por #78 constituyen reglas aprobadas para el diseño.
 
 La presencia de código o diagramas amplios anteriores no acredita una función del
 MVP. Un estado solo cambia a implementado o verificado cuando existe evidencia

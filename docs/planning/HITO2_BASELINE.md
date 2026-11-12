@@ -1,6 +1,6 @@
 # Línea base verificable del Hito 2
 
-**Fecha de auditoría:** 2026-11-09
+**Fecha de auditoría:** 2026-11-11
 
 **Issue:** #68
 
@@ -17,14 +17,15 @@ La línea base normativa para continuar el desarrollo es la integrada en
 El commit `f076611` redujo el SRS al alcance real del MVP y el commit `67237af`
 normalizó sus identificadores. No existe en `origin/develop` un commit posterior
 que reactive el catálogo histórico de treinta RF y veintiocho RNF.
-El commit de merge `fc27de8` refinó esa misma línea base con cuatro perfiles,
-siete etapas y ciclos de vida reversibles sin agregar ni renumerar requisitos.
+El commit de merge `fc27de8` refinó esa misma línea base con cuatro perfiles y
+ciclos de vida reversibles. El issue #78 validó nueve etapas, la alternativa
+monitoria, permisos, campos y reglas de cierre sin agregar ni renumerar requisitos.
 
 ## Diferencias encontradas
 
 | Artefacto | Contenido observado | Interpretación y acción |
 |---|---|---|
-| SRS 1.5 en `origin/develop` | Catálogo compacto de 11 RF, 10 RNF y 7 RD; cuatro perfiles, siete etapas y ciclos reversibles. | Fuente normativa de construcción y aceptación. |
+| SRS 1.6 en `origin/develop` | Catálogo compacto de 11 RF, 10 RNF y 7 RD; cuatro perfiles, nueve etapas y ciclos reversibles. | Fuente normativa de construcción y aceptación. |
 | Informe corregido del Hito 1 | Síntesis académica `R1` a `R14`, con requisitos funcionales, de calidad y cumplimiento. | Resume la propuesta completa. No reemplaza por sí sola los identificadores ni reactiva funciones excluidas del SRS. |
 | PPT del Hito 2, lámina 11 | Catálogo histórico `RF-001…RF-030`, `RNF-001…RNF-028` y total de 58 requisitos. | Debe sustituirse por 11 RF, 10 RNF y 7 RD, indicando que el catálogo compacto es el vigente. |
 
@@ -46,7 +47,7 @@ commits ni cantidad de líneas de código.
 | Paquete | Peso | Requisitos e historias | Resultado aceptable |
 |---|---:|---|---|
 | P1. Clientes persistentes | 15 % | RF-002, RF-003; HU-07, HU-08 | Registrar, editar, buscar, desactivar y reactivar clientes con autorización y auditoría. |
-| P2. Casos y responsable | 25 % | RF-004, RF-005, RF-007; HU-03 | Registrar y editar un caso con cliente activo, responsable, participantes, prioridad y etapa controlada. |
+| P2. Casos y responsable | 25 % | RF-004, RF-005, RF-007; HU-03 | Registrar y editar un caso con cliente activo, responsable, participantes y etapa controlada según las reglas validadas. |
 | P3. Consulta y búsqueda de casos | 15 % | RF-006, RF-010; HU-02, HU-04 | Consultar ficha y aplicar filtros sin exponer casos no autorizados. |
 | P4. Estado e historial | 20 % | RF-004, RF-005, RF-009; HU-04, HU-05 | Confirmar cambios, archivar o reactivar y conservar actor, momento, motivo y valores relevantes. |
 | P5. Fechas relevantes | 10 % | RF-008; HU-06 | Registrar una fecha manual sin calcular un plazo judicial definitivo. |
