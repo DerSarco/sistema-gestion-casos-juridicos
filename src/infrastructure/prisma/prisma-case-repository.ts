@@ -29,6 +29,13 @@ const includeCase = {
     },
   },
   laborData: true,
+  relevantDates: {
+    include: {
+      type: { select: { name: true } },
+      responsible: { select: { displayName: true } },
+    },
+    orderBy: { occursAt: "asc" },
+  },
 } as const;
 
 type CaseRecord = Awaited<ReturnType<PrismaCaseRepository["findRecord"]>>;
@@ -76,6 +83,15 @@ export class PrismaCaseRepository {
           name: item.participant.displayName,
           role: item.role.name,
         })),
+      relevantDates: record.relevantDates.map((item) => ({
+        id: item.id,
+        type: item.type.name,
+        title: item.title,
+        occursAt: item.occursAt.toISOString(),
+        responsible: item.responsible.displayName,
+        source: item.source,
+        notes: item.notes,
+      })),
       court: record.court,
       rit: record.rit,
       judicialRole: record.judicialRole,
@@ -121,7 +137,9 @@ export class PrismaCaseRepository {
         where: {
           studyId: this.studyId,
           active: true,
-          type: { in: [CatalogType.MATTER, CatalogType.STAGE] },
+          type: {
+            in: [CatalogType.MATTER, CatalogType.STAGE, CatalogType.DATE_TYPE],
+          },
         },
         select: { id: true, type: true, name: true, code: true },
         orderBy: { sortOrder: "asc" },
@@ -137,7 +155,69 @@ export class PrismaCaseRepository {
       matters: catalogs.filter((item) => item.type === CatalogType.MATTER),
       stages: catalogs.filter((item) => item.type === CatalogType.STAGE),
       users,
+      dateTypes: catalogs.filter((item) => item.type === CatalogType.DATE_TYPE),
     };
+  }
+
+  async addRelevantDate(
+    caseId: string,
+    input: {
+      typeId: string;
+      responsibleId: string;
+      title: string;
+      occursAt: string;
+      source: string;
+      notes: string;
+    },
+    actorId: string,
+  ): Promise<PersistentCase | null> {
+    const current = await this.findByIdOrCode(caseId);
+    if (!current) return null;
+    const [type, responsible] = await Promise.all([
+      this.database.catalogValue.findFirst({
+        where: {
+          id: input.typeId,
+          studyId: this.studyId,
+          type: CatalogType.DATE_TYPE,
+          active: true,
+        },
+      }),
+      this.database.user.findFirst({
+        where: {
+          id: input.responsibleId,
+          studyId: this.studyId,
+          status: "ACTIVE",
+        },
+      }),
+    ]);
+    if (!type || !responsible) return null;
+    await this.database.$transaction(async (tx) => {
+      const date = await tx.relevantDate.create({
+        data: {
+          studyId: this.studyId,
+          caseId: current.id,
+          typeId: type.id,
+          responsibleId: responsible.id,
+          title: input.title,
+          occursAt: new Date(input.occursAt),
+          timezone: "America/Santiago",
+          source: input.source || null,
+          notes: input.notes || null,
+        },
+      });
+      await tx.auditEvent.create({
+        data: {
+          studyId: this.studyId,
+          caseId: current.id,
+          actorId,
+          entityType: "RELEVANT_DATE",
+          entityId: date.id,
+          action: "RELEVANT_DATE_CREATED",
+          protectedValue: { typeId: type.id, occursAt: input.occursAt },
+        },
+      });
+    });
+    return this.findByIdOrCode(current.id);
   }
 
   async save(

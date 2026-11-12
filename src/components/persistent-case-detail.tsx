@@ -42,6 +42,12 @@ export function PersistentCaseDetail({
         <div className="button-row">
           <Link
             className="button button-secondary"
+            href={`/casos/${legalCase.internalCode}/fechas/nueva`}
+          >
+            Registrar fecha
+          </Link>
+          <Link
+            className="button button-secondary"
             href={`/casos/${legalCase.internalCode}/estado`}
           >
             Cambiar etapa
@@ -140,6 +146,33 @@ export function PersistentCaseDetail({
               <h2>Observaciones</h2>
             </header>
             <p>{legalCase.notes || "Sin observaciones."}</p>
+          </section>
+          <section className="card detail-card">
+            <header>
+              <h2>Fechas relevantes</h2>
+            </header>
+            {legalCase.relevantDates.length ? (
+              <ol className="timeline">
+                {legalCase.relevantDates.map((item) => (
+                  <li key={item.id}>
+                    <strong>{item.title}</strong>
+                    <time>
+                      {new Intl.DateTimeFormat("es-CL", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                        timeZone: "America/Santiago",
+                      }).format(new Date(item.occursAt))}
+                    </time>
+                    <span>
+                      {item.type} · {item.responsible}
+                    </span>
+                    {item.source && <small>Fuente: {item.source}</small>}
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p>Sin fechas registradas.</p>
+            )}
           </section>
         </div>
         <aside className="detail-side">

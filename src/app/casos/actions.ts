@@ -146,3 +146,49 @@ export async function changeCaseStageAction(
     };
   }
 }
+
+export async function addRelevantDateAction(
+  _previous: CaseLifecycleState,
+  data: FormData,
+): Promise<CaseLifecycleState> {
+  const actor = await getServerActor();
+  const title = String(data.get("title") ?? "").trim();
+  const occursAt = String(data.get("occursAt") ?? "");
+  const source = String(data.get("source") ?? "").trim();
+  if (title.length < 3)
+    return {
+      status: "error",
+      message: "Ingresa un título de al menos 3 caracteres.",
+    };
+  if (!occursAt || Number.isNaN(Date.parse(occursAt)))
+    return { status: "error", message: "Ingresa una fecha y hora válidas." };
+  if (
+    String(data.get("typeCode") ?? "") === "MANUAL_EXPIRY" &&
+    source.length < 3
+  )
+    return {
+      status: "error",
+      message: "La caducidad manual requiere indicar su fuente.",
+    };
+  const result = await createPrismaCaseRepository(
+    actor.studyId,
+  ).addRelevantDate(
+    String(data.get("caseId") ?? ""),
+    {
+      typeId: String(data.get("typeId") ?? ""),
+      responsibleId: String(data.get("responsibleId") ?? ""),
+      title,
+      occursAt,
+      source,
+      notes: String(data.get("notes") ?? "").trim(),
+    },
+    actor.id,
+  );
+  if (!result)
+    return {
+      status: "error",
+      message: "El caso, tipo o responsable no está disponible.",
+    };
+  revalidatePath(`/casos/${result.internalCode}`);
+  redirect(`/casos/${result.internalCode}`, RedirectType.replace);
+}

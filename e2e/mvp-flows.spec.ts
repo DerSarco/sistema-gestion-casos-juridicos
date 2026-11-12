@@ -120,6 +120,31 @@ test("P3 combina filtros y oculta casos no disponibles", async ({ page }) => {
   await expect(page.getByText(/no pertenece al estudio/)).toBeVisible();
 });
 
+test("P5 registra una caducidad manual sin calcular plazos", async ({
+  page,
+}) => {
+  const dateTitle = `Referencia manual E2E ${String(Date.now()).slice(-6)}`;
+  await page.goto("/casos/CASO-FICTICIO-001/fechas/nueva");
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.getByLabel(/^Tipo/).selectOption({ label: "Caducidad manual" });
+  await page.getByLabel(/^Título/).fill(dateTitle);
+  await page.getByLabel(/Fecha y hora/).fill("2026-12-15T10:30");
+  await page
+    .getByLabel(/^Responsable/)
+    .selectOption({ label: "Abogado Ficticio A" });
+  await page.getByLabel(/^Fuente/).fill("Documento ficticio revisado");
+  await page.getByRole("button", { name: "Guardar fecha" }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await expect(page.getByText(dateTitle, { exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole("listitem")
+      .filter({ hasText: dateTitle })
+      .getByText("Fuente: Documento ficticio revisado"),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/\/casos\/CASO-FICTICIO-001$/);
+});
+
 test("el modal gestiona foco y Escape", async ({ page }) => {
   await page.goto("/casos/CASO-FICTICIO-001/estado");
   await expect(page.getByRole("dialog")).toBeVisible();
