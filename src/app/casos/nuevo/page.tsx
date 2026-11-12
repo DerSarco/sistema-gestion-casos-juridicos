@@ -9,5 +9,5 @@ export default async function NewCasePage({ searchParams }: { searchParams: Prom
   const { editar } = await searchParams;
   const actor = await getServerActor(); const repository = createPrismaCaseRepository(actor.studyId);
   const [current, options] = await Promise.all([editar ? repository.findByIdOrCode(editar) : Promise.resolve(null), repository.formOptions()]);
-  return <AppShell active="cases"><PersistentCaseForm key={current?.id ?? "new"} current={current} options={options} /></AppShell>;
+  return <AppShell active="cases"><PersistentCaseForm key={current?.id ?? "new"} current={current} options={options} actorId={actor.id} canDistribute={actor.role === "Socio"} /></AppShell>;
 }

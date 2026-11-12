@@ -1,15 +1,17 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { PersistentCase } from "@/modules/cases/domain/persistent-case";
+import { getServerActor } from "@/infrastructure/auth/server-actor";
 import { AppShell } from "./app-shell";
 import { CaseLifecycleForm } from "./case-lifecycle-form";
-export function PersistentCaseDetail({
+export async function PersistentCaseDetail({
   legalCase,
   modal,
 }: {
   legalCase: PersistentCase | null;
   modal?: ReactNode;
 }) {
+  const actor = await getServerActor();
   if (!legalCase)
     return (
       <AppShell active="cases">
@@ -234,17 +236,19 @@ export function PersistentCaseDetail({
               Registro manual interno, sin sincronización externa.
             </p>
           </section>
-          <section className="card detail-card">
-            <header>
-              <h2>Ciclo del caso</h2>
-            </header>
-            <CaseLifecycleForm legalCase={legalCase} />
-            {legalCase.lifecycleReason && (
-              <p className="muted">
-                Último motivo: {legalCase.lifecycleReason}
-              </p>
-            )}
-          </section>
+          {actor.role === "Socio" && (
+            <section className="card detail-card">
+              <header>
+                <h2>Ciclo del caso</h2>
+              </header>
+              <CaseLifecycleForm legalCase={legalCase} />
+              {legalCase.lifecycleReason && (
+                <p className="muted">
+                  Último motivo: {legalCase.lifecycleReason}
+                </p>
+              )}
+            </section>
+          )}
         </aside>
       </div>
       {modal}

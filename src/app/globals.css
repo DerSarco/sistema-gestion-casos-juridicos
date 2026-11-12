@@ -50,6 +50,8 @@ h2 { font-size: 1.1rem; }
 .nav-item:hover, .nav-item:focus-visible, .logout:hover, .logout:focus-visible { background: rgb(255 255 255 / 10%); color: #fff; }
 .nav-item-active { border-left: 4px solid #c4f3f5; background: rgb(255 255 255 / 17%); color: #fff; }
 .logout { margin-top: auto; border-top: 1px solid rgb(255 255 255 / 18%); border-radius: 0; padding-top: 1.25rem; }
+.sidebar form { margin-top: auto; }
+.sidebar form .logout { width: 100%; border-right: 0; border-bottom: 0; border-left: 0; background: transparent; }
 .workspace { min-width: 0; }
 .topbar { min-height: 58px; display: flex; align-items: center; justify-content: space-between; padding: .65rem 2rem; border-bottom: 1px solid var(--border); background: var(--surface); color: #475467; }
 .user { display: flex; align-items: center; gap: .65rem; color: var(--ink); }

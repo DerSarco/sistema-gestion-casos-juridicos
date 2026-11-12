@@ -18,9 +18,13 @@ const ids = {
   studyB: "20000000-0000-4000-8000-000000000001",
   rolePartnerA: "10000000-0000-4000-8000-000000000101",
   roleLawyerA: "10000000-0000-4000-8000-000000000102",
+  roleAssistantA: "10000000-0000-4000-8000-000000000103",
+  roleProcuratorA: "10000000-0000-4000-8000-000000000104",
   rolePartnerB: "20000000-0000-4000-8000-000000000101",
   partnerA: "10000000-0000-4000-8000-000000000201",
   lawyerA: "10000000-0000-4000-8000-000000000202",
+  assistantA: "10000000-0000-4000-8000-000000000203",
+  procuratorA: "10000000-0000-4000-8000-000000000204",
   partnerB: "20000000-0000-4000-8000-000000000201",
   clientA: "10000000-0000-4000-8000-000000000301",
   clientB: "20000000-0000-4000-8000-000000000301",
@@ -102,6 +106,8 @@ async function main() {
     update: { name: "Socio", active: true },
     create: { id: ids.rolePartnerA, studyId: ids.studyA, name: "Socio" },
   });
+  await prisma.role.upsert({ where: { id: ids.roleAssistantA }, update: { name: "Asistente", active: true }, create: { id: ids.roleAssistantA, studyId: ids.studyA, name: "Asistente" } });
+  await prisma.role.upsert({ where: { id: ids.roleProcuratorA }, update: { name: "Procurador", active: true }, create: { id: ids.roleProcuratorA, studyId: ids.studyA, name: "Procurador" } });
   await prisma.role.upsert({
     where: { id: ids.roleLawyerA },
     update: { name: "Abogado", active: true },
@@ -124,6 +130,8 @@ async function main() {
       accessIdentifier: "socio-a@example.test",
     },
   });
+  await prisma.user.upsert({ where: { id: ids.assistantA }, update: { displayName: "Asistente Ficticio A", status: "ACTIVE" }, create: { id: ids.assistantA, studyId: ids.studyA, roleId: ids.roleAssistantA, displayName: "Asistente Ficticio A", accessIdentifier: "asistente-a@example.test" } });
+  await prisma.user.upsert({ where: { id: ids.procuratorA }, update: { displayName: "Procurador Ficticio A", status: "ACTIVE" }, create: { id: ids.procuratorA, studyId: ids.studyA, roleId: ids.roleProcuratorA, displayName: "Procurador Ficticio A", accessIdentifier: "procurador-a@example.test" } });
   await prisma.user.upsert({
     where: { id: ids.lawyerA },
     update: { displayName: "Abogado Ficticio A", status: "ACTIVE" },

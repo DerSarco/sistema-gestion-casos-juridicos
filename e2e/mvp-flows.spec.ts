@@ -1,4 +1,27 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+const demoPassword = process.env.DEMO_LOGIN_PASSWORD;
+
+async function login(
+  page: Page,
+  identifier = "socio-a@example.test",
+): Promise<void> {
+  if (!demoPassword) throw new Error("DEMO_LOGIN_PASSWORD no está configurada.");
+  await page.goto("/");
+  await page.getByLabel("Correo electrónico").fill(identifier);
+  await page.getByLabel("Contraseña").fill(demoPassword);
+  await page.getByRole("button", { name: "Ingresar" }).click();
+  await expect(page).toHaveURL(/\/casos$/);
+}
+
+test.beforeEach(async ({ page }, testInfo) => {
+  if (
+    testInfo.title.startsWith("AUTH-") ||
+    testInfo.title.startsWith("MVP-01")
+  )
+    return;
+  await login(page);
+});
 
 test("MVP-01 valida acceso de demostración y navega", async ({ page }) => {
   await page.goto("/");
@@ -8,11 +31,43 @@ test("MVP-01 valida acceso de demostración y navega", async ({ page }) => {
   await expect(page.locator(".error-summary")).toContainText(
     "correo electrónico válido",
   );
-  await page.getByLabel("Correo electrónico").fill("abogado@estudio.cl");
-  await page.getByLabel("Contraseña").fill("demostracion");
+  if (!demoPassword) throw new Error("DEMO_LOGIN_PASSWORD no está configurada.");
+  await page.getByLabel("Correo electrónico").fill("socio-a@example.test");
+  await page.getByLabel("Contraseña").fill(demoPassword);
   await page.getByRole("button", { name: "Ingresar" }).click();
   await expect(page).toHaveURL(/\/casos$/);
 });
+
+test("AUTH-01 protege rutas y elimina la sesión al cerrar", async ({ page }) => {
+  await page.goto("/casos");
+  await expect(page).toHaveURL(/\/$/);
+  await login(page);
+  await page.getByRole("button", { name: "Cerrar sesión" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await page.goto("/clientes");
+  await expect(page).toHaveURL(/\/$/);
+});
+
+for (const account of [
+  { identifier: "abogado-a@example.test", role: "Abogado" },
+  { identifier: "asistente-a@example.test", role: "Asistente" },
+  { identifier: "procurador-a@example.test", role: "Procurador" },
+]) {
+  test(`AUTH-02 oculta acciones elevadas al perfil ${account.role}`, async ({
+    page,
+  }) => {
+    await login(page, account.identifier);
+    await expect(page.locator(".topbar")).toContainText(account.role);
+    await page.goto("/clientes");
+    await expect(
+      page.getByRole("button", { name: /Desactivar|Reactivar/ }),
+    ).toHaveCount(0);
+    await page.goto("/casos/CASO-FICTICIO-001");
+    await expect(page.getByText("Ciclo del caso", { exact: true })).toHaveCount(
+      0,
+    );
+  });
+}
 
 test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async ({
   page,
