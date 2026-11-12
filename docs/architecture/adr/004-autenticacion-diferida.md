@@ -14,8 +14,10 @@ inicio de sesión produciría una falsa expectativa de protección.
 
 El milestone v0.2 no incluirá sign in, sign up ni selección de rol simulada. La
 aplicación se identificará como entorno no productivo con datos ficticios. El
-acceso interno y la autorización en servidor se implementarán en el milestone
-v0.3 mediante el issue #29. No existirá registro público de usuarios.
+acceso interno y la autorización completa en servidor se implementarán en el
+milestone v0.5 mediante el issue #85. Los incrementos anteriores conservarán el
+límite de autorización en servidor con actores internos ficticios. No existirá
+registro público de usuarios.
 
 ## Consecuencias
 

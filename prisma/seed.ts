@@ -132,12 +132,12 @@ async function main() {
 
   await prisma.client.upsert({
     where: { id: ids.clientA },
-    update: { displayName: "Cliente Ficticio 01" },
+    update: { displayName: "Cliente Ficticio 01", rutNormalized: "111111111" },
     create: {
       id: ids.clientA,
       studyId: ids.studyA,
       displayName: "Cliente Ficticio 01",
-      rutNormalized: "RUT-FICTICIO-01",
+      rutNormalized: "111111111",
       phone: "+56900000001",
       email: "cliente01@example.test",
       originMatter: "Consulta ficticia",
@@ -145,12 +145,12 @@ async function main() {
   });
   await prisma.client.upsert({
     where: { id: ids.clientB },
-    update: { displayName: "Cliente Ficticio 02" },
+    update: { displayName: "Cliente Ficticio 02", rutNormalized: "222222222" },
     create: {
       id: ids.clientB,
       studyId: ids.studyB,
       displayName: "Cliente Ficticio 02",
-      rutNormalized: "RUT-FICTICIO-02",
+      rutNormalized: "222222222",
       phone: "+56900000002",
       email: "cliente02@example.test",
       originMatter: "Consulta ficticia",

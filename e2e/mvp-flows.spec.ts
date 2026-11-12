@@ -12,26 +12,32 @@ test("MVP-01 valida acceso de demostración y navega", async ({ page }) => {
   await expect(page).toHaveURL(/\/casos$/);
 });
 
-test("MVP-07 y MVP-08 buscan, validan, crean y editan sin duplicar", async ({ page }) => {
+test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async ({ page }) => {
   await page.goto("/clientes");
   await page.getByPlaceholder(/Buscar por nombre/).fill("inexistente");
   await expect(page.getByText("No se encontraron clientes")).toBeVisible();
-  await page.getByRole("button", { name: "Limpiar búsqueda" }).first().click();
+  await page.getByRole("button", { name: "Limpiar filtros" }).first().click();
   await page.getByRole("link", { name: "+ Nuevo cliente" }).click();
   await page.getByRole("button", { name: "Guardar cliente" }).click();
-  await expect(page.locator(".error-summary")).toContainText("Revise los campos");
-  await page.getByLabel(/Nombre del cliente/).fill("Cliente 05");
+  await expect(page.locator(".error-summary")).toContainText("Revise el formulario");
+  await page.getByLabel(/Nombre completo/).fill("Cliente 05");
+  await page.getByLabel(/RUT/).fill("555555555");
   await page.getByRole("textbox", { name: /Correo electrónico/ }).fill("cliente05@ejemplo.cl");
   await page.getByRole("textbox", { name: /Teléfono/ }).fill("+56 9 1111 2222");
+  await page.getByLabel(/Origen o materia/).fill("Consulta laboral ficticia");
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.getByText("Cliente 05", { exact: true })).toBeVisible();
-  await expect(page.getByText("Mostrando 5 de 5 clientes")).toBeVisible();
+  await expect(page.getByText("Mostrando 2 de 2 clientes")).toBeVisible();
   const row = page.getByRole("row").filter({ hasText: "Cliente 05" });
   await row.getByRole("link", { name: /Editar/ }).click();
-  await page.getByLabel(/Nombre del cliente/).fill("Cliente 05 actualizado");
+  await page.getByLabel(/Nombre completo/).fill("Cliente 05 actualizado");
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.getByText("Cliente 05 actualizado")).toBeVisible();
-  await expect(page.getByText("Mostrando 5 de 5 clientes")).toBeVisible();
+  await expect(page.getByText("Mostrando 2 de 2 clientes")).toBeVisible();
+  const updatedRow = page.getByRole("row").filter({ hasText: "Cliente 05 actualizado" });
+  await updatedRow.getByPlaceholder("Motivo del cambio").fill("Cierre operativo ficticio");
+  await updatedRow.getByRole("button", { name: "Desactivar" }).click();
+  await expect(updatedRow.getByText("Inactivo", { exact: true })).toBeVisible();
 });
 
 test("MVP-02 a MVP-06 completan caso, filtros, estado, fecha y cancelación", async ({ page }) => {
@@ -85,8 +91,26 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 900 }, { name: "
     for (const path of ["/", "/casos", "/casos/nuevo", "/casos/CASO-001", "/casos/CASO-001/estado", "/casos/CASO-001/fechas/nueva", "/clientes", "/clientes/nuevo"]) {
       await page.goto(path);
       await expect(page.locator("body")).toBeVisible();
-      const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
-      expect(overflow, `${path} presenta desborde horizontal`).toBe(false);
+      const overflow = await page.evaluate(() => ({
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: window.innerWidth,
+        elements: Array.from(document.querySelectorAll("body *"))
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              element: `${element.tagName.toLowerCase()}.${Array.from(element.classList).join(".")}`,
+              left: Math.round(rect.left),
+              right: Math.round(rect.right),
+              width: Math.round(rect.width),
+            };
+          })
+          .filter(({ left, right }) => left < -1 || right > window.innerWidth + 1)
+          .slice(0, 8),
+      }));
+      expect(
+        overflow.documentWidth,
+        `${path} presenta desborde horizontal: ${JSON.stringify(overflow)}`,
+      ).toBeLessThanOrEqual(overflow.viewportWidth + 1);
     }
   });
 }

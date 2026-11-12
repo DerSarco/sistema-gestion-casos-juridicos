@@ -52,7 +52,7 @@ test("las migraciones y el seed idempotente crean solo datos ficticios", async (
 
   for (const client of clients.rows) {
     assert.match(client.display_name, /Ficticio/);
-    assert.match(client.rut_normalized, /^RUT-FICTICIO-/);
+    assert.match(client.rut_normalized, /^\d{9}$/);
     assert.match(client.email, /@example\.test$/);
   }
 });
