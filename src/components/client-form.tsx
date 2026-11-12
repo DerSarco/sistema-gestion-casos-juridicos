@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { initialClientFormState, saveClientAction } from "@/app/clientes/actions";
+import { saveClientAction, type ClientFormState } from "@/app/clientes/actions";
 import type { Client } from "@/modules/clients/domain/client";
 import { PageHeading } from "./page-heading";
 
 export function ClientForm({ client }: { client?: Client }) {
-  const [state, action, pending] = useActionState(saveClientAction, initialClientFormState);
+  const [state, action, pending] = useActionState(saveClientAction, { status: "idle" } satisfies ClientFormState);
   const values = state.values;
   return <div className="form-page form-page-narrow">
     <PageHeading title={client ? "Editar cliente" : "Registrar cliente"} subtitle="La ficha se almacena en PostgreSQL y conserva trazabilidad de sus cambios" />

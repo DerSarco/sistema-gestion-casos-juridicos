@@ -13,8 +13,6 @@ export type ClientFormState = {
   values?: ClientInput;
 };
 
-export const initialClientFormState: ClientFormState = { status: "idle" };
-
 function formInput(formData: FormData): ClientInput {
   return {
     displayName: String(formData.get("displayName") ?? ""),
@@ -53,8 +51,6 @@ export async function saveClientAction(_previous: ClientFormState, formData: For
 }
 
 export type LifecycleState = { status: "idle" | "error"; message?: string };
-export const initialLifecycleState: LifecycleState = { status: "idle" };
-
 export async function changeClientStatusAction(_previous: LifecycleState, formData: FormData): Promise<LifecycleState> {
   try {
     const actor = await getServerActor();

@@ -19,7 +19,7 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   await page.getByRole("button", { name: "Limpiar filtros" }).first().click();
   await page.getByRole("link", { name: "+ Nuevo cliente" }).click();
   await page.getByRole("button", { name: "Guardar cliente" }).click();
-  await expect(page.locator(".error-summary")).toContainText("Revise los campos");
+  await expect(page.locator(".error-summary")).toContainText("Revise el formulario");
   await page.getByLabel(/Nombre completo/).fill("Cliente 05");
   await page.getByLabel(/RUT/).fill("555555555");
   await page.getByRole("textbox", { name: /Correo electrónico/ }).fill("cliente05@ejemplo.cl");

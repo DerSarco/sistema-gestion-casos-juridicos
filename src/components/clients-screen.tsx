@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useActionState, useMemo, useState } from "react";
-import { changeClientStatusAction, initialLifecycleState } from "@/app/clientes/actions";
+import { changeClientStatusAction, type LifecycleState } from "@/app/clientes/actions";
 import type { Client } from "@/modules/clients/domain/client";
 import { Icon } from "./icons";
 import { PageHeading } from "./page-heading";
 
 function LifecycleForm({ client }: { client: Client }) {
-  const [state, action, pending] = useActionState(changeClientStatusAction, initialLifecycleState);
+  const [state, action, pending] = useActionState(changeClientStatusAction, { status: "idle" } satisfies LifecycleState);
   const target = client.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
   return <form action={action} className="lifecycle-form">
     <input type="hidden" name="clientId" value={client.id} /><input type="hidden" name="targetStatus" value={target} />
