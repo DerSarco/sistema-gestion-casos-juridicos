@@ -92,6 +92,8 @@ tbody tr:hover { background: #f8fafc; }
 .form-page { width: min(100%, 980px); margin: 0 auto; }
 .form-page-narrow { width: min(100%, 780px); }
 .form-card { display: grid; gap: 1.25rem; padding: 1.8rem; }
+.form-section { display: grid; min-width: 0; gap: 1rem; margin: 0; padding: 1.25rem; border: 1px solid var(--border); border-radius: 10px; }
+.form-section legend { padding: 0 .4rem; font-weight: 700; color: var(--teal); }
 .field { display: grid; gap: .45rem; text-align: left; }
 .field > span { color: #293548; font-size: .78rem; font-weight: 750; letter-spacing: .02em; }
 .field b { color: var(--danger); }
