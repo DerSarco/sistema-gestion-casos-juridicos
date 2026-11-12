@@ -24,6 +24,13 @@ export type PersistentCase = {
     source: string | null;
     notes: string | null;
   }>;
+  history: Array<{
+    id: string;
+    action: string;
+    actor: string;
+    reason: string | null;
+    occurredAt: string;
+  }>;
   court: string | null;
   rit: string | null;
   judicialRole: string | null;
