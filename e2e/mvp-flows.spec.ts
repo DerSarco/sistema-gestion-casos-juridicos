@@ -80,16 +80,16 @@ test("P2 crea, edita y archiva un caso persistente", async ({
 });
 
 test("el modal gestiona foco y Escape", async ({ page }) => {
-  await page.goto("/casos/CASO-001/estado");
+  await page.goto("/casos/CASO-FICTICIO-001/estado");
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect(page.getByLabel("Cerrar")).toBeFocused();
   await page.keyboard.press("Escape");
-  await expect(page).toHaveURL(/\/casos\/CASO-001$/);
+  await expect(page).toHaveURL(/\/casos\/CASO-FICTICIO-001$/);
 });
 
 test("confirmar un modal no lo revive al navegar atrás", async ({ page }) => {
   await page.goto("/casos");
-  await page.goto("/casos/CASO-001/estado");
+  await page.goto("/casos/CASO-FICTICIO-001/estado");
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.getByRole("button", { name: "Confirmar cambio" }).click();
   await expect(page.getByRole("dialog")).toBeHidden();
