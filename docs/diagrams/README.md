@@ -13,14 +13,15 @@ tres se utilizarán en el video de hasta quince minutos:
 |---|---|---|---:|---|---|---|
 | 1 | Proceso y contexto del MVP | Explicar el flujo interno y separar la OJV del sistema. | 50 s | [`mvp-process-context.puml`](src/mvp-process-context.puml) | [`mvp-process-context.svg`](rendered/mvp-process-context.svg) | Objetivo general; RF-011; HU-02 a HU-08 |
 | 2 | Casos de uso reducidos | Mostrar cuatro perfiles y capacidades realmente comprometidas. | 60 s | [`mvp-use-cases.puml`](src/mvp-use-cases.puml) | [`mvp-use-cases.svg`](rendered/mvp-use-cases.svg) | CU-001, CU-003 a CU-008 y CU-013 |
-| 3 | Modelo de datos reducido | Explicar las entidades mínimas y su trazabilidad. | 60 s | [`mvp-data-model.puml`](src/mvp-data-model.puml) | [`mvp-data-model.svg`](rendered/mvp-data-model.svg) | ED-01, ED-02, ED-04 a ED-06, ED-08 y ED-09 |
+| 3 | Modelo de datos del MVP | Explicar el caso laboral general, sus campos condicionales y la separación respecto del cliente. | 60 s | [`mvp-data-model.puml`](src/mvp-data-model.puml) | [`mvp-data-model.svg`](rendered/mvp-data-model.svg) | ED-01 a ED-10 según relaciones mostradas |
 
 El bloque completo ocupa aproximadamente 2 minutos y 50 segundos. En la
 presentación debe indicarse que el acceso está diseñado pero todavía no
 implementado, que la persistencia actual es temporal, que #74 mantiene 0 %
 funcional aceptado y que la OJV no es una integración. Los modelos reflejan
-cuatro perfiles, nueve etapas, la alternativa de audiencia única y ciclos de
-vida reversibles con los permisos operativos validados en #78.
+cuatro perfiles, nueve etapas, la alternativa de audiencia única, casos
+individuales o colectivos, campos condicionales y ciclos de vida reversibles con
+los permisos operativos validados en #78 y el diseño #79.
 
 ## Diagramas de apoyo del MVP
 
