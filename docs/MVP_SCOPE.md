@@ -1,6 +1,6 @@
 # Línea base del MVP priorizado
 
-**Versión:** 1.3
+**Versión:** 1.4
 
 **Fecha:** 2026-11-11
 
@@ -84,10 +84,14 @@ no forman parte de la aceptación ni del porcentaje funcional del MVP actual.
   reabre casos; estas acciones exigen motivo y auditoría.
 - El responsable principal es un socio o abogado y el procurador participa en
   gestiones de apoyo.
-- El cliente exige nombre completo, teléfono, origen o materia y RUT; el correo
-  es opcional y la fecha de despido se exige cuando corresponda.
-- Una causa laboral exige empresa, fecha de ingreso y fecha de despido; tienda,
-  finiquito y cuantía son accesorios.
+- El cliente exige nombre completo o razón social, teléfono, origen o materia y
+  RUT; el correo es opcional. Los antecedentes laborales pertenecen al caso.
+- El caso representa una materia laboral general, individual o colectiva. Los
+  campos específicos se muestran y validan según materia y etapa.
+- Una materia de despido exige empresa o contraparte, fecha de ingreso laboral y
+  fecha de despido. Una gestión colectiva identifica la organización relacionada
+  y el tipo de gestión. Tutela u otras materias no heredan automáticamente los
+  mínimos de un despido; tienda, finiquito y cuantía son accesorios.
 - El orden operativo utiliza etapa y próxima fecha, sin catálogo manual de
   prioridad en el MVP.
 - La referencia de caducidad se ingresa manualmente y no constituye cálculo o

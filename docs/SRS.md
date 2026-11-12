@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 1.6
+**Versión del documento:** 1.7
 
 **Estado:** Reglas operativas validadas; aceptación final pendiente
 
@@ -28,6 +28,7 @@
 | 1.4 | 2026-10-27 | Normalización continua de identificadores: once RF, diez RNF y siete requisitos de datos, sin cambio de alcance | Equipo del proyecto |
 | 1.5 | 2026-11-09 | Refinamiento con cuatro perfiles, siete etapas y ciclos de vida reversibles, sin aumentar la línea base normativa | Equipo del proyecto |
 | 1.6 | 2026-11-11 | Consolidación anonimizada de permisos, campos, flujo, fechas, cierre y conservación validados con el estudio | Equipo del proyecto |
+| 1.7 | 2026-11-11 | Generalización del modelo de casos laborales y definición de campos condicionales por materia y etapa | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -383,9 +384,9 @@ restricción obligatoria de independencia respecto de la OJV.
 | ID | Requisito del MVP | Criterio verificable | Historias |
 |---|---|---|---|
 | RF-001 | Permitir el inicio de sesión de cuentas internas activas, sin registro público. | Una cuenta válida accede; credenciales inválidas son rechazadas sin revelar si la cuenta existe. | HU-01 |
-| RF-002 | Registrar, editar, desactivar y reactivar clientes mediante el formulario o listado existente. | Nombre completo, teléfono, origen o materia y RUT son obligatorios; correo es opcional y fecha de despido se exige cuando corresponda. Solo Socio cambia reversiblemente el estado activo con actor, momento y motivo, sin eliminación física. | HU-08 |
+| RF-002 | Registrar, editar, desactivar y reactivar clientes mediante el formulario o listado existente. | Nombre completo o razón social, teléfono, origen o materia y RUT son obligatorios; el correo es opcional. Solo Socio cambia reversiblemente el estado activo con actor, momento y motivo, sin eliminación física. | HU-08 |
 | RF-003 | Buscar clientes por nombre, origen, dato de contacto autorizado o estado de actividad y advertir posibles coincidencias. | Una coincidencia de nombre y origen genera advertencia sin bloquear ni fusionar, porque un cliente puede poseer varias gestiones; un cliente inactivo se identifica claramente y no puede seleccionarse para un caso nuevo. | HU-07, HU-08 |
-| RF-004 | Registrar, editar, archivar y reactivar una ficha de caso vinculada con un cliente activo. | El caso conserva identificador y relaciones; en materia laboral exige empresa, fecha de ingreso y fecha de despido; tribunal, RIT, ROL, tienda, finiquito y cuantía pueden quedar vacíos. Solo Socio archiva o reactiva con motivo y sin eliminación física. | HU-03, HU-04 |
+| RF-004 | Registrar, editar, archivar y reactivar una ficha de caso vinculada con un cliente activo. | El caso conserva identificador y relaciones. Los datos específicos aparecen y se validan según materia y etapa: una materia de despido exige empresa o contraparte, fecha de ingreso laboral y fecha de despido; una gestión colectiva identifica la organización relacionada. Tribunal, RIT, ROL, tienda, finiquito y cuantía pueden quedar vacíos mientras no correspondan. Solo Socio archiva o reactiva con motivo y sin eliminación física. | HU-03, HU-04 |
 | RF-005 | Mantener estado y etapa mediante valores controlados. | El flujo reconoce las nueve etapas validadas, la alternativa de audiencia única y cierres anticipados en comparendo, audiencia o juicio; un cambio confirmado queda en el historial y cancelar no altera valores. | HU-03, HU-05 |
 | RF-006 | Consultar la ficha consolidada de un caso autorizado, incluido su estado activo o archivado. | La ficha presenta cliente, responsable, participantes, estado, etapa, procedimiento, fechas e historial básico dentro del estudio. | HU-04 |
 | RF-007 | Asignar un responsable principal y participantes con rol operativo. | Todo caso activo posee como responsable a un socio o abogado; el procurador puede participar en gestiones de apoyo. Solo Socio distribuye o reasigna y la acción registra ejecutor, momento y motivo. | HU-03 |
@@ -447,7 +448,7 @@ a cada comportamiento.
 |---|---|---|---|---|---|
 | RN-005 | Identificador interno del cliente | Cada cliente debe poseer un identificador interno único dentro del estudio. | ALC-02; necesidad de trazabilidad cliente–caso | Vigente | El identificador interno no sustituye documentos oficiales ni debe exponer datos sensibles innecesarios. |
 | RN-006 | Relación cliente–caso | Cada caso debe vincularse con un cliente y un cliente puede relacionarse con uno o más casos. | ALC-02, ALC-03 | Vigente | Los casos con múltiples personas relacionadas requieren una regla adicional antes de implementarse. |
-| RN-007 | Datos mínimos del cliente | Un cliente requiere nombre completo, teléfono, origen o materia y RUT; el correo es opcional y la fecha de despido se exige cuando corresponda a la materia. | Validación operativa #78; hallazgo sobre campos incompletos | Vigente | El RUT responde a la identificación necesaria para la tramitación judicial y debe protegerse como dato confidencial. |
+| RN-007 | Datos mínimos del cliente | Un cliente requiere nombre completo o razón social, teléfono, origen o materia y RUT; el correo es opcional. | Validación operativa #78; análisis estructural anonimizado del flujo; decisión de diseño #79 | Vigente | Las fechas y antecedentes laborales pertenecen al caso, no al cliente. El RUT responde a la identificación necesaria para la tramitación judicial y debe protegerse como dato confidencial. |
 | RN-008 | Actualización y coincidencia trazables | Los cambios de contacto conservan fecha y usuario; una coincidencia por nombre y origen genera advertencia sin fusionar ni bloquear automáticamente. | Validación operativa #78; ALC-02, ALC-07 | Vigente | Un cliente puede mantener más de una gestión de materias distintas. |
 | RN-020 | Ciclo de vida del cliente | La baja operativa se representa mediante desactivación reversible; no existe eliminación física de clientes en el MVP. | ALC-02; RF-002; validación #78 | Vigente | Solo Socio puede desactivar o reactivar y debe registrar actor, momento y motivo. |
 | RN-021 | Uso de clientes inactivos | Un cliente inactivo permanece visible en consultas históricas, pero no puede seleccionarse para registrar un caso nuevo. | RF-002, RF-003, RF-004 | Vigente | La continuidad de casos ya existentes no rompe su relación histórica con el cliente. |
@@ -457,7 +458,7 @@ a cada comportamiento.
 | ID | Nombre | Regla | Fuente | Estado | Condición o excepción |
 |---|---|---|---|---|---|
 | RN-009 | Identificador interno del caso | Cada caso debe poseer un identificador interno único dentro del estudio. | ALC-03 | Vigente | El identificador interno es independiente de un eventual RIT o ROL. |
-| RN-010 | Datos obligatorios del caso activo | Todo caso activo debe tener cliente, estado, etapa y responsable vigente; una causa laboral exige empresa, fecha de ingreso y fecha de despido. | ALC-03; validación operativa #78 | Vigente | Tienda o sucursal, finiquito y cuantía son accesorios; otros campos dependen de la materia. |
+| RN-010 | Datos obligatorios y condicionales del caso activo | Todo caso activo debe tener cliente, materia, estado, etapa y responsable vigente. Los campos específicos dependen de la materia: un despido exige empresa o contraparte, fecha de ingreso laboral y fecha de despido; una gestión colectiva exige identificar la organización relacionada y el tipo de gestión. | ALC-03; validación operativa #78; decisión de diseño #79 | Vigente | Tienda o sucursal, finiquito y cuantía son accesorios. Tutela, prácticas antisindicales y otras materias no deben heredar automáticamente los campos obligatorios de un despido. |
 | RN-011 | Flujo y estados controlados | Las etapas son ingreso, clasificación, comparendo, distribución, redacción, seguimiento judicial, audiencia preparatoria, juicio o conciliación y cierre. Los estados son ingresado, pendiente de comparendo, pendiente de distribución, en redacción, presentado, judicializado y cerrado. | ALC-05; validación operativa #78 | Vigente | El procedimiento monitorio usa audiencia única; no se utiliza un catálogo manual de prioridad en el MVP. |
 | RN-012 | Identificadores judiciales no inventados | El RIT, ROL, tribunal u otro antecedente judicial se registra solo cuando está disponible; su ausencia inicial no autoriza completar valores ficticios. | Flujo observado; separación respecto de la OJV | Vigente | La obligatoriedad dependerá de la etapa y debe precisarse en los requisitos funcionales. |
 | RN-013 | Responsable y participantes | Cada caso activo tiene como responsable principal vigente a un socio o abogado; el procurador puede participar en entrevistas, recolección de documentos y otras gestiones de apoyo. | ALC-04; validación operativa #78 | Vigente | Solo Socio distribuye o reasigna y debe registrar motivo. |
@@ -515,18 +516,22 @@ de clasificación autoriza almacenarlas.
 | ED-01 | Estudio | Delimitar la organización responsable de los registros. | Identificador interno, nombre anonimizado o de prueba, estado, fechas de control. | Posee usuarios, clientes, casos y catálogos. | Interna; confidencial si identifica a la organización real. |
 | ED-02 | Usuario | Identificar a quien ejecuta acciones internas. | Identificador, nombre de prueba, identificador de acceso, estado y rol vigente. | Pertenece a un estudio; participa en asignaciones, cambios y revisiones. | Confidencial. |
 | ED-03 | Rol y permiso | Definir capacidades autorizadas. | Identificador, nombre, descripción, permisos y vigencia. | Se asigna a usuarios; controla operaciones. | Interna. |
-| ED-04 | Cliente | Mantener la ficha, contacto autorizado y ciclo de vida reversible. | Identificador interno, nombre completo, teléfono, origen o materia, RUT, correo opcional, fecha de despido cuando corresponda, estado activo y evidencia del cambio de estado. | Pertenece a un estudio; se relaciona con uno o más casos. | Confidencial. |
-| ED-05 | Caso | Mantener la ficha operativa única y su archivo reversible. | Identificador interno, cliente, materia, empresa y fechas laborales cuando correspondan, tribunal y RIT/ROL disponibles, estado, etapa, procedimiento, observaciones, condición de archivo y fechas de control. | Pertenece a un estudio y cliente; posee asignaciones, participantes, fechas e historial. | Confidencial. |
+| ED-04 | Cliente | Mantener la ficha, contacto autorizado y ciclo de vida reversible. | Identificador interno, tipo de cliente, nombre completo o razón social, teléfono, origen o materia, RUT, correo opcional, estado activo y evidencia del cambio de estado. | Pertenece a un estudio; se relaciona con uno o más casos. | Confidencial. |
+| ED-05 | Caso | Mantener la ficha operativa general de una materia laboral y su archivo reversible. | Identificador interno, cliente, materia, naturaleza individual o colectiva, estado, etapa, procedimiento, observaciones, condición de archivo y antecedentes judiciales cuando estén disponibles. | Pertenece a un estudio y cliente; posee detalle laboral opcional, asignaciones, participantes, fechas e historial. | Confidencial. |
 | ED-06 | Asignación o participación | Conservar responsabilidad y participación actual e histórica. | Caso, usuario, rol operativo, indicador de responsable principal, inicio, término, ejecutor y motivo cuando se defina. | Pertenece a un caso y referencia usuarios. | Confidencial. |
 | ED-07 | Catálogo | Normalizar materias, estados, etapas, procedimientos y tipos de fecha. | Tipo de catálogo, código, nombre, descripción, orden y vigencia. | Sus valores son utilizados por casos y fechas. | Interna. |
 | ED-08 | Fecha o hito | Registrar seguimiento sin determinar automáticamente plazos jurídicos. | Caso, tipo, fecha, responsable, fuente, observación y verificación manual cuando corresponda. | Pertenece a un caso. | Confidencial. |
 | ED-09 | Evento de historial | Registrar acciones críticas y correcciones. | Estudio, caso o entidad afectada, actor, fecha, acción y valores relevantes protegidos. | Referencia usuario y registro afectado. | Confidencial. |
+| ED-10 | Antecedente laboral del caso | Conservar datos laborales que solo corresponden a determinadas materias sin cargarlos en la ficha del cliente. | Caso, empresa o contraparte, fecha de ingreso laboral, fecha y causal de despido, organización colectiva y tipo de gestión cuando correspondan. | Relación opcional uno a uno con el caso; sus validaciones dependen de la materia seleccionada. | Confidencial. |
 
 La validación operativa confirmó el uso del RUT para identificar al cliente en la
 tramitación judicial manual. Esta finalidad no autoriza publicación, uso con
 datos reales durante el proyecto académico ni acceso fuera de los permisos
-definidos. Las materias y ampliaciones futuras de catálogo requieren control de
-cambios.
+definidos. El análisis estructural de la planilla operativa confirmó que el flujo
+incluye despidos y otras materias laborales individuales o colectivas. Por ello,
+la fecha de despido pertenece al caso y solo es obligatoria para las materias que
+la requieren. Las materias y ampliaciones futuras de catálogo requieren control
+de cambios.
 
 #### 3.5.3 Requisitos conceptuales de datos
 
@@ -534,7 +539,7 @@ cambios.
 |---|---|---|---|
 | RD-001 | Toda entidad operativa debe poseer identificador interno estable y pertenencia al estudio cuando corresponda. | No se persisten clientes, casos, catálogos o eventos sin identificador y estudio válidos. | RN-001, RN-005, RN-009 |
 | RD-002 | Las relaciones cliente–caso, caso–asignación o participación y caso–fecha deben preservar integridad referencial incluso después de desactivar o archivar. | No existen registros dependientes asociados con una referencia inexistente y las operaciones reversibles conservan sus relaciones. | RN-006, RN-013, RN-014, RN-020 |
-| RD-003 | Un caso activo debe conservar un cliente existente y activo al crearse, además de estado, etapa y responsable principal vigentes. | La aplicación y la persistencia rechazan casos activos incompletos o nuevos casos vinculados con clientes inactivos, sin romper relaciones históricas. | RN-010, RN-021, RNF-006 |
+| RD-003 | Un caso activo debe conservar un cliente existente y activo al crearse, materia, estado, etapa, responsable principal y los antecedentes condicionales exigidos por la materia. | La aplicación y la persistencia rechazan casos activos incompletos o nuevos casos vinculados con clientes inactivos; exigen los mínimos de un despido cuando corresponde y permiten otras materias sin fecha de despido. | RN-010, RN-021, RNF-006, ED-10 |
 | RD-004 | RIT, ROL, tribunal y otros antecedentes judiciales deben admitir ausencia hasta que estén disponibles. | El caso se registra sin valores ficticios y luego admite una actualización manual. | RF-004, RF-011 |
 | RD-005 | Las fechas deben conservar tipo, valor, responsable y fuente u observación cuando corresponda. | Las fechas laborales, de comparendo, audiencia, seguimiento o referencia de caducidad se muestran sin transformarse en cálculo jurídico automático. | RF-008 |
 | RD-006 | El historial debe ser aditivo para usuarios comunes e incluir las acciones críticas de ciclo de vida. | Los eventos existentes no se editan ni eliminan; desactivación, reactivación, archivo y restauración agregan una nueva entrada. | RF-002, RF-004, RF-009, RNF-003 |
