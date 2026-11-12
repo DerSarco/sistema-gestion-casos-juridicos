@@ -16,7 +16,7 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   await page.goto("/clientes");
   await page.getByPlaceholder(/Buscar por nombre/).fill("inexistente");
   await expect(page.getByText("No se encontraron clientes")).toBeVisible();
-  await page.getByRole("button", { name: "Limpiar búsqueda" }).first().click();
+  await page.getByRole("button", { name: "Limpiar filtros" }).first().click();
   await page.getByRole("link", { name: "+ Nuevo cliente" }).click();
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.locator(".error-summary")).toContainText("Revise los campos");

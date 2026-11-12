@@ -169,6 +169,7 @@ tbody tr:hover { background: #f8fafc; }
   .page-heading, .case-header { align-items: stretch; flex-direction: column; }
   .page-heading .button { width: 100%; }
   .filters { display: flex; overflow-x: auto; padding-bottom: .35rem; }
+  .client-filters { width: 100%; }
   .filters .search-field { min-width: 100%; }
   .filters select { min-width: 155px; }
   .form-grid, .facts { grid-template-columns: 1fr; }
@@ -189,8 +190,8 @@ tbody tr:hover { background: #f8fafc; }
 
 body { overflow-x: hidden; }
 .clear-filters { border: 0; background: transparent; color: var(--teal); font: inherit; font-weight: 700; cursor: pointer; margin: 0 0 12px; text-decoration: underline; }
-.client-filters { grid-template-columns: minmax(260px, 620px) minmax(170px, 220px); }
-.client-actions { display: grid; gap: .55rem; min-width: 210px; }
+.client-filters { max-width: 100%; min-width: 0; grid-template-columns: minmax(260px, 620px) minmax(170px, 220px); }
+.client-actions { display: grid; gap: .55rem; width: 190px; max-width: 100%; }
 .lifecycle-form { display: grid; grid-template-columns: minmax(120px, 1fr) auto; gap: .4rem; align-items: center; }
 .lifecycle-form input { min-height: 34px; padding: .35rem .5rem; border: 1px solid var(--border); border-radius: 6px; }
 .lifecycle-form small { grid-column: 1 / -1; }
