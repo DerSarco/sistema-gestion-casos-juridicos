@@ -76,6 +76,11 @@ específica, consulta de carga de trabajo, reportes básicos y exportaciones
 autorizadas. Estas capacidades pertenecen al alcance general del producto, pero
 no forman parte de la aceptación ni del porcentaje funcional del MVP actual.
 
+El issue #87 implementa esta extensión mediante agregados limitados al estudio y
+un CSV mínimo exclusivo de `Socio`, autorizado y auditado. La especificación se
+encuentra en `docs/V1_REPORTS.md`; su incorporación no altera el 100 % ya
+alcanzado por los seis paquetes del MVP.
+
 ## Decisiones operativas validadas
 
 - Los cuatro perfiles pueden consultar, registrar y editar clientes y casos,

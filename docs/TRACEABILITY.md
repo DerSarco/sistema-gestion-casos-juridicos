@@ -83,12 +83,13 @@ integrada y ejecutada.
 | P3 consulta autorizada | RF-006, RF-010 | Búsqueda y filtros combinables sin revelar recursos ajenos | PR #99; issue #82 | Integrado; 15 % |
 | P4 etapas e historial | RF-005, RF-009 | Transiciones e historial cronológico aditivo | PR #101; issue #83 | Integrado; 20 % |
 | P5 fechas relevantes | RF-008, RF-009, RF-011 | Fechas persistentes y caducidad manual sin cálculo jurídico | PR #100; issue #84 | Integrado; 10 % |
-| P6 acceso y permisos | RF-001; RNF-001, RNF-002, RNF-004 | Sesión interna, cuatro perfiles, aislamiento y matriz negativa | Issue #85; 30 unitarias, 7 PostgreSQL y 15 Playwright | Implementado y verificado; 15 % al integrarse |
+| P6 acceso y permisos | RF-001; RNF-001, RNF-002, RNF-004 | Sesión interna, cuatro perfiles, aislamiento y matriz negativa | PR #102; issue #85; 33 unitarias, 7 PostgreSQL y 15 Playwright | Integrado; 15 % |
+| Extensión V1 reportes | HU-V1-01; RNF-001 a RNF-005, RNF-009, RNF-010 | Carga por responsable, distribuciones y CSV mínimo autorizado y auditado | Issue #87; pruebas unitarias, PostgreSQL y Playwright | Posterior al MVP; no agrega porcentaje |
 | Ocho pantallas de Stitch implementadas | HU-01 a HU-08; RNF-004, RNF-007, RNF-008 | Ocho rutas, navegación, revisión visual de escritorio y móvil, build y prueba estructural | #72 | Evidencia visual implementada; no suma porcentaje funcional sin persistencia y aceptación |
 | Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | 16 pruebas unitarias y 7 Playwright: validaciones, creación y edición en memoria, filtros, modales accesibles y tres viewports | PR #75, issue #74 | Evidencia temporal integrada; mantiene 0 % funcional aceptado sin persistencia, autorización y aceptación |
 
 ## Estado del denominador
 
-Los paquetes P1 a P5 aportan **85 %** ya integrado. P6 completa el 15 % restante
-cuando su PR se integra en `develop` con Quality y GitGuardian aprobados. La
-aceptación y el release se acreditan separadamente en el issue #86.
+Los paquetes P1 a P6 aportan **100 % de implementación funcional integrada**.
+La aceptación y el release se acreditan separadamente en el issue #86. La
+extensión de reportes de #87 pertenece a la versión 1 y no altera el denominador.

@@ -66,8 +66,32 @@ for (const account of [
     await expect(page.getByText("Ciclo del caso", { exact: true })).toHaveCount(
       0,
     );
+    await page.goto("/reportes");
+    await expect(page.getByRole("heading", { name: "Reportes" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Exportar CSV" }),
+    ).toHaveCount(0);
+    const response = await page.request.post("/reportes/exportar");
+    expect(response.status()).toBe(403);
+    expect(await response.text()).not.toContain("CASO-FICTICIO-001");
   });
 }
+
+test("V1-01 consulta carga y exporta un CSV minimizado como Socio", async ({
+  page,
+}) => {
+  await page.goto("/reportes");
+  await expect(page.getByRole("heading", { name: "Reportes" })).toBeVisible();
+  await expect(page.getByText("Carga por responsable")).toBeVisible();
+  await expect(page.getByText("Abogado Ficticio A")).toBeVisible();
+  const response = await page.request.post("/reportes/exportar");
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toContain("text/csv");
+  const csv = await response.text();
+  expect(csv).toContain("Código interno");
+  expect(csv).toContain("CASO-FICTICIO-001");
+  expect(csv).not.toMatch(/RUT|correo|teléfono|Cliente Ficticio/i);
+});
 
 test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async ({
   page,
@@ -238,7 +262,7 @@ for (const viewport of [
   { name: "tablet", width: 820, height: 1180 },
   { name: "mobile", width: 390, height: 844 },
 ]) {
-  test(`ocho pantallas sin desborde de página en ${viewport.name}`, async ({
+  test(`pantallas sin desborde de página en ${viewport.name}`, async ({
     page,
   }) => {
     test.setTimeout(90_000);
@@ -252,6 +276,7 @@ for (const viewport of [
       "/casos/CASO-001/fechas/nueva",
       "/clientes",
       "/clientes/nuevo",
+      "/reportes",
     ]) {
       await page.goto(path);
       await expect(page.locator("body")).toBeVisible();

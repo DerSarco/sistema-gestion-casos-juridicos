@@ -108,6 +108,15 @@ tbody tr:hover { background: #f8fafc; }
 .notice strong { font-size: .82rem; }
 .notice span, .notice:not(:has(span)) { font-size: .82rem; }
 .notice.compact { padding: .75rem .9rem; }
+.report-notice { margin-bottom: 1.25rem; }
+.report-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+.report-metric { display: grid; gap: .35rem; padding: 1.25rem; }
+.report-metric span { color: var(--muted); font-size: .78rem; font-weight: 750; text-transform: uppercase; }
+.report-metric strong { color: var(--teal); font-size: 2rem; }
+.report-section { margin-bottom: 1.25rem; }
+.report-heading { padding: 1rem; border-bottom: 1px solid var(--border); }
+.report-heading h2 { margin: 0; }
+.report-distributions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 
 .case-header { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1.5rem; margin-bottom: 1.4rem; }
 .case-title-row { display: flex; align-items: center; flex-wrap: wrap; gap: .65rem; }
@@ -160,6 +169,7 @@ tbody tr:hover { background: #f8fafc; }
 }
 
 @media (max-width: 700px) {
+  .report-metrics, .report-distributions { grid-template-columns: minmax(0, 1fr); }
   body { font-size: 14px; }
   .app-shell { display: block; padding-bottom: 70px; }
   .workspace { width: 100%; max-width: 100vw; overflow-x: hidden; }

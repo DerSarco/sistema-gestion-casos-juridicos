@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Icon } from "./icons";
 import { getServerActor, logoutAction } from "@/infrastructure/auth/server-actor";
 
-export async function AppShell({ active, children }: { active: "cases" | "clients"; children: ReactNode }) {
+export async function AppShell({ active, children }: { active: "cases" | "clients" | "reports"; children: ReactNode }) {
   const actor = await getServerActor();
   return (
     <div className="app-shell">
@@ -15,6 +15,7 @@ export async function AppShell({ active, children }: { active: "cases" | "client
         <nav aria-label="Navegación principal">
           <Link className={`nav-item ${active === "cases" ? "nav-item-active" : ""}`} href="/casos"><Icon name="folder" /> Casos</Link>
           <Link className={`nav-item ${active === "clients" ? "nav-item-active" : ""}`} href="/clientes"><Icon name="clients" /> Clientes</Link>
+          <Link className={`nav-item ${active === "reports" ? "nav-item-active" : ""}`} href="/reportes"><Icon name="chart" /> Reportes</Link>
         </nav>
         <form action={logoutAction}><button className="logout" type="submit"><Icon name="logout" /> Cerrar sesión</button></form>
       </aside>

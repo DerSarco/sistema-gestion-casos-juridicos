@@ -28,6 +28,7 @@ Este repositorio concentra:
 - [Línea base del MVP priorizado](docs/MVP_SCOPE.md)
 - [Historias de usuario y criterios Gherkin](docs/USER_STORIES.md)
 - [Matriz de trazabilidad](docs/TRACEABILITY.md)
+- [Reportes y exportaciones autorizadas de la versión 1](docs/V1_REPORTS.md)
 - [Planificación del MVP](docs/planning/README.md)
 - [Capturas verificadas del prototipo Stitch](docs/mockups/stitch/README.md)
 - [Arquitectura y decisiones técnicas](docs/architecture/README.md)
