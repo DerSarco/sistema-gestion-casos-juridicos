@@ -29,6 +29,8 @@ Este repositorio concentra:
 - [Historias de usuario y criterios Gherkin](docs/USER_STORIES.md)
 - [Matriz de trazabilidad](docs/TRACEABILITY.md)
 - [Reportes y exportaciones autorizadas de la versión 1](docs/V1_REPORTS.md)
+- [Evidencia de validación v0.5.0](docs/ACCEPTANCE_v0.5.0.md)
+- [Notas del pre-release v0.5.0](docs/RELEASE_NOTES_v0.5.0.md)
 - [Planificación del MVP](docs/planning/README.md)
 - [Capturas verificadas del prototipo Stitch](docs/mockups/stitch/README.md)
 - [Arquitectura y decisiones técnicas](docs/architecture/README.md)
@@ -92,9 +94,10 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 
 ## Estado
 
-El MVP incorpora persistencia PostgreSQL, clientes, casos, distribución, etapas,
+El pre-release académico `v0.5.0` incorpora persistencia PostgreSQL, clientes, casos, distribución, etapas,
 fechas, historial y acceso interno con los perfiles Socio, Abogado, Asistente y
-Procurador. La autorización se verifica en servidor y las operaciones de ciclo
-de vida quedan restringidas al perfil Socio. El sistema no debe desplegarse como
-producto ni utilizar datos reales hasta completar la validación técnica,
-jurídica y organizacional definida para la versión 1.
+Procurador, además de reportes internos mínimos. La autorización se verifica en
+servidor y las operaciones de ciclo de vida y exportación quedan restringidas al
+perfil Socio. El sistema no debe desplegarse como producto ni utilizar datos
+reales hasta completar la aceptación externa y la validación jurídica, técnica y
+organizacional definida para la versión 1.

@@ -1,6 +1,6 @@
 # Matriz de trazabilidad del MVP
 
-**Versión:** 1.2
+**Versión:** 1.3
 
 **Fecha:** 2026-11-12
 
@@ -84,7 +84,8 @@ integrada y ejecutada.
 | P4 etapas e historial | RF-005, RF-009 | Transiciones e historial cronológico aditivo | PR #101; issue #83 | Integrado; 20 % |
 | P5 fechas relevantes | RF-008, RF-009, RF-011 | Fechas persistentes y caducidad manual sin cálculo jurídico | PR #100; issue #84 | Integrado; 10 % |
 | P6 acceso y permisos | RF-001; RNF-001, RNF-002, RNF-004 | Sesión interna, cuatro perfiles, aislamiento y matriz negativa | PR #102; issue #85; 33 unitarias, 7 PostgreSQL y 15 Playwright | Integrado; 15 % |
-| Extensión V1 reportes | HU-V1-01; RNF-001 a RNF-005, RNF-009, RNF-010 | Carga por responsable, distribuciones y CSV mínimo autorizado y auditado | Issue #87; pruebas unitarias, PostgreSQL y Playwright | Posterior al MVP; no agrega porcentaje |
+| Extensión V1 reportes | HU-V1-01; RNF-001 a RNF-005, RNF-009, RNF-010 | Carga por responsable, distribuciones y CSV mínimo autorizado y auditado | PR #103; issue #87; 37 unitarias, 7 PostgreSQL y 16 Playwright en la regresión posterior | Integrado; posterior al MVP y sin agregar porcentaje |
+| Validación del corte v0.5.0 | RF-001 a RF-011; RNF-001 a RNF-010 | Base nueva, regresión completa, build y capturas con datos ficticios | Issue #86; `ACCEPTANCE_v0.5.0.md`; evidencia visual anonimizada | Validación técnica completa; aceptación de los socios pendiente |
 | Ocho pantallas de Stitch implementadas | HU-01 a HU-08; RNF-004, RNF-007, RNF-008 | Ocho rutas, navegación, revisión visual de escritorio y móvil, build y prueba estructural | #72 | Evidencia visual implementada; no suma porcentaje funcional sin persistencia y aceptación |
 | Flujos temporales de las ocho pantallas | HU-01 a HU-08; RNF-007 a RNF-010 | 16 pruebas unitarias y 7 Playwright: validaciones, creación y edición en memoria, filtros, modales accesibles y tres viewports | PR #75, issue #74 | Evidencia temporal integrada; mantiene 0 % funcional aceptado sin persistencia, autorización y aceptación |
 
