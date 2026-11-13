@@ -1,63 +1,56 @@
 # Revisión de calidad del SRS
 
-**Documento revisado:** `docs/SRS.md`, versión 0.9  
-**Fecha:** 2026-10-16  
-**Referencia:** IEEE Std 830-1998  
-**Alcance:** revisión interna; no constituye aprobación de los socios ni de la
-docente.
+**Documento revisado:** `docs/SRS.md`, versión 1.6
+
+**Fecha:** 2026-11-11
+
+**Referencia:** IEEE Std 830-1998
+
+**Alcance:** revisión posterior a la validación operativa del issue #78; no
+constituye autorización para usar datos reales ni aceptación final del producto.
 
 ## Resultado
 
-El SRS posee una estructura identificable de introducción, descripción general,
-requisitos específicos y trazabilidad. Los requisitos funcionales, no
-funcionales y de datos tienen identificadores únicos, criterios verificables y
-relación con su fuente o regla. Los asuntos que dependen de una decisión externa
-se mantienen explícitos y no se presentan como hechos aprobados.
-
-El documento queda apto para iniciar diseño y construcción incremental con datos
-ficticios. No queda autorizado el uso de datos reales ni un despliegue
-productivo. La autenticación y la autorización siguen siendo requisitos de alta
-prioridad de la versión 1, aunque por decisión de planificación se implementarán
-después del primer incremento funcional.
+El SRS especifica el MVP que será diseñado, construido y aceptado en esta
+iteración: ocho historias, once RF —incluida la restricción `RF-011`—, diez RNF y
+siete requisitos conceptuales de datos. La validación incorpora cuatro perfiles,
+nueve etapas operativas, una alternativa de audiencia única, campos mínimos y
+ciclos de vida reversibles sin aumentar el catálogo normativo ni crear pantallas.
 
 ## Lista de revisión
 
-| Propiedad | Comprobación | Evidencia | Resultado |
-|---|---|---|---|
-| Corrección | Cada requisito proviene del alcance, del informe, de evidencia primaria o de una decisión explícita. | Columnas `Fuente` y `Trazabilidad`; `TRACEABILITY.md`. | Cumple internamente; validación externa pendiente. |
-| Ausencia de ambigüedad | Los requisitos utilizan identificadores, actor, precondición, resultado, excepciones y criterio de aceptación. | `RF-001` a `RF-030`; glosario. | Cumple con decisiones abiertas identificadas. |
-| Completitud | Se cubren capacidades, exclusiones, interfaces, funciones, calidad, datos, reglas y asuntos abiertos. | Secciones 2 y 3; `ALC`, `EXC`, `RF`, `RNF`, `RN`, `RD`. | Cumple para la especificación interna de versión 1. |
-| Consistencia | OJV no es una interfaz técnica; la IA no modifica fichas; datos reales permanecen bloqueados; autenticación está diferida pero no excluida. | `EXC-01`, `RN-027` a `RN-030`, `RNF-007` a `RNF-010`, sección 3.6. | Cumple. |
-| Priorización | Cada RF y RNF declara prioridad; la prioridad no se confunde con el orden de desarrollo. | Secciones 3.2, 3.3 y 3.6. | Cumple. |
-| Verificabilidad | Cada requisito posee un criterio observable o cuantificable y un método o caso previsto. | Criterios de aceptación; códigos `DF`, `DNF` y `DD`. | Cumple en diseño; ejecución pendiente. |
-| Modificabilidad | Los requisitos están agrupados por tema y usan identificadores estables sin duplicar su definición en la matriz. | Estructura del SRS y enlaces a `TRACEABILITY.md`. | Cumple. |
-| Trazabilidad | Cada RF, RNF y RD se relaciona con fuente, reglas, caso de uso o ámbito y prueba prevista. | `TRACEABILITY.md`. | Cobertura documental completa. |
+| Propiedad IEEE 830 | Evidencia | Resultado |
+|---|---|---|
+| Corrección | El alcance responde al registro y seguimiento inicial sin automatización judicial. | Cumple internamente. |
+| Ausencia de ambigüedad | Cada RF/RNF vigente posee criterio observable; permisos, campos, flujo, fechas y cierre incorporan las decisiones de #78. | Cumple. |
+| Completitud | Las ocho historias y vistas están cubiertas por al menos un RF y un RNF. | Cumple. |
+| Consistencia | SRS, alcance, Gherkin, diagramas, trazabilidad y planificación incorporan la validación #78 sin cambiar el denominador. | Cumple. |
+| Verificabilidad | Los criterios pueden convertirse en pruebas o revisión documental. | Cumple en diseño; ejecución pendiente. |
+| Modificabilidad | La evolución futura está separada del compromiso actual. | Cumple. |
+| Trazabilidad | Historia, vista, requisito, issue y evidencia prevista están relacionados. | Cumple para el MVP. |
 
-## Comprobaciones de cobertura
+## Cobertura vigente
 
-- 30 requisitos funcionales: `RF-001` a `RF-030`.
-- 28 requisitos no funcionales: `RNF-001` a `RNF-028`.
-- 30 reglas del negocio: `RN-001` a `RN-030`.
-- 15 requisitos de datos: `RD-001` a `RD-015`.
-- 14 entidades conceptuales: `ED-01` a `ED-14`.
-- 13 casos de uso reservados: `CU-001` a `CU-013`.
-- 10 exclusiones explícitas: `EXC-01` a `EXC-10`.
+- 8 historias de usuario con criterios Gherkin.
+- 8 vistas del prototipo.
+- 11 requisitos funcionales, incluida la restricción de independencia de la OJV.
+- 10 requisitos no funcionales.
+- 7 requisitos conceptuales de datos.
+- 1 objetivo general y 4 objetivos específicos medibles.
+- 4 perfiles internos y 9 etapas operativas, con permisos, responsables,
+  alternativa monitoria y cierres anticipados definidos.
 
-## Decisiones externas pendientes
+## Límites
 
-Los asuntos `AR-01` a `AR-07` y `AD-01` a `AD-07` requieren validación con los
-socios, revisión jurídica u otra fuente autorizada. Mientras permanezcan
-abiertos:
+No forman parte de la aceptación: administración de cuentas o catálogos,
+recuperación de acceso, reasignaciones avanzadas, alertas automáticas, dashboard,
+reportes, exportaciones, anexo imprimible, Calendar, OneDrive, Gemini, portal de
+clientes, cálculo de plazos, eliminación física ni integración con la OJV. La
+desactivación de clientes y el archivo de casos sí pertenecen al MVP como
+operaciones reversibles, autorizadas y auditables.
 
-- se pueden construir prototipos y flujos reversibles con datos ficticios;
-- no se deben fijar silenciosamente campos, permisos, plazos de conservación o
-  tratamientos como decisiones definitivas;
-- no se deben utilizar datos reales;
-- los diagramas y el modelo físico deben señalar los supuestos que adopten.
-
-## Criterio de cambio
-
-Todo cambio que altere alcance, comportamiento o datos debe actualizar en el
-mismo pull request el requisito afectado, la matriz de trazabilidad, el caso de
-uso o modelo correspondiente y la prueba prevista. Una validación externa debe
-registrar fecha, fuente y decisión sin publicar información confidencial.
+Todo cambio de alcance debe actualizar conjuntamente `MVP_SCOPE.md`, SRS,
+historias, trazabilidad, mockups y pruebas mediante un issue específico.
+La revisión de #61 no declara cerrada la coherencia global: #68 debe actualizar
+la matriz, los diagramas incompatibles y la planificación antes de congelar la
+línea base completa.

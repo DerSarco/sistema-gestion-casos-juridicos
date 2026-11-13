@@ -19,6 +19,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: sistema_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d sistema_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -38,6 +53,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Create ephemeral authentication values
+        run: |
+          echo "SESSION_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+          echo "DEMO_LOGIN_PASSWORD=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
+
       - name: Run lint
         run: pnpm lint
 
@@ -46,6 +66,16 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+
+      - name: Verify migrations, fictional seed and database constraints
+        run: pnpm test:db
+        env:
+          DATABASE_URL: postgresql://postgres@localhost:5432/sistema_test?schema=public
+
+      - name: Run browser tests
+        run: pnpm test:e2e
+        env:
+          DATABASE_URL: postgresql://postgres@localhost:5432/sistema_test?schema=public
 
       - name: Build application
         run: pnpm build

@@ -15,7 +15,11 @@ compatible.
 PostgreSQL será la base objetivo y Prisma implementará el adaptador de
 persistencia. El esquema declarará integridad referencial e índices; las reglas
 que no puedan expresarse con una restricción permanecerán en casos de uso y
-pruebas. Las versiones se fijarán en `pnpm-lock.yaml`.
+pruebas. Las consultas operativas permanecerán encapsuladas en adaptadores de
+`src/infrastructure/prisma`; no se escribirán consultas en componentes, rutas ni
+entidades de dominio. El SQL directo se reserva para migraciones versionadas y
+para pruebas explícitas de restricciones. Las versiones se fijarán en
+`pnpm-lock.yaml`.
 
 ## Alternativas consideradas
 

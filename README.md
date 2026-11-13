@@ -24,8 +24,17 @@ Este repositorio concentra:
 ## Documentación
 
 - [Especificación de requisitos de software](docs/SRS.md)
+- [Objetivos y medición del proyecto](docs/OBJECTIVES.md)
+- [Línea base del MVP priorizado](docs/MVP_SCOPE.md)
+- [Historias de usuario y criterios Gherkin](docs/USER_STORIES.md)
 - [Matriz de trazabilidad](docs/TRACEABILITY.md)
+- [Reportes y exportaciones autorizadas de la versión 1](docs/V1_REPORTS.md)
+- [Evidencia de validación v0.5.0](docs/ACCEPTANCE_v0.5.0.md)
+- [Notas del pre-release v0.5.0](docs/RELEASE_NOTES_v0.5.0.md)
+- [Planificación del MVP](docs/planning/README.md)
+- [Capturas verificadas del prototipo Stitch](docs/mockups/stitch/README.md)
 - [Arquitectura y decisiones técnicas](docs/architecture/README.md)
+- [Migraciones y pruebas PostgreSQL](docs/architecture/database-testing.md)
 - [Reglas de contribución](CONTRIBUTING.md)
 - [Diagramas UML](docs/diagrams/README.md)
 
@@ -35,13 +44,18 @@ Requisitos: Node.js 24 y pnpm 11.
 
 ```bash
 pnpm install --frozen-lockfile
+export DATABASE_URL='postgresql://usuario:clave@localhost:5432/sistema?schema=public'
+export SESSION_SECRET="$(openssl rand -hex 32)"
+export DEMO_LOGIN_PASSWORD="$(openssl rand -hex 24)"
 pnpm dev
 ```
 
-La aplicación queda disponible en `http://localhost:3000`. El incremento v0.2
-usa únicamente fixtures ficticios y todavía no implementa autenticación ni
-autorización. Por ello no debe exponerse públicamente ni utilizarse con datos
-reales.
+La aplicación queda disponible en `http://localhost:3000`. Las cuentas internas
+ficticias se crean con el seed y utilizan la contraseña temporal definida fuera
+del repositorio en `DEMO_LOGIN_PASSWORD`. `SESSION_SECRET` debe contener al menos
+32 caracteres. Ninguna de estas variables debe versionarse ni compartirse en
+issues, capturas o registros. El entorno sigue siendo de preproducción y no debe
+utilizar datos reales.
 
 Antes de abrir un pull request se deben ejecutar:
 
@@ -51,6 +65,10 @@ pnpm typecheck
 pnpm test
 pnpm build
 ```
+
+Los cambios de base de datos requieren además una instancia PostgreSQL de prueba
+vacía y el procedimiento documentado en
+[`docs/architecture/database-testing.md`](docs/architecture/database-testing.md).
 
 El workflow `Quality` de GitHub Actions ejecuta las mismas comprobaciones para
 todo pull request dirigido a `develop` o `main`. Instala las dependencias desde
@@ -76,8 +94,10 @@ almacena credenciales judiciales ni calcula plazos jurídicos de forma definitiv
 
 ## Estado
 
-La versión v0.2 incorpora la especificación revisada, arquitectura, diagramas,
-esquema PostgreSQL, verificación automática y flujos funcionales de clientes y
-casos sobre memoria temporal con datos ficticios. La autenticación y la
-autorización permanecen planificadas para v0.3; esta versión no debe desplegarse
-como sistema productivo ni utilizar datos reales.
+El pre-release académico `v0.5.0` incorpora persistencia PostgreSQL, clientes, casos, distribución, etapas,
+fechas, historial y acceso interno con los perfiles Socio, Abogado, Asistente y
+Procurador, además de reportes internos mínimos. La autorización se verifica en
+servidor y las operaciones de ciclo de vida y exportación quedan restringidas al
+perfil Socio. El sistema no debe desplegarse como producto ni utilizar datos
+reales hasta completar la aceptación externa y la validación jurídica, técnica y
+organizacional definida para la versión 1.

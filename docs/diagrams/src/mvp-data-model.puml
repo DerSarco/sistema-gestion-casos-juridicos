@@ -1,0 +1,127 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+hide methods
+title Modelo de datos del MVP — diseño v2 — 2026-11-11
+
+class Estudio <<ED-01>> {
+  id: UUID
+  nombre: String
+  activo: Boolean
+}
+class Rol <<ED-03>> {
+  id: UUID
+  nombre: String
+  vigente: Boolean
+}
+class Usuario <<ED-02>> {
+  id: UUID
+  identificadorAcceso: String
+  activo: Boolean
+}
+class Cliente <<ED-04>> {
+  id: UUID
+  tipo: TipoCliente
+  nombreORazonSocial: String
+  rutNormalizado: String
+  telefono: String
+  email?: String
+  origenMateria: String
+  activo: Boolean
+  motivoCambio?: String
+}
+class ValorCatalogo <<ED-07>> {
+  id: UUID
+  tipo: String
+  codigo: String
+  nombre: String
+  orden: Int
+  vigente: Boolean
+}
+class CasoLaboral <<ED-05>> {
+  id: UUID
+  codigoInterno: String
+  archivado: Boolean
+  motivoArchivo?: String
+  tribunal?: String
+  rit?: String
+  rolJudicial?: String
+  observacion?: String
+}
+class AntecedenteLaboral <<ED-10>> {
+  id: UUID
+  empresaOContraparte?: String
+  fechaIngresoLaboral?: Date
+  fechaDespido?: Date
+  causalDespido?: String
+  organizacionColectiva?: String
+  tipoGestionColectiva?: String
+  tiendaOSucursal?: String
+  finiquito?: String
+  cuantia?: Decimal
+}
+class Participacion <<ED-06>> {
+  id: UUID
+  principal: Boolean
+  inicio: Instant
+  termino?: Instant
+  motivo?: String
+}
+class FechaRelevante <<ED-08>> {
+  id: UUID
+  fecha: Instant
+  zona: String
+  fuente?: String
+  observacion?: String
+}
+class EventoHistorial <<ED-09>> {
+  id: UUID
+  entidad: String
+  accion: String
+  fecha: Instant
+  motivo?: String
+  detalleProtegido?: Json
+}
+
+Estudio "1" *-- "0..*" Usuario
+Estudio "1" *-- "0..*" Cliente
+Estudio "1" *-- "0..*" CasoLaboral
+Estudio "1" *-- "0..*" ValorCatalogo
+Usuario "0..*" --> "1" Rol
+Cliente "1" -- "0..*" CasoLaboral
+CasoLaboral "1" *-- "0..1" AntecedenteLaboral
+CasoLaboral "1" *-- "1..*" Participacion
+Participacion "0..*" --> "1" Usuario : responsable o apoyo
+Participacion "0..*" --> "1" ValorCatalogo : rol operativo
+CasoLaboral "0..*" --> "4..5" ValorCatalogo : materia, naturaleza,\nestado, etapa y procedimiento opcional
+CasoLaboral "1" *-- "0..*" FechaRelevante
+FechaRelevante "0..*" --> "1" Usuario : responsable
+FechaRelevante "0..*" --> "1" ValorCatalogo : tipo
+CasoLaboral "1" *-- "0..*" EventoHistorial
+EventoHistorial "0..*" --> "0..1" Usuario : actor
+
+note right of AntecedenteLaboral
+  Los campos se muestran y validan según la materia.
+  La fecha de despido pertenece al caso y solo se
+  exige para materias de despido.
+  Una gestión colectiva identifica su organización.
+end note
+note left of Cliente
+  No contiene antecedentes laborales del caso.
+  La desactivación es reversible y no elimina
+  relaciones históricas.
+end note
+note right of CasoLaboral
+  Representa asuntos laborales individuales o colectivos.
+  Tribunal, RIT y ROL admiten ausencia inicial.
+  El archivo es reversible y no existe prioridad manual.
+end note
+note bottom of FechaRelevante
+  Registro manual. No calcula plazos jurídicos
+  definitivos ni crea alertas automáticas.
+end note
+note bottom of EventoHistorial
+  Registro aditivo de acciones críticas.
+end note
+@enduml
