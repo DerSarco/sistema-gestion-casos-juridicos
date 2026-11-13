@@ -27,7 +27,7 @@ al repositorio:
 El comando configurado en Vercel es:
 
 ```sh
-pnpm prisma migrate deploy && pnpm prisma db seed && pnpm build
+pnpm prisma generate && pnpm prisma migrate deploy && pnpm prisma db seed && pnpm build
 ```
 
 El seed es idempotente y solo habilita datos ficticios. Antes de cualquier uso
