@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 1.7
+**Versión del documento:** 1.8
 
 **Estado:** Reglas operativas validadas; aceptación final pendiente
 
@@ -29,6 +29,7 @@
 | 1.5 | 2026-11-09 | Refinamiento con cuatro perfiles, siete etapas y ciclos de vida reversibles, sin aumentar la línea base normativa | Equipo del proyecto |
 | 1.6 | 2026-11-11 | Consolidación anonimizada de permisos, campos, flujo, fechas, cierre y conservación validados con el estudio | Equipo del proyecto |
 | 1.7 | 2026-11-11 | Generalización del modelo de casos laborales y definición de campos condicionales por materia y etapa | Equipo del proyecto |
+| 1.8 | 2026-11-12 | Extensión controlada de versión 1 para carga, reportes básicos y exportación mínima autorizada | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -400,6 +401,17 @@ restricción obligatoria de independencia respecto de la OJV.
 `RF-011` no agrega una pantalla. Su inclusión en el catálogo funcional conserva
 explícita y verificable la frontera entre el sistema interno y la plataforma
 judicial externa.
+
+#### 3.2.2 Extensión posterior al MVP para la versión 1
+
+El issue #87 incorpora, sin modificar los once RF ni el porcentaje del MVP, una
+consulta de carga por responsable y distribuciones por etapa y estado. Los cuatro
+perfiles pueden consultar los agregados de su propio estudio. Solo `Socio` puede
+exportar un CSV minimizado con código interno, materia, etapa, estado, ciclo,
+responsable y próxima fecha relevante registrada. La exportación se autoriza en
+servidor, se audita sin almacenar su contenido y excluye datos de identidad,
+contacto y antecedentes laborales. Su especificación detallada se conserva en
+`docs/V1_REPORTS.md`.
 
 ### 3.3 Requisitos no funcionales
 

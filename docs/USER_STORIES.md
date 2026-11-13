@@ -254,6 +254,40 @@ Escenario: Rechazar la desactivación para otros perfiles
 
 Trazabilidad: `MVP-08`, RF-002, RF-009, RNF-001, RNF-003, RNF-004, RNF-008.
 
+## HU-V1-01 — Consultar carga y exportar un reporte autorizado
+
+Esta historia pertenece a la versión 1 posterior al MVP y no modifica su
+denominador funcional.
+
+**Como** integrante autorizado del estudio
+
+**quiero** consultar carga y distribuciones operativas
+
+**para** apoyar el seguimiento y la asignación del trabajo.
+
+```gherkin
+Escenario: Consultar carga del estudio
+  Dado que existe una sesión interna vigente
+  Cuando el usuario consulta reportes
+  Entonces visualiza carga por responsable y casos por etapa y estado
+  Y no obtiene datos de otro estudio
+
+Escenario: Exportar un reporte mínimo como Socio
+  Dado que el usuario posee perfil Socio
+  Cuando solicita exportar casos
+  Entonces recibe un CSV de campos operativos minimizados
+  Y la exportación queda asociada con su usuario sin almacenar el contenido
+
+Escenario: Rechazar una exportación sin permiso
+  Dado que el usuario posee perfil Abogado, Asistente o Procurador
+  Cuando solicita directamente la exportación
+  Entonces el servidor rechaza la operación
+  Y no expone información de casos
+```
+
+Trazabilidad: issue #87, RNF-001 a RNF-005, RNF-009, RNF-010 y
+`docs/V1_REPORTS.md`.
+
 ## Criterio de término
 
 Una historia se considera aceptada cuando todos sus escenarios son demostrables
