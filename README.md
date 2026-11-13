@@ -31,6 +31,7 @@ Este repositorio concentra:
 - [Reportes y exportaciones autorizadas de la versión 1](docs/V1_REPORTS.md)
 - [Evidencia de validación v0.5.0](docs/ACCEPTANCE_v0.5.0.md)
 - [Notas del pre-release v0.5.0](docs/RELEASE_NOTES_v0.5.0.md)
+- [Despliegue académico en Vercel](docs/VERCEL_DEPLOYMENT.md)
 - [Planificación del MVP](docs/planning/README.md)
 - [Capturas verificadas del prototipo Stitch](docs/mockups/stitch/README.md)
 - [Arquitectura y decisiones técnicas](docs/architecture/README.md)
