@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { getPrismaClient } from "@/infrastructure/prisma/prisma-client";
+import { authorize } from "@/modules/auth/domain/authorization";
 
 const COOKIE_NAME = "sgcj_session";
 const SESSION_SECONDS = 60 * 60 * 8;
@@ -57,9 +58,20 @@ export async function getOptionalServerActor(): Promise<ServerActor | null> {
   return user ? { id: user.id, studyId: user.studyId, displayName: user.displayName, role: user.role.name } : null;
 }
 export async function getServerActor(): Promise<ServerActor> { const actor = await getOptionalServerActor(); if (!actor) redirect("/"); return actor; }
-export function requirePartner(actor: ServerActor): void { if (actor.role !== "Socio") throw new Error("Esta acción requiere el perfil Socio."); }
+export function requirePartner(actor: ServerActor): void {
+  try {
+    authorize(actor.role, "user:manage");
+  } catch {
+    throw new Error("Esta acción requiere el perfil Socio.");
+  }
+}
 export function requireSelfAssignment(actor: ServerActor, responsibleId: string, participantIds: string[]): void {
-  if (actor.role !== "Socio" && (responsibleId !== actor.id || participantIds.length > 0)) throw new Error("Solo un Socio puede distribuir el caso a otras personas.");
+  if (responsibleId === actor.id && participantIds.length === 0) return;
+  try {
+    authorize(actor.role, "case:assign");
+  } catch {
+    throw new Error("Solo un Socio puede distribuir el caso a otras personas.");
+  }
 }
 export async function loginWithInternalAccount(identifier: string, password: string): Promise<ServerActor | null> {
   const expectedPassword = process.env.DEMO_LOGIN_PASSWORD; if (!expectedPassword) throw new Error("DEMO_LOGIN_PASSWORD debe configurarse fuera del repositorio.");
