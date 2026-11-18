@@ -29,7 +29,7 @@ export async function AppShell({ active, children }: { active: "cases" | "client
               <form className="demo-profile-switcher" action={switchDemoProfileAction}>
                 <input type="hidden" name="returnTo" value={returnTo} />
                 <label htmlFor="demo-role">Perfil demo</label>
-                <select id="demo-role" name="role" defaultValue={actor.role === "Abogado" ? (actor.displayName.endsWith("B") ? "Abogado B" : "Abogado A") : actor.role} aria-describedby="demo-profile-note">
+                <select key={actor.id} id="demo-role" name="role" defaultValue={actor.role === "Abogado" ? (actor.displayName.endsWith("B") ? "Abogado B" : "Abogado A") : actor.role} aria-describedby="demo-profile-note">
                   <option>Socio</option>
                   <option>Abogado A</option>
                   <option>Abogado B</option>

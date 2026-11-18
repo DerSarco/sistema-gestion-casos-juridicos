@@ -9,7 +9,7 @@
 La línea base normativa para continuar el desarrollo es la integrada en
 `origin/develop` mediante los PR #62, #67 y #76:
 
-- once requisitos funcionales, `RF-001` a `RF-011`;
+- doce requisitos funcionales, `RF-001` a `RF-012`;
 - diez requisitos no funcionales, `RNF-001` a `RNF-010`;
 - siete requisitos de datos, `RD-001` a `RD-007`;
 - ocho historias de usuario, `HU-01` a `HU-08`.
@@ -25,12 +25,12 @@ monitoria, permisos, campos y reglas de cierre sin agregar ni renumerar requisit
 
 | Artefacto | Contenido observado | Interpretación y acción |
 |---|---|---|
-| SRS 1.6 en `origin/develop` | Catálogo compacto de 11 RF, 10 RNF y 7 RD; cuatro perfiles, nueve etapas y ciclos reversibles. | Fuente normativa de construcción y aceptación. |
+| SRS 1.9 vigente | Catálogo compacto de 12 RF, 10 RNF y 7 RD; cuatro perfiles, nueve etapas y ciclos reversibles. | Fuente normativa de construcción y aceptación. |
 | Informe corregido del Hito 1 | Síntesis académica `R1` a `R14`, con requisitos funcionales, de calidad y cumplimiento. | Resume la propuesta completa. No reemplaza por sí sola los identificadores ni reactiva funciones excluidas del SRS. |
-| PPT del Hito 2, lámina 11 | Catálogo histórico `RF-001…RF-030`, `RNF-001…RNF-028` y total de 58 requisitos. | Debe sustituirse por 11 RF, 10 RNF y 7 RD, indicando que el catálogo compacto es el vigente. |
+| PPT del Hito 2, lámina 11 | Catálogo histórico `RF-001…RF-030`, `RNF-001…RNF-028` y total de 58 requisitos. | Debe sustituirse por 12 RF, 10 RNF y 7 RD, indicando que el catálogo compacto es el vigente. |
 
 La corrección exacta de la lámina 11 consiste en reemplazar el total de 58 por
-`11 RF + 10 RNF + 7 RD`, identificar `RF-011`, RNF y RD como puertas
+`12 RF + 10 RNF + 7 RD`, identificar `RF-011`, `RF-012`, RNF y RD como puertas
 transversales, y declarar que el avance aceptado inicial es 0 %. No se debe
 presentar el catálogo histórico como backlog pendiente.
 

@@ -2,7 +2,7 @@
 
 **Proyecto:** Sistema de gestión de casos jurídicos
 
-**Versión del documento:** 1.8
+**Versión del documento:** 1.9
 
 **Estado:** Reglas operativas validadas; aceptación final pendiente
 
@@ -618,7 +618,7 @@ issue y estado. La tabla siguiente resume los grupos cubiertos.
 | Requisito | Fuente | Issue | Caso de uso | Diseño/diagrama | Prueba | Estado |
 |---|---|---|---|---|---|---|
 | Línea base del MVP | Objetivos, historias y alcance priorizado | #53, #61 | Ocho historias | Tres modelos `mvp-*` | Revisión documental y visual | Modelado; implementación no inferida |
-| 11 RF | Problema, alcance, historias Gherkin y validación operativa | #61, #78 | HU-01 a HU-08 | Casos de uso y datos reducidos | Reglas validadas; ejecución pendiente | Especificado |
+| 12 RF | Problema, alcance, historias Gherkin y validación operativa | #61, #78, #115 | HU-01 a HU-09 | Casos de uso y datos reducidos | Reglas validadas; ejecución pendiente | Especificado |
 | 10 RNF | Riesgos esenciales, plan de calidad y permisos validados | #61, #78 | Transversal | Proceso y modelo reducido | Métodos definidos; ejecución pendiente | Especificado |
 | 7 RD | Privacidad, integridad y modelo reducido | #61, #78 | HU-03, HU-04, HU-06, HU-08 | Modelo de datos del MVP | Reglas operativas validadas; ejecución pendiente | Especificado |
 | Revisión IEEE 830-1998 | SRS 1.4 | #61, #66 | Todo el MVP | Modelos seleccionados | Lista de revisión documental | Revisado internamente |
