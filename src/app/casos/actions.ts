@@ -54,7 +54,7 @@ export async function saveCaseAction(
   if (Object.keys(errors).length)
     return { status: "invalid", errors, values: input };
   try {
-    const repository = createPrismaCaseRepository(actor.studyId);
+    const repository = createPrismaCaseRepository(actor.studyId, actor);
     const caseId = String(data.get("caseId") ?? "") || null;
     const current = caseId ? await repository.findByIdOrCode(caseId) : null;
     if (caseId && !current)
@@ -105,7 +105,7 @@ export async function changeCaseLifecycleAction(
       };
     const target = data.get("target") === "ARCHIVED" ? "ARCHIVED" : "ACTIVE";
     const result = await createPrismaCaseRepository(
-      actor.studyId,
+      actor.studyId, actor,
     ).changeLifecycle(
       String(data.get("caseId") ?? ""),
       target,
@@ -137,7 +137,7 @@ export async function changeCaseStageAction(
 ): Promise<CaseLifecycleState> {
   try {
     const actor = await getServerActor();
-    const result = await createPrismaCaseRepository(actor.studyId).changeStage(
+    const result = await createPrismaCaseRepository(actor.studyId, actor).changeStage(
       String(data.get("caseId") ?? ""),
       String(data.get("stageId") ?? ""),
       String(data.get("reason") ?? "").trim(),
@@ -187,7 +187,7 @@ export async function addRelevantDateAction(
       message: "La caducidad manual requiere indicar su fuente.",
     };
   const result = await createPrismaCaseRepository(
-    actor.studyId,
+    actor.studyId, actor,
   ).addRelevantDate(
     String(data.get("caseId") ?? ""),
     {

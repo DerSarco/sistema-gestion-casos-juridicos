@@ -48,7 +48,14 @@ export class PrismaCaseRepository {
   constructor(
     private readonly database: Database,
     private readonly studyId: string,
+    private readonly viewer?: { id: string; role: string },
   ) {}
+
+  private visibility() {
+    return this.viewer?.role === "Abogado"
+      ? { participations: { some: { participantId: this.viewer.id, endedAt: null } } }
+      : {};
+  }
 
   async findRecord(idOrCode: string) {
     const isUuid =
@@ -58,6 +65,7 @@ export class PrismaCaseRepository {
     return this.database.legalCase.findFirst({
       where: {
         studyId: this.studyId,
+        ...this.visibility(),
         ...(isUuid ? { id: idOrCode } : { internalCode: idOrCode }),
       },
       include: includeCase,
@@ -125,7 +133,7 @@ export class PrismaCaseRepository {
 
   async list(): Promise<PersistentCase[]> {
     const records = await this.database.legalCase.findMany({
-      where: { studyId: this.studyId },
+      where: { studyId: this.studyId, ...this.visibility() },
       include: includeCase,
       orderBy: [{ createdAt: "desc" }, { id: "asc" }],
     });
@@ -496,6 +504,6 @@ export class PrismaCaseRepository {
   }
 }
 
-export function createPrismaCaseRepository(studyId: string) {
-  return new PrismaCaseRepository(getPrismaClient(), studyId);
+export function createPrismaCaseRepository(studyId: string, viewer?: { id: string; role: string }) {
+  return new PrismaCaseRepository(getPrismaClient(), studyId, viewer);
 }

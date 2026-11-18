@@ -1,6 +1,6 @@
 # Historias de usuario priorizadas del MVP
 
-**Versión:** 1.2
+**Versión:** 1.3
 
 **Fecha:** 2026-11-11
 
@@ -61,6 +61,34 @@ Escenario: Búsqueda sin coincidencias
 ```
 
 Trazabilidad: `MVP-02`, RF-010, RNF-001, RNF-007.
+
+## HU-09 — Administrar usuarios internos
+
+**Como** Socio
+
+**quiero** crear, desactivar y reactivar usuarios del estudio
+
+**para** controlar quién puede operar la plataforma y con qué perfil.
+
+```gherkin
+Escenario: Crear un usuario interno
+  Dado que el Socio mantiene una sesión vigente
+  Cuando registra nombre, identificador de acceso y rol válido
+  Entonces el usuario queda activo dentro del mismo estudio
+  Y la creación queda auditada
+
+Escenario: Aislar casos entre abogados
+  Dado que dos abogados poseen casos distintos
+  Cuando uno de ellos consulta listados, reportes o una ficha directa
+  Entonces obtiene solamente casos donde participa activamente
+
+Escenario: Rechazar administración sin privilegios
+  Dado un Abogado, Asistente o Procurador autenticado
+  Cuando intenta administrar usuarios internos
+  Entonces el servidor rechaza la operación sin modificar datos
+```
+
+Trazabilidad: RF-001, RF-012, RNF-001, RNF-002, #115.
 
 ## HU-03 — Registrar o editar un caso
 

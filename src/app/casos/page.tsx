@@ -7,6 +7,6 @@ import { connection } from "next/server";
 export const instant = false;
 
 export default async function CasesPage() {
-  await connection(); const actor = await getServerActor(); const cases = await createPrismaCaseRepository(actor.studyId).list();
+  await connection(); const actor = await getServerActor(); const cases = await createPrismaCaseRepository(actor.studyId, actor).list();
   return <AppShell active="cases"><PersistentCasesScreen cases={cases} /></AppShell>;
 }

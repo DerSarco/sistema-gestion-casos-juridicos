@@ -17,6 +17,7 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 | Historia | Vista | Resultado verificable | RF | RNF principales | Issue de diseño |
 |---|---|---|---|---|---|
 | HU-01 | MVP-01 Inicio de sesión | Acceso interno sin registro público | RF-001 | RNF-001, RNF-002, RNF-004 | #85 |
+| HU-09 | Administración interna | Crear y gestionar usuarios solo como Socio; aislar casos por Abogado | RF-001, RF-012 | RNF-001, RNF-002, RNF-004 | #115 |
 | HU-02 | MVP-02 Casos | Buscar y filtrar por atributos, procedimiento, próxima fecha y archivo; ordenar sin prioridad subjetiva | RF-010 | RNF-001, RNF-007 | #78, #82 |
 | HU-03 | MVP-03 Formulario de caso | Registrar o editar caso con bloque común y campos condicionales según materia y etapa | RF-004, RF-005, RF-007 | RNF-006, RNF-008 | #78, #79, #81 |
 | HU-04 | MVP-04 Ficha del caso | Consultar ficha e historial; archivar o reactivar exclusivamente como Socio | RF-004, RF-006, RF-009 | RNF-001, RNF-003 | #81, #83 |
@@ -30,6 +31,7 @@ no constituyen deuda, incumplimiento ni criterio de aceptación de esta iteraci�
 | RF | Fuente | Verificación prevista | Estado real al 2026-11-11 |
 |---|---|---|---|
 | RF-001 | ALC-01; HU-01 | Acceso válido e inválido sin registro público | Implementado y verificado en #85 con cuentas activas, sesión firmada y cierre de sesión |
+| RF-012 | ALC-01; HU-09 | Gestión reversible de usuarios y alcance por participación | Implementado y verificado en #115 |
 | RF-002 | ALC-02; HU-08; #78 | Campos mínimos validados y ciclo reversible exclusivo de Socio | Implementado y verificado en #80 y #85 |
 | RF-003 | ALC-02; HU-07, HU-08; #78 | Búsqueda, actividad y advertencia no bloqueante por nombre y origen | Implementado y verificado en #80 |
 | RF-004 | ALC-03; HU-03, HU-04; #78, #79 | Mínimos comunes y condicionales por materia; archivo reversible exclusivo de Socio | Implementado y verificado en #81 y #85 |

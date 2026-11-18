@@ -39,9 +39,9 @@ test("las migraciones y el seed idempotente crean solo datos ficticios", async (
 
   assert.deepEqual(counts.rows[0], {
     studies: 2,
-    clients: 2,
-    cases: 1,
-    participations: 1,
+    clients: 3,
+    cases: 2,
+    participations: 2,
   });
 
   const clients = await pool.query<{
@@ -80,7 +80,7 @@ test("las relaciones compuestas impiden cruzar estudios", async () => {
   const result = await pool.query<{ count: number }>(
     "SELECT count(*)::int AS count FROM legal_cases",
   );
-  assert.equal(result.rows[0]?.count, 1);
+  assert.equal(result.rows[0]?.count, 2);
 });
 
 test("solo permite un responsable principal vigente por caso", async () => {

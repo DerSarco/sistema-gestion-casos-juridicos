@@ -11,7 +11,7 @@ export async function POST(): Promise<Response> {
       { message: "La exportación requiere el perfil Socio." },
       { status: 403 },
     );
-  const rows = await createPrismaReportRepository(actor.studyId).exportRows(
+  const rows = await createPrismaReportRepository(actor.studyId, actor).exportRows(
     actor.id,
   );
   return new Response(buildCaseCsv(rows), {

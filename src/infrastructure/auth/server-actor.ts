@@ -8,7 +8,8 @@ const COOKIE_NAME = "sgcj_session";
 const SESSION_SECONDS = 60 * 60 * 8;
 const DEMO_IDENTIFIERS = {
   Socio: "socio-a@example.test",
-  Abogado: "abogado-a@example.test",
+  "Abogado A": "abogado-a@example.test",
+  "Abogado B": "abogado-b@example.test",
   Asistente: "asistente-a@example.test",
   Procurador: "procurador-a@example.test",
 } as const;
@@ -20,6 +21,7 @@ export function isDemoProfileSwitcherEnabled(value = process.env.DEMO_PROFILE_SW
 }
 
 export function demoIdentifierForRole(role: string): string | null {
+  if (role === "Abogado") return DEMO_IDENTIFIERS["Abogado A"];
   return role in DEMO_IDENTIFIERS ? DEMO_IDENTIFIERS[role as DemoRole] : null;
 }
 
@@ -87,6 +89,6 @@ export async function switchDemoProfileAction(data: FormData): Promise<void> {
   if (!target) throw new Error("La cuenta ficticia seleccionada no está disponible para este estudio.");
   await startSession(target.id, target.studyId);
   const requestedPath = String(data.get("returnTo") ?? "");
-  const returnTo = /^\/(casos|clientes|reportes)(\/|$)/.test(requestedPath) ? requestedPath : "/casos";
+  const returnTo = /^\/(casos|clientes|reportes|usuarios)(\/|$)/.test(requestedPath) ? requestedPath : "/casos";
   redirect(returnTo);
 }
