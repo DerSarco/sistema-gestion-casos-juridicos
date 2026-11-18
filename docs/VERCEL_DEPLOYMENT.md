@@ -21,6 +21,9 @@ al repositorio:
 - `DATABASE_URL`: conexión PostgreSQL administrada;
 - `SESSION_SECRET`: secreto aleatorio de al menos 32 caracteres;
 - `DEMO_LOGIN_PASSWORD`: contraseña compartida del entorno de demostración.
+- `DEMO_PROFILE_SWITCHER_ENABLED`: usar `true` únicamente en el entorno de
+  demostración para habilitar el cambio rápido entre las cuatro identidades
+  ficticias. Debe permanecer ausente o en `false` fuera de ese contexto.
 
 ## Build de demostración
 

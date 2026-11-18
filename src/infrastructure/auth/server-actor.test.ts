@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createSessionValue, requirePartner, requireSelfAssignment, verifySessionValue } from "./server-actor";
+import { createSessionValue, demoIdentifierForRole, isDemoProfileSwitcherEnabled, requirePartner, requireSelfAssignment, verifySessionValue } from "./server-actor";
 
 process.env.SESSION_SECRET = "test-session".padEnd(32, "x");
 const actor = (role: string) => ({ id: "actor", studyId: "study", role, displayName: "Usuario" });
@@ -24,5 +24,26 @@ describe("requirePartner", () => {
     expect(verifySessionValue(value, 2_000)).toEqual({ userId: "user", studyId: "study", expiresAt: expect.any(Number) });
     expect(verifySessionValue(`${value}x`, 2_000)).toBeNull();
     expect(verifySessionValue(value, 1_000 + 9 * 60 * 60 * 1_000)).toBeNull();
+  });
+});
+
+describe("selector de perfiles ficticios", () => {
+  it("solo se habilita con la bandera explícita", () => {
+    expect(isDemoProfileSwitcherEnabled("true")).toBe(true);
+    expect(isDemoProfileSwitcherEnabled("false")).toBe(false);
+    expect(isDemoProfileSwitcherEnabled(undefined)).toBe(false);
+  });
+
+  it.each([
+    ["Socio", "socio-a@example.test"],
+    ["Abogado", "abogado-a@example.test"],
+    ["Asistente", "asistente-a@example.test"],
+    ["Procurador", "procurador-a@example.test"],
+  ])("limita %s a su identidad ficticia autorizada", (role, identifier) => {
+    expect(demoIdentifierForRole(role)).toBe(identifier);
+  });
+
+  it("rechaza perfiles ajenos al conjunto demo", () => {
+    expect(demoIdentifierForRole("Administrador")).toBeNull();
   });
 });
