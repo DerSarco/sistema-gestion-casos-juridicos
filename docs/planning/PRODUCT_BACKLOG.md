@@ -12,7 +12,7 @@ v0.2.0, pero no aceptación de la historia completa.
 
 | Orden | ID | Resultado | Trazabilidad | Prioridad | Puntos | Dependencias | Estado al 2026-10-27 |
 |---:|---|---|---|---|---:|---|---|
-| 1 | PB-01 | Mantener línea base de objetivos, alcance, SRS y trazabilidad | OE-01; 11 RF; 10 RNF; 7 RD | Must | 3 | Ninguna | SRS refinado en #61; congelación integral en #68 |
+| 1 | PB-01 | Mantener línea base de objetivos, alcance, SRS y trazabilidad | OE-01; 12 RF; 10 RNF; 7 RD | Must | 3 | Ninguna | SRS refinado en #61; congelación integral en #68; extensión controlada en #115 |
 | 2 | PB-02 | Consolidar ocho vistas y evidencia limpia del prototipo | OE-02; MVP-01 a MVP-08 | Must | 5 | PB-01 | Interfaz y navegación implementadas; #74 agrega verificación temporal, responsive y accesible; aceptación funcional persistente pendiente |
 | 3 | PB-03 | Conectar persistencia PostgreSQL mediante adaptadores Prisma | RD-001 a RD-003 | Must | 8 | PB-01 | Adaptador de clientes implementado en #70; conexión del flujo y adaptador de casos pendientes |
 | 4 | PB-04 | Registrar, editar, desactivar o reactivar clientes | HU-08; RF-002, RF-009 | Must | 5 | PB-03 | Registro y edición temporales; ciclo reversible, conexión real y aceptación pendientes |

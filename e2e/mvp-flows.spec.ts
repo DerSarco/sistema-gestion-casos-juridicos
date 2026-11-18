@@ -55,10 +55,13 @@ test("AUTH-03 cambia perfiles ficticios sin exponer credenciales", async ({ page
   await switcher.getByLabel("Perfil demo").selectOption("Abogado A");
   await switcher.getByRole("button", { name: "Cambiar" }).click();
   await expect(page.locator(".topbar")).toContainText("Abogado Ficticio A · Abogado");
+  await expect(page.getByLabel("Perfil demo")).toHaveValue("Abogado A");
   await page.goto("/reportes");
+  await expect(page.getByLabel("Perfil demo")).toHaveValue("Abogado A");
   await expect(page.getByRole("button", { name: "Exportar CSV" })).toHaveCount(0);
   await page.locator(".demo-profile-switcher").getByLabel("Perfil demo").selectOption("Socio");
   await page.locator(".demo-profile-switcher").getByRole("button", { name: "Cambiar" }).click();
+  await expect(page.getByLabel("Perfil demo")).toHaveValue("Socio");
   await expect(page.getByRole("button", { name: "Exportar CSV" })).toBeVisible();
 });
 

@@ -52,12 +52,12 @@ externos.
 
 | Clasificación | Requisitos | Compromiso |
 |---|---|---|
-| MVP | RF-001 a RF-010 | Implementar y verificar mediante las ocho historias priorizadas. RF-001 se implementa al final del incremento funcional. |
+| Versión vigente | RF-001 a RF-010 y RF-012 | Implementar y verificar mediante las nueve historias priorizadas. RF-001 se implementa al final del incremento funcional. |
 | Restricción obligatoria | RF-011 | La solución no se comunica técnicamente con la OJV ni solicita credenciales judiciales. |
 
-El MVP comprende once requisitos funcionales, incluido `RF-011` como restricción
-obligatoria. La numeración vigente es continua y no reserva identificadores para
-capacidades diferidas.
+La versión vigente comprende doce requisitos funcionales, incluido `RF-011` como restricción
+obligatoria y `RF-012` para la administración de usuarios internos. La numeración
+vigente es continua y no reserva identificadores para capacidades diferidas.
 
 ## Línea base no funcional
 
