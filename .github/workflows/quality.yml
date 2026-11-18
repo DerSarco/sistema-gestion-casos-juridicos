@@ -76,6 +76,7 @@ jobs:
         run: pnpm test:e2e
         env:
           DATABASE_URL: postgresql://postgres@localhost:5432/sistema_test?schema=public
+          DEMO_PROFILE_SWITCHER_ENABLED: "true"
 
       - name: Build application
         run: pnpm build

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon } from "./icons";
-import { getServerActor, logoutAction } from "@/infrastructure/auth/server-actor";
+import { getServerActor, isDemoProfileSwitcherEnabled, logoutAction, switchDemoProfileAction } from "@/infrastructure/auth/server-actor";
 
 export async function AppShell({ active, children }: { active: "cases" | "clients" | "reports"; children: ReactNode }) {
   const actor = await getServerActor();
+  const returnTo = active === "clients" ? "/clientes" : active === "reports" ? "/reportes" : "/casos";
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -20,7 +21,26 @@ export async function AppShell({ active, children }: { active: "cases" | "client
         <form action={logoutAction}><button className="logout" type="submit"><Icon name="logout" /> Cerrar sesión</button></form>
       </aside>
       <div className="workspace">
-        <header className="topbar"><span>Gestión de Casos</span><span className="user"><span className="avatar">{actor.displayName.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</span><strong>{actor.displayName} · {actor.role}</strong></span></header>
+        <header className="topbar">
+          <span>Gestión de Casos</span>
+          <div className="topbar-actions">
+            {isDemoProfileSwitcherEnabled() && (
+              <form className="demo-profile-switcher" action={switchDemoProfileAction}>
+                <input type="hidden" name="returnTo" value={returnTo} />
+                <label htmlFor="demo-role">Perfil demo</label>
+                <select id="demo-role" name="role" defaultValue={actor.role} aria-describedby="demo-profile-note">
+                  <option>Socio</option>
+                  <option>Abogado</option>
+                  <option>Asistente</option>
+                  <option>Procurador</option>
+                </select>
+                <button type="submit">Cambiar</button>
+                <span id="demo-profile-note" className="sr-only">Función exclusiva del entorno de demostración</span>
+              </form>
+            )}
+            <span className="user"><span className="avatar">{actor.displayName.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</span><strong>{actor.displayName} · {actor.role}</strong></span>
+          </div>
+        </header>
         <main className="content">{children}</main>
       </div>
     </div>

@@ -6,7 +6,22 @@ import { getPrismaClient } from "@/infrastructure/prisma/prisma-client";
 
 const COOKIE_NAME = "sgcj_session";
 const SESSION_SECONDS = 60 * 60 * 8;
+const DEMO_IDENTIFIERS = {
+  Socio: "socio-a@example.test",
+  Abogado: "abogado-a@example.test",
+  Asistente: "asistente-a@example.test",
+  Procurador: "procurador-a@example.test",
+} as const;
+export type DemoRole = keyof typeof DEMO_IDENTIFIERS;
 export type ServerActor = { id: string; studyId: string; role: string; displayName: string };
+
+export function isDemoProfileSwitcherEnabled(value = process.env.DEMO_PROFILE_SWITCHER_ENABLED): boolean {
+  return value === "true";
+}
+
+export function demoIdentifierForRole(role: string): string | null {
+  return role in DEMO_IDENTIFIERS ? DEMO_IDENTIFIERS[role as DemoRole] : null;
+}
 
 function secret(): string {
   const value = process.env.SESSION_SECRET;
@@ -53,3 +68,25 @@ export async function loginWithInternalAccount(identifier: string, password: str
   return { id: user.id, studyId: user.studyId, displayName: user.displayName, role: user.role.name };
 }
 export async function logoutAction(): Promise<void> { "use server"; await endSession(); redirect("/"); }
+export async function switchDemoProfileAction(data: FormData): Promise<void> {
+  "use server";
+  if (!isDemoProfileSwitcherEnabled()) throw new Error("El cambio rápido de perfil no está habilitado.");
+  const actor = await getServerActor();
+  const identifier = demoIdentifierForRole(String(data.get("role") ?? ""));
+  if (!identifier) throw new Error("El perfil de demostración no está autorizado.");
+  const target = await getPrismaClient().user.findFirst({
+    where: {
+      accessIdentifier: identifier,
+      studyId: actor.studyId,
+      status: "ACTIVE",
+      study: { active: true },
+      role: { active: true },
+    },
+    select: { id: true, studyId: true },
+  });
+  if (!target) throw new Error("La cuenta ficticia seleccionada no está disponible para este estudio.");
+  await startSession(target.id, target.studyId);
+  const requestedPath = String(data.get("returnTo") ?? "");
+  const returnTo = /^\/(casos|clientes|reportes)(\/|$)/.test(requestedPath) ? requestedPath : "/casos";
+  redirect(returnTo);
+}

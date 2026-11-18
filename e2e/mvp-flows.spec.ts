@@ -48,6 +48,20 @@ test("AUTH-01 protege rutas y elimina la sesión al cerrar", async ({ page }) =>
   await expect(page).toHaveURL(/\/$/);
 });
 
+test("AUTH-03 cambia perfiles ficticios sin exponer credenciales", async ({ page }) => {
+  await login(page);
+  const switcher = page.locator(".demo-profile-switcher");
+  await expect(switcher).toContainText("Perfil demo");
+  await switcher.getByLabel("Perfil demo").selectOption("Abogado");
+  await switcher.getByRole("button", { name: "Cambiar" }).click();
+  await expect(page.locator(".topbar")).toContainText("Abogado Ficticio A · Abogado");
+  await page.goto("/reportes");
+  await expect(page.getByRole("button", { name: "Exportar CSV" })).toHaveCount(0);
+  await page.locator(".demo-profile-switcher").getByLabel("Perfil demo").selectOption("Socio");
+  await page.locator(".demo-profile-switcher").getByRole("button", { name: "Cambiar" }).click();
+  await expect(page.getByRole("button", { name: "Exportar CSV" })).toBeVisible();
+});
+
 for (const account of [
   { identifier: "abogado-a@example.test", role: "Abogado" },
   { identifier: "asistente-a@example.test", role: "Asistente" },
@@ -83,7 +97,13 @@ test("V1-01 consulta carga y exporta un CSV minimizado como Socio", async ({
   await page.goto("/reportes");
   await expect(page.getByRole("heading", { name: "Reportes" })).toBeVisible();
   await expect(page.getByText("Carga por responsable")).toBeVisible();
-  await expect(page.getByText("Abogado Ficticio A")).toBeVisible();
+  await expect(page.getByRole("cell", { name: "Abogado Ficticio A" })).toBeVisible();
+  await expect(page.getByText("Próximos eventos")).toBeVisible();
+  await expect(page.getByText("Sin próxima fecha")).toBeVisible();
+  await page.getByRole("combobox", { name: "Etapa", exact: true }).selectOption({ label: "Ingreso" });
+  await page.getByRole("button", { name: "Aplicar filtros" }).click();
+  await expect(page).toHaveURL(/etapa=Ingreso/);
+  await expect(page.getByRole("heading", { name: "Casos por etapa" })).toBeVisible();
   const response = await page.request.post("/reportes/exportar");
   expect(response.status()).toBe(200);
   expect(response.headers()["content-type"]).toContain("text/csv");
