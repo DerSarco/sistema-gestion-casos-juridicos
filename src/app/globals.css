@@ -197,6 +197,7 @@ tbody tr:hover { background: #f8fafc; }
 
 @media (max-width: 1024px) {
   .app-shell { grid-template-columns: 82px minmax(0, 1fr); }
+  .workspace { width: 100%; min-width: 0; max-width: 100vw; overflow-x: hidden; }
   .topbar { padding-inline: 1rem; }
   .topbar > span:first-child { display: none; }
   .topbar-actions { width: 100%; justify-content: space-between; min-width: 0; gap: .6rem; }
