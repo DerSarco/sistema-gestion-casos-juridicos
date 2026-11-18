@@ -4,4 +4,4 @@ import { createPrismaCaseRepository } from "@/infrastructure/prisma/prisma-case-
 
 export const instant = false;
 
-export default async function CaseDetailPage({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; const actor = await getServerActor(); return <PersistentCaseDetail legalCase={await createPrismaCaseRepository(actor.studyId).findByIdOrCode(id)} />; }
+export default async function CaseDetailPage({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; const actor = await getServerActor(); return <PersistentCaseDetail legalCase={await createPrismaCaseRepository(actor.studyId, actor).findByIdOrCode(id)} />; }

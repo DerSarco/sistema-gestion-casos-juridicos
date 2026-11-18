@@ -52,7 +52,7 @@ test("AUTH-03 cambia perfiles ficticios sin exponer credenciales", async ({ page
   await login(page);
   const switcher = page.locator(".demo-profile-switcher");
   await expect(switcher).toContainText("Perfil demo");
-  await switcher.getByLabel("Perfil demo").selectOption("Abogado");
+  await switcher.getByLabel("Perfil demo").selectOption("Abogado A");
   await switcher.getByRole("button", { name: "Cambiar" }).click();
   await expect(page.locator(".topbar")).toContainText("Abogado Ficticio A · Abogado");
   await page.goto("/reportes");
@@ -60,6 +60,35 @@ test("AUTH-03 cambia perfiles ficticios sin exponer credenciales", async ({ page
   await page.locator(".demo-profile-switcher").getByLabel("Perfil demo").selectOption("Socio");
   await page.locator(".demo-profile-switcher").getByRole("button", { name: "Cambiar" }).click();
   await expect(page.getByRole("button", { name: "Exportar CSV" })).toBeVisible();
+});
+
+test("AUTH-04 aísla los casos entre dos abogados ficticios", async ({ page }) => {
+  await login(page, "abogado-a@example.test");
+  await expect(page.getByText("CASO-FICTICIO-001", { exact: true })).toBeVisible();
+  await expect(page.getByText("CASO-FICTICIO-002", { exact: true })).toHaveCount(0);
+  await page.goto("/casos/CASO-FICTICIO-002");
+  await expect(page.getByText("Caso no disponible")).toBeVisible();
+  await page.locator(".demo-profile-switcher").getByLabel("Perfil demo").selectOption("Abogado B");
+  await page.locator(".demo-profile-switcher").getByRole("button", { name: "Cambiar" }).click();
+  await expect(page.getByText("Abogado Ficticio B · Abogado", { exact: true }).last()).toBeVisible();
+  await expect(page.getByText("CASO-FICTICIO-002", { exact: true })).toBeVisible();
+  await expect(page.getByText("CASO-FICTICIO-001", { exact: true })).toHaveCount(0);
+});
+
+test("AUTH-05 permite al Socio crear y desactivar usuarios internos", async ({ page }) => {
+  await login(page);
+  await page.getByRole("link", { name: "Usuarios" }).click();
+  await expect(page.getByRole("heading", { name: "Usuarios internos" })).toBeVisible();
+  const identifier = `abogado-e2e-${Date.now()}@example.test`;
+  await page.getByLabel("Nombre").fill("Abogado E2E Ficticio");
+  await page.getByLabel("Identificador de acceso").fill(identifier);
+  await page.locator('.user-create-form select[name="roleId"]').selectOption({ label: "Abogado" });
+  await page.getByRole("button", { name: "Crear usuario" }).click();
+  await expect(page.getByText("Usuario interno creado correctamente.")).toBeVisible();
+  const row = page.getByRole("row").filter({ hasText: identifier });
+  await expect(row).toContainText("Activo");
+  await row.getByRole("button", { name: "Desactivar" }).click();
+  await expect(row).toContainText("Inactivo");
 });
 
 for (const account of [
@@ -72,6 +101,9 @@ for (const account of [
   }) => {
     await login(page, account.identifier);
     await expect(page.locator(".topbar")).toContainText(account.role);
+    await expect(page.getByRole("link", { name: "Usuarios" })).toHaveCount(0);
+    await page.goto("/usuarios");
+    await expect(page).toHaveURL(/\/casos$/);
     await page.goto("/clientes");
     await expect(
       page.getByRole("button", { name: /Desactivar|Reactivar/ }),
