@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import { Icon } from "./icons";
 import { getServerActor, isDemoProfileSwitcherEnabled, logoutAction, switchDemoProfileAction } from "@/infrastructure/auth/server-actor";
 
-export async function AppShell({ active, children }: { active: "cases" | "clients" | "reports"; children: ReactNode }) {
+export async function AppShell({ active, children }: { active: "cases" | "clients" | "reports" | "users"; children: ReactNode }) {
   const actor = await getServerActor();
-  const returnTo = active === "clients" ? "/clientes" : active === "reports" ? "/reportes" : "/casos";
+  const returnTo = active === "clients" ? "/clientes" : active === "reports" ? "/reportes" : active === "users" ? "/usuarios" : "/casos";
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -17,6 +17,7 @@ export async function AppShell({ active, children }: { active: "cases" | "client
           <Link className={`nav-item ${active === "cases" ? "nav-item-active" : ""}`} href="/casos"><Icon name="folder" /> Casos</Link>
           <Link className={`nav-item ${active === "clients" ? "nav-item-active" : ""}`} href="/clientes"><Icon name="clients" /> Clientes</Link>
           <Link className={`nav-item ${active === "reports" ? "nav-item-active" : ""}`} href="/reportes"><Icon name="chart" /> Reportes</Link>
+          {actor.role === "Socio" && <Link className={`nav-item ${active === "users" ? "nav-item-active" : ""}`} href="/usuarios"><Icon name="clients" /> Usuarios</Link>}
         </nav>
         <form action={logoutAction}><button className="logout" type="submit"><Icon name="logout" /> Cerrar sesión</button></form>
       </aside>
@@ -28,9 +29,10 @@ export async function AppShell({ active, children }: { active: "cases" | "client
               <form className="demo-profile-switcher" action={switchDemoProfileAction}>
                 <input type="hidden" name="returnTo" value={returnTo} />
                 <label htmlFor="demo-role">Perfil demo</label>
-                <select id="demo-role" name="role" defaultValue={actor.role} aria-describedby="demo-profile-note">
+                <select id="demo-role" name="role" defaultValue={actor.role === "Abogado" ? (actor.displayName.endsWith("B") ? "Abogado B" : "Abogado A") : actor.role} aria-describedby="demo-profile-note">
                   <option>Socio</option>
-                  <option>Abogado</option>
+                  <option>Abogado A</option>
+                  <option>Abogado B</option>
                   <option>Asistente</option>
                   <option>Procurador</option>
                 </select>

@@ -56,11 +56,17 @@ export class PrismaReportRepository {
   constructor(
     private readonly database: Database,
     private readonly studyId: string,
+    private readonly viewer?: { id: string; role: string },
   ) {}
 
   async findScopedCases() {
     return this.database.legalCase.findMany({
-      where: { studyId: this.studyId },
+      where: {
+        studyId: this.studyId,
+        ...(this.viewer?.role === "Abogado"
+          ? { participations: { some: { participantId: this.viewer.id, endedAt: null } } }
+          : {}),
+      },
       include: reportInclude(new Date()),
       orderBy: [{ createdAt: "desc" }, { id: "asc" }],
     });
@@ -151,6 +157,6 @@ export class PrismaReportRepository {
   }
 }
 
-export function createPrismaReportRepository(studyId: string) {
-  return new PrismaReportRepository(getPrismaClient(), studyId);
+export function createPrismaReportRepository(studyId: string, viewer?: { id: string; role: string }) {
+  return new PrismaReportRepository(getPrismaClient(), studyId, viewer);
 }

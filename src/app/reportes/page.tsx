@@ -9,7 +9,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
   const actor = await getServerActor();
   const query = await searchParams;
   const filters = { responsibleId: query.responsable, stage: query.etapa, status: query.estado };
-  const summary = await createPrismaReportRepository(actor.studyId).summary(filters);
+  const summary = await createPrismaReportRepository(actor.studyId, actor).summary(filters);
   return (
     <AppShell active="reports">
       <ReportsScreen summary={summary} canExport={actor.role === "Socio"} filters={filters} />

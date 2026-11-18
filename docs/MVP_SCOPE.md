@@ -83,8 +83,10 @@ alcanzado por los seis paquetes del MVP.
 
 ## Decisiones operativas validadas
 
-- Los cuatro perfiles pueden consultar, registrar y editar clientes y casos,
-  cambiar estado o etapa y registrar fechas dentro del estudio.
+- El Socio consulta todos los casos; cada Abogado consulta solamente aquellos
+  donde mantiene una participación activa. Los permisos restantes conservan la
+  matriz operativa vigente.
+- Solo Socio crea, desactiva o reactiva usuarios internos del estudio.
 - Solo Socio distribuye o reasigna, desactiva o reactiva clientes y archiva o
   reabre casos; estas acciones exigen motivo y auditoría.
 - El responsable principal es un socio o abogado y el procurador participa en
@@ -110,7 +112,7 @@ alcanzado por los seis paquetes del MVP.
 ## Funciones expresamente diferidas a evoluciones futuras
 
 - ficha independiente de cliente;
-- administración de usuarios, roles y catálogos;
+- administración de roles y catálogos;
 - recuperación de contraseña y registro público;
 - reasignaciones avanzadas y correcciones administrativas fuera del flujo básico;
 - alertas automáticas, calendario global y cálculo de plazos;

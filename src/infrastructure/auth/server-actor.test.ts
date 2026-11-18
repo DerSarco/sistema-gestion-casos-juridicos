@@ -37,6 +37,7 @@ describe("selector de perfiles ficticios", () => {
   it.each([
     ["Socio", "socio-a@example.test"],
     ["Abogado", "abogado-a@example.test"],
+    ["Abogado B", "abogado-b@example.test"],
     ["Asistente", "asistente-a@example.test"],
     ["Procurador", "procurador-a@example.test"],
   ])("limita %s a su identidad ficticia autorizada", (role, identifier) => {

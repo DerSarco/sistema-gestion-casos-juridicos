@@ -30,6 +30,7 @@
 | 1.6 | 2026-11-11 | Consolidación anonimizada de permisos, campos, flujo, fechas, cierre y conservación validados con el estudio | Equipo del proyecto |
 | 1.7 | 2026-11-11 | Generalización del modelo de casos laborales y definición de campos condicionales por materia y etapa | Equipo del proyecto |
 | 1.8 | 2026-11-12 | Extensión controlada de versión 1 para carga, reportes básicos y exportación mínima autorizada | Equipo del proyecto |
+| 1.9 | 2026-11-18 | Control de cambio #115: alcance por abogado y administración de usuarios internos por Socio | Equipo del proyecto |
 
 ## 1. Introducción
 
@@ -191,6 +192,7 @@ clientes y casos dentro del estudio.
 Responsabilidades previstas:
 
 - consultar clientes y casos, responsables, estados y fechas relevantes;
+- consultar únicamente los casos en que participa activamente;
 - registrar y editar clientes y casos;
 - actualizar información operativa dentro de los permisos definidos;
 - registrar observaciones, cambios de estado y fechas autorizadas;
@@ -267,7 +269,7 @@ un portal de clientes ni la gestión del anexo de información y autorización.
 
 | Capacidad | ACT-01 Administrador | ACT-02 Abogado | ACT-03 Asistente | ACT-04 Procurador |
 |---|---|---|---|---|
-| Consultar clientes y casos del estudio | Permitido | Permitido | Permitido | Permitido |
+| Consultar casos | Todos los del estudio | Solo participación activa propia | Permitido | Permitido |
 | Registrar y editar clientes y casos | Permitido | Permitido | Permitido | Permitido |
 | Cambiar etapa o estado | Permitido | Permitido | Permitido | Permitido |
 | Registrar fechas relevantes | Permitido | Permitido | Permitido | Permitido |
@@ -276,11 +278,12 @@ un portal de clientes ni la gestión del anexo de información y autorización.
 | Archivar o reabrir casos | Permitido; exige motivo | No permitido | No permitido | No permitido |
 | Consultar historial de cambios | Permitido | Permitido | Permitido | Permitido |
 | Eliminar o alterar historial crítico | No permitido | No permitido | No permitido | No permitido |
+| Crear, activar o desactivar usuarios internos | Permitido | No permitido | No permitido | No permitido |
 
 La matriz constituye la base funcional de autorización del MVP. Todas las
 operaciones siguen limitadas al estudio de la sesión y se verifican en el
-servidor. El acceso cotidiano de los cuatro perfiles no habilita administración
-de usuarios, catálogos ni acciones elevadas.
+servidor. Solo Socio administra usuarios internos; la administración de roles y
+catálogos permanece fuera de esta versión.
 
 #### 2.3.5 Características y necesidades comunes
 
@@ -378,13 +381,13 @@ requisitos no funcionales y en el diseño técnico.
 
 ### 3.2 Requisitos funcionales
 
-La línea base normativa contiene once requisitos funcionales. Diez aportan una
+La línea base normativa contiene doce requisitos funcionales. Once aportan una
 capacidad visible en las ocho historias Gherkin y el último establece una
 restricción obligatoria de independencia respecto de la OJV.
 
 | ID | Requisito del MVP | Criterio verificable | Historias |
 |---|---|---|---|
-| RF-001 | Permitir el inicio de sesión de cuentas internas activas, sin registro público. | Una cuenta válida accede; credenciales inválidas son rechazadas sin revelar si la cuenta existe. | HU-01 |
+| RF-001 | Permitir el inicio de sesión de cuentas internas activas, sin registro público. | Una cuenta válida accede; credenciales inválidas son rechazadas sin revelar si la cuenta existe; un Abogado solo obtiene casos donde participa activamente. | HU-01, HU-02 |
 | RF-002 | Registrar, editar, desactivar y reactivar clientes mediante el formulario o listado existente. | Nombre completo o razón social, teléfono, origen o materia y RUT son obligatorios; el correo es opcional. Solo Socio cambia reversiblemente el estado activo con actor, momento y motivo, sin eliminación física. | HU-08 |
 | RF-003 | Buscar clientes por nombre, origen, dato de contacto autorizado o estado de actividad y advertir posibles coincidencias. | Una coincidencia de nombre y origen genera advertencia sin bloquear ni fusionar, porque un cliente puede poseer varias gestiones; un cliente inactivo se identifica claramente y no puede seleccionarse para un caso nuevo. | HU-07, HU-08 |
 | RF-004 | Registrar, editar, archivar y reactivar una ficha de caso vinculada con un cliente activo. | El caso conserva identificador y relaciones. Los datos específicos aparecen y se validan según materia y etapa: una materia de despido exige empresa o contraparte, fecha de ingreso laboral y fecha de despido; una gestión colectiva identifica la organización relacionada. Tribunal, RIT, ROL, tienda, finiquito y cuantía pueden quedar vacíos mientras no correspondan. Solo Socio archiva o reactiva con motivo y sin eliminación física. | HU-03, HU-04 |
@@ -395,6 +398,7 @@ restricción obligatoria de independencia respecto de la OJV.
 | RF-009 | Consultar el historial básico cronológico del caso y de sus acciones críticas. | Ingreso, asignación, presentación y cambios de ciclo de vida, estado, etapa, responsable, participantes y fechas muestran acción, usuario, momento, motivo y valores relevantes; un usuario común no los edita. | HU-04 a HU-06, HU-08 |
 | RF-010 | Buscar y filtrar casos por identificador, cliente, responsable, estado, etapa, procedimiento, próxima fecha o condición de archivo. | Los filtros pueden combinarse y limpiarse; el orden operativo utiliza etapa y próxima fecha, sin catálogo manual de prioridad. | HU-02 |
 | RF-011 | Mantener independencia técnica respecto de la OJV y las credenciales judiciales. | La revisión de arquitectura, código, configuración y tráfico confirma que el sistema no consulta, obtiene, envía ni sincroniza información con la OJV y no solicita ni almacena credenciales judiciales. | HU-06; EXC-01, EXC-02 |
+| RF-012 | Administrar usuarios internos del estudio. | Solo Socio puede crear cuentas con nombre, identificador y rol vigente, además de desactivarlas o reactivarlas sin eliminación física; cada acción queda auditada. | HU-09 |
 
 #### 3.2.1 Restricción funcional obligatoria
 
@@ -451,8 +455,8 @@ a cada comportamiento.
 |---|---|---|---|---|---|
 | RN-001 | Pertenencia al estudio | Todo usuario, cliente, caso y registro operativo debe pertenecer al estudio que lo administra. | ALC-01, ALC-02, ALC-03 | Vigente | La versión 1 se valida con un estudio; cualquier aislamiento entre varios estudios debe verificarse técnicamente antes de habilitarse. |
 | RN-002 | Usuario identificable | Toda acción autenticada debe asociarse con un usuario interno identificable y un rol vigente. | ACT-01, ACT-02, ACT-03, ACT-04 | Vigente | Las acciones automatizadas, si existen, deben identificarse como servicio y no atribuirse a una persona. |
-| RN-003 | Autorización validada | Los cuatro perfiles pueden consultar, registrar y editar clientes y casos, cambiar estado o etapa y registrar fechas dentro del estudio. Solo Socio ejecuta acciones elevadas. | Validación operativa #78; matriz de responsabilidades | Vigente | Toda operación se valida en el servidor y permanece limitada al estudio de la sesión. |
-| RN-004 | Administración restringida | Solo el perfil autorizado de socio propietario o administrador puede administrar usuarios, roles y catálogos. | ACT-01; matriz inicial de responsabilidades | Propuesta | Debe validarse si existirá más de un administrador y cómo se recuperará el acceso. |
+| RN-003 | Autorización validada | Los perfiles operan dentro del estudio; cada Abogado solo consulta casos con participación activa propia y solo Socio ejecuta acciones elevadas. | Validación operativa #78; control de cambio #115 | Vigente | Toda operación se valida en el servidor y permanece limitada al estudio y alcance de la sesión. |
+| RN-004 | Administración restringida | Solo Socio puede crear, desactivar o reactivar usuarios internos. La administración de roles y catálogos queda diferida. | ACT-01; control de cambio #115 | Vigente | No existe registro público, eliminación física ni invitación por correo en esta versión. |
 
 #### 3.4.2 Clientes y datos de contacto
 

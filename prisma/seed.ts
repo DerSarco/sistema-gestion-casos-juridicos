@@ -23,13 +23,17 @@ const ids = {
   rolePartnerB: "20000000-0000-4000-8000-000000000101",
   partnerA: "10000000-0000-4000-8000-000000000201",
   lawyerA: "10000000-0000-4000-8000-000000000202",
+  lawyerA2: "10000000-0000-4000-8000-000000000205",
   assistantA: "10000000-0000-4000-8000-000000000203",
   procuratorA: "10000000-0000-4000-8000-000000000204",
   partnerB: "20000000-0000-4000-8000-000000000201",
   clientA: "10000000-0000-4000-8000-000000000301",
+  clientA2: "10000000-0000-4000-8000-000000000302",
   clientB: "20000000-0000-4000-8000-000000000301",
   caseA: "10000000-0000-4000-8000-000000000401",
+  caseA2: "10000000-0000-4000-8000-000000000402",
   participationA: "10000000-0000-4000-8000-000000000501",
+  participationA2: "10000000-0000-4000-8000-000000000502",
   relevantDateA: "10000000-0000-4000-8000-000000000601",
   laborDataA: "10000000-0000-4000-8000-000000000701",
 };
@@ -130,6 +134,17 @@ async function main() {
       accessIdentifier: "socio-a@example.test",
     },
   });
+  await prisma.user.upsert({
+    where: { id: ids.lawyerA2 },
+    update: { displayName: "Abogado Ficticio B", status: "ACTIVE" },
+    create: {
+      id: ids.lawyerA2,
+      studyId: ids.studyA,
+      roleId: ids.roleLawyerA,
+      displayName: "Abogado Ficticio B",
+      accessIdentifier: "abogado-b@example.test",
+    },
+  });
   await prisma.user.upsert({ where: { id: ids.assistantA }, update: { displayName: "Asistente Ficticio A", status: "ACTIVE" }, create: { id: ids.assistantA, studyId: ids.studyA, roleId: ids.roleAssistantA, displayName: "Asistente Ficticio A", accessIdentifier: "asistente-a@example.test" } });
   await prisma.user.upsert({ where: { id: ids.procuratorA }, update: { displayName: "Procurador Ficticio A", status: "ACTIVE" }, create: { id: ids.procuratorA, studyId: ids.studyA, roleId: ids.roleProcuratorA, displayName: "Procurador Ficticio A", accessIdentifier: "procurador-a@example.test" } });
   await prisma.user.upsert({
@@ -166,6 +181,19 @@ async function main() {
       phone: "+56900000001",
       email: "cliente01@example.test",
       originMatter: "Consulta ficticia",
+    },
+  });
+  await prisma.client.upsert({
+    where: { id: ids.clientA2 },
+    update: { displayName: "Cliente Ficticio 03", rutNormalized: "333333333" },
+    create: {
+      id: ids.clientA2,
+      studyId: ids.studyA,
+      displayName: "Cliente Ficticio 03",
+      rutNormalized: "333333333",
+      phone: "+56900000003",
+      email: "cliente03@example.test",
+      originMatter: "Consulta ficticia independiente",
     },
   });
   await prisma.client.upsert({
@@ -237,6 +265,37 @@ async function main() {
       assignedById: ids.partnerA,
       primary: true,
       reason: "Asignación ficticia inicial",
+    },
+  });
+
+  await prisma.legalCase.upsert({
+    where: { id: ids.caseA2 },
+    update: { title: "Caso laboral ficticio 02" },
+    create: {
+      id: ids.caseA2,
+      studyId: ids.studyA,
+      clientId: ids.clientA2,
+      matterId: value(CatalogType.MATTER, "COLLECTION"),
+      natureId: value(CatalogType.CASE_NATURE, "INDIVIDUAL"),
+      statusId: value(CatalogType.CASE_STATUS, "ENTERED"),
+      stageId: value(CatalogType.STAGE, "DRAFTING"),
+      internalCode: "CASO-FICTICIO-002",
+      title: "Caso laboral ficticio 02",
+      lifecycleStatus: "ACTIVE",
+    },
+  });
+  await prisma.caseParticipation.upsert({
+    where: { id: ids.participationA2 },
+    update: { endedAt: null, primary: true, participantId: ids.lawyerA2 },
+    create: {
+      id: ids.participationA2,
+      studyId: ids.studyA,
+      caseId: ids.caseA2,
+      participantId: ids.lawyerA2,
+      roleId: value(CatalogType.PARTICIPATION_ROLE, "PRIMARY"),
+      assignedById: ids.partnerA,
+      primary: true,
+      reason: "Asignación ficticia independiente",
     },
   });
 

@@ -10,7 +10,7 @@ export default async function NewDatePage({
 }) {
   const { id } = await params;
   const actor = await getServerActor();
-  const repository = createPrismaCaseRepository(actor.studyId);
+  const repository = createPrismaCaseRepository(actor.studyId, actor);
   const [legalCase, options] = await Promise.all([
     repository.findByIdOrCode(id),
     repository.formOptions(),
