@@ -97,7 +97,13 @@ test("V1-01 consulta carga y exporta un CSV minimizado como Socio", async ({
   await page.goto("/reportes");
   await expect(page.getByRole("heading", { name: "Reportes" })).toBeVisible();
   await expect(page.getByText("Carga por responsable")).toBeVisible();
-  await expect(page.getByText("Abogado Ficticio A")).toBeVisible();
+  await expect(page.getByRole("cell", { name: "Abogado Ficticio A" })).toBeVisible();
+  await expect(page.getByText("Próximos eventos")).toBeVisible();
+  await expect(page.getByText("Sin próxima fecha")).toBeVisible();
+  await page.getByRole("combobox", { name: "Etapa", exact: true }).selectOption({ label: "Ingreso" });
+  await page.getByRole("button", { name: "Aplicar filtros" }).click();
+  await expect(page).toHaveURL(/etapa=Ingreso/);
+  await expect(page.getByRole("heading", { name: "Casos por etapa" })).toBeVisible();
   const response = await page.request.post("/reportes/exportar");
   expect(response.status()).toBe(200);
   expect(response.headers()["content-type"]).toContain("text/csv");

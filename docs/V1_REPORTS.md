@@ -1,17 +1,23 @@
 # Reportes y exportaciones autorizadas de la versión 1
 
 **Fecha:** 2026-11-12  
-**Issue:** #87  
+**Issues:** #87, #109
 **Estado:** implementado para preproducción con datos ficticios
 
 ## Finalidad y alcance
 
 La versión 1 incorpora una consulta interna de carga de trabajo para apoyar la
 distribución y el seguimiento ya definidos en el alcance general del proyecto.
-La pantalla presenta totales de casos, carga por responsable y distribuciones
-por etapa y estado. Todas las consultas se limitan al `studyId` de la sesión.
+La pantalla presenta totales de casos, carga por responsable, distribuciones
+por etapa y estado, próximas fechas e indicadores de casos activos que requieren
+atención porque no tienen responsable o una próxima fecha registrada. Permite
+filtrar por responsable, etapa y estado. Todas las consultas se limitan al
+`studyId` de la sesión.
 
-Esta capacidad no cambia el denominador del MVP ni crea un dashboard analítico.
+Las distribuciones se representan con barras accesibles y valores numéricos; no
+se usan rankings de productividad, predicciones ni comparaciones de desempeño.
+Esta capacidad no cambia el alcance de la versión 1 ni crea un dashboard
+analítico.
 Tampoco incorpora inteligencia artificial, Calendar, OneDrive, OJV ni cálculo de
 plazos. Su finalidad deriva de la consulta de carga y reportes contemplada en el
 alcance acordado; el formato mínimo se adopta como decisión de diseño sujeta a
@@ -53,6 +59,17 @@ Escenario: Consultar carga autorizada
   Dado un usuario interno con sesión y perfil vigentes
   Cuando consulta los reportes
   Entonces obtiene solamente agregados de casos de su estudio
+
+Escenario: Filtrar el seguimiento operativo
+  Dado un usuario interno con sesión y perfil vigentes
+  Cuando filtra los reportes por responsable, etapa o estado
+  Entonces visualiza métricas, distribuciones y carga correspondientes al filtro
+
+Escenario: Identificar casos que requieren atención
+  Dado que existen casos activos sin responsable o sin próxima fecha
+  Cuando un usuario interno consulta los reportes
+  Entonces el sistema informa sus cantidades como indicadores operativos
+  Y presenta las próximas fechas registradas en orden cronológico
 
 Escenario: Exportar un reporte mínimo como Socio
   Dado un Socio autenticado

@@ -3,6 +3,7 @@ import { getPrismaClient } from "@/infrastructure/prisma/prisma-client";
 import type {
   CountRow,
   ExportCaseRow,
+  ReportFilters,
   ReportSummary,
   WorkloadRow,
 } from "@/modules/reports/domain/report";
@@ -20,7 +21,11 @@ function reportInclude(now: Date) {
   },
   relevantDates: {
     where: { occursAt: { gte: now } },
-    select: { occursAt: true },
+    select: {
+      title: true,
+      occursAt: true,
+      responsible: { select: { displayName: true } },
+    },
     orderBy: { occursAt: "asc" as const },
     take: 1,
   },
@@ -61,10 +66,20 @@ export class PrismaReportRepository {
     });
   }
 
-  async summary(): Promise<ReportSummary> {
+  async summary(filters: ReportFilters = {}): Promise<ReportSummary> {
     const records = await this.findScopedCases();
+    const filterOptions = {
+      responsible: [...new Map(records.flatMap((record) => record.participations.map((participation) => [participation.participantId, participation.participant.displayName] as const))).entries()].map(([value, label]) => ({ value, label })).sort((left, right) => left.label.localeCompare(right.label, "es-CL")),
+      stage: [...new Set(records.map((record) => record.stage.name))].sort((left, right) => left.localeCompare(right, "es-CL")).map((value) => ({ value, label: value })),
+      status: [...new Set(records.map((record) => record.businessStatus.name))].sort((left, right) => left.localeCompare(right, "es-CL")).map((value) => ({ value, label: value })),
+    };
+    const filtered = records.filter((record) =>
+      (!filters.responsibleId || record.participations[0]?.participantId === filters.responsibleId) &&
+      (!filters.stage || record.stage.name === filters.stage) &&
+      (!filters.status || record.businessStatus.name === filters.status),
+    );
     const workload = new Map<string, WorkloadRow>();
-    for (const record of records) {
+    for (const record of filtered) {
       const primary = record.participations[0];
       const responsibleId = primary?.participantId ?? "unassigned";
       const current = workload.get(responsibleId) ?? {
@@ -80,20 +95,29 @@ export class PrismaReportRepository {
       workload.set(responsibleId, current);
     }
     return {
-      totalCases: records.length,
-      activeCases: records.filter(
+      totalCases: filtered.length,
+      activeCases: filtered.filter(
         (record) => record.lifecycleStatus !== "ARCHIVED",
       ).length,
-      archivedCases: records.filter(
+      archivedCases: filtered.filter(
         (record) => record.lifecycleStatus === "ARCHIVED",
       ).length,
+      unassignedCases: filtered.filter((record) => record.lifecycleStatus !== "ARCHIVED" && record.participations.length === 0).length,
+      casesWithoutUpcomingDate: filtered.filter((record) => record.lifecycleStatus !== "ARCHIVED" && record.relevantDates.length === 0).length,
       workload: [...workload.values()].sort(
         (left, right) =>
           right.activeCases - left.activeCases ||
           left.responsible.localeCompare(right.responsible, "es-CL"),
       ),
-      byStage: countBy(records, (record) => record.stage.name),
-      byStatus: countBy(records, (record) => record.businessStatus.name),
+      byStage: countBy(filtered, (record) => record.stage.name),
+      byStatus: countBy(filtered, (record) => record.businessStatus.name),
+      upcomingEvents: filtered.flatMap((record) => record.relevantDates.map((event) => ({
+        caseCode: record.internalCode,
+        title: event.title,
+        occursAt: event.occursAt.toISOString(),
+        responsible: event.responsible.displayName,
+      }))).sort((left, right) => left.occursAt.localeCompare(right.occursAt)).slice(0, 6),
+      filterOptions,
     };
   }
 

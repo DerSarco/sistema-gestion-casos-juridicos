@@ -5,12 +5,14 @@ import { createPrismaReportRepository } from "@/infrastructure/prisma/prisma-rep
 
 export const instant = false;
 
-export default async function ReportsPage() {
+export default async function ReportsPage({ searchParams }: { searchParams: Promise<{ responsable?: string; etapa?: string; estado?: string }> }) {
   const actor = await getServerActor();
-  const summary = await createPrismaReportRepository(actor.studyId).summary();
+  const query = await searchParams;
+  const filters = { responsibleId: query.responsable, stage: query.etapa, status: query.estado };
+  const summary = await createPrismaReportRepository(actor.studyId).summary(filters);
   return (
     <AppShell active="reports">
-      <ReportsScreen summary={summary} canExport={actor.role === "Socio"} />
+      <ReportsScreen summary={summary} canExport={actor.role === "Socio"} filters={filters} />
     </AppShell>
   );
 }

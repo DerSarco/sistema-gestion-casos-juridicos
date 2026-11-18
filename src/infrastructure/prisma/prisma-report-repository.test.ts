@@ -17,7 +17,7 @@ const record = {
       participant: { displayName: "Socio Ficticio A" },
     },
   ],
-  relevantDates: [{ occursAt: new Date("2026-12-01T12:00:00.000Z") }],
+  relevantDates: [{ title: "Audiencia ficticia", occursAt: new Date("2026-12-01T12:00:00.000Z"), responsible: { displayName: "Socio Ficticio A" } }],
 };
 
 function repository() {
@@ -41,6 +41,9 @@ describe("PrismaReportRepository", () => {
       expect.objectContaining({
         totalCases: 1,
         activeCases: 1,
+        unassignedCases: 0,
+        casesWithoutUpcomingDate: 0,
+        upcomingEvents: [expect.objectContaining({ caseCode: "CASO-FICTICIO-001", title: "Audiencia ficticia" })],
         workload: [
           expect.objectContaining({
             responsible: "Socio Ficticio A",
@@ -52,6 +55,14 @@ describe("PrismaReportRepository", () => {
     expect(context.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { studyId } }),
     );
+  });
+
+  it("aplica filtros coherentes y conserva opciones globales", async () => {
+    const context = repository();
+    const summary = await context.repository.summary({ stage: "Cierre" });
+    expect(summary.totalCases).toBe(0);
+    expect(summary.byStage).toEqual([]);
+    expect(summary.filterOptions.stage).toEqual([{ value: "Ingreso", label: "Ingreso" }]);
   });
 
   it("audita la exportación sin guardar su contenido", async () => {
