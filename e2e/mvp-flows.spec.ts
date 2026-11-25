@@ -167,7 +167,7 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   await expect(page.getByText("No se encontraron clientes")).toBeVisible();
   await page.getByRole("button", { name: "Limpiar filtros" }).first().click();
   await page.getByRole("link", { name: "+ Nuevo cliente" }).click();
-  await page.getByRole("button", { name: "Guardar cliente" }).click();
+  await page.getByRole("button", { name: "Guardar y generar documento" }).click();
   await expect(page.locator(".error-summary")).toContainText(
     "Revise el formulario",
   );
@@ -178,11 +178,18 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
     .fill("cliente05@ejemplo.cl");
   await page.getByRole("textbox", { name: /Teléfono/ }).fill("+56 9 1111 2222");
   await page.getByLabel(/Origen o materia/).fill("Consulta laboral ficticia");
-  await page.getByRole("button", { name: "Guardar cliente" }).click();
-  await expect(page.getByText(clientName, { exact: true })).toBeVisible();
-  await expect(page.getByText(/Mostrando \d+ de \d+ clientes/)).toBeVisible();
-  const row = page.getByRole("row").filter({ hasText: clientName });
-  await row.getByRole("link", { name: /Editar/ }).click();
+  await page.getByRole("button", { name: "Guardar y generar documento" }).click();
+  await expect(page).toHaveURL(/\/clientes\/[^/]+\/autorizaciones\/[^/]+/);
+  await expect(page.getByRole("heading", { name: /Información y autorización/ })).toBeVisible();
+  await expect(page.getByText(/PLANTILLA BASE PENDIENTE/)).toBeVisible();
+  await expect(page.getByText(/^AUT-/)).toBeVisible();
+  await page.getByRole("link", { name: "Volver a editar" }).click();
+  await expect(page.getByRole("heading", { name: "Información y autorización de datos personales" })).toBeVisible();
+  await expect(page.locator(".authorization-item .status", { hasText: "Pendiente de firma" })).toBeVisible();
+  await page.getByRole("button", { name: "Generar nuevo documento" }).click();
+  await expect(page).toHaveURL(/\/clientes\/[^/]+\/autorizaciones\/[^/]+/);
+  await page.getByRole("link", { name: "Volver a editar" }).click();
+  await expect(page.locator(".authorization-item")).toHaveCount(2);
   await page.getByLabel(/Nombre completo/).fill(updatedClientName);
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(page.getByText(updatedClientName)).toBeVisible();
