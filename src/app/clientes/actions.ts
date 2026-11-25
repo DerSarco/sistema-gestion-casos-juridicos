@@ -62,8 +62,9 @@ export async function changeClientStatusAction(_previous: LifecycleState, formDa
     const updated = await createPrismaClientRepository(actor.studyId).changeStatus(id, target, reason, actor.id);
     if (!updated) return { status: "error", message: "El cliente no existe o no pertenece al estudio." };
     revalidatePath("/clientes");
-    return { status: "idle" };
+    redirect("/clientes");
   } catch (error) {
+    if (error && typeof error === "object" && "digest" in error) throw error;
     return { status: "error", message: error instanceof Error ? error.message : "No fue posible cambiar el estado." };
   }
 }
