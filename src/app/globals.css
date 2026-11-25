@@ -272,10 +272,17 @@ tbody tr:hover { background: #f8fafc; }
 body { overflow-x: hidden; }
 .clear-filters { border: 0; background: transparent; color: var(--teal); font: inherit; font-weight: 700; cursor: pointer; margin: 0 0 12px; text-decoration: underline; }
 .client-filters { max-width: 100%; min-width: 0; grid-template-columns: minmax(260px, 620px) minmax(170px, 220px); }
-.client-actions { display: grid; gap: .55rem; width: 190px; max-width: 100%; }
-.lifecycle-form { display: grid; grid-template-columns: minmax(120px, 1fr) auto; gap: .4rem; align-items: center; }
-.lifecycle-form input { min-height: 34px; padding: .35rem .5rem; border: 1px solid var(--border); border-radius: 6px; }
-.lifecycle-form small { grid-column: 1 / -1; }
+.client-actions { display: flex; align-items: center; width: max-content; max-width: 100%; }
+.lifecycle-panel { margin-top: 1rem; border-color: #f3c7c3; box-shadow: none; }
+.lifecycle-panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; }
+.lifecycle-panel-header h2 { margin: .15rem 0 .35rem; font-size: 1.15rem; }
+.lifecycle-panel-header p { margin: 0; color: var(--muted); line-height: 1.5; }
+.lifecycle-edit-form { display: grid; gap: 1rem; }
+.lifecycle-edit-form textarea { resize: vertical; }
+.lifecycle-panel-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.lifecycle-panel-actions span { color: var(--muted); font-size: .82rem; }
+.button-danger { border-color: var(--danger); background: #fff; color: var(--danger); }
+.button-danger:hover { background: #fff1f0; }
 .empty-state { display: grid; justify-items: center; gap: 10px; padding: 42px 20px; text-align: center; }
 .empty-state strong { font-size: 1.08rem; }
 .field-error { color: #9f1239; font-weight: 700; }
@@ -284,6 +291,8 @@ input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="
 
 @media (max-width: 700px) {
   .client-filters { grid-template-columns: minmax(0, 1fr); }
+  .lifecycle-panel-header, .lifecycle-panel-actions { align-items: stretch; flex-direction: column; }
+  .lifecycle-panel-actions .button { width: 100%; }
   .clients-table, .clients-table tbody, .clients-table tr, .clients-table td { display: block; width: 100%; }
   .clients-table thead { display: none; }
   .clients-table tr { padding: .55rem 1rem; border-bottom: 1px solid #e8ebf0; }

@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { saveClientAction, type ClientFormState } from "@/app/clientes/actions";
 import type { Client } from "@/modules/clients/domain/client";
+import { ClientLifecycleForm } from "./client-lifecycle-form";
 import { PageHeading } from "./page-heading";
 
-export function ClientForm({ client }: { client?: Client }) {
+export function ClientForm({ client, canManageLifecycle = false }: { client?: Client; canManageLifecycle?: boolean }) {
   const [state, action, pending] = useActionState(saveClientAction, { status: "idle" } satisfies ClientFormState);
   const values = state.values;
   return <div className="form-page form-page-narrow">
@@ -26,5 +27,6 @@ export function ClientForm({ client }: { client?: Client }) {
       </div>
       <footer className="form-actions"><Link className="button button-secondary" href="/clientes">Cancelar</Link>{state.status === "potential-match" && <button className="button button-secondary" name="confirmPotentialMatch" value="true" disabled={pending}>Guardar de todas formas</button>}<button className="button button-primary" type="submit" disabled={pending}>{pending ? "Guardando…" : "Guardar cliente"}</button></footer>
     </form>
+    {client && canManageLifecycle && <ClientLifecycleForm client={client} />}
   </div>;
 }
