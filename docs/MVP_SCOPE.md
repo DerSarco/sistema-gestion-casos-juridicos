@@ -117,9 +117,14 @@ alcanzado por los seis paquetes del MVP.
 - reasignaciones avanzadas y correcciones administrativas fuera del flujo básico;
 - alertas automáticas, calendario global y cálculo de plazos;
 - dashboard analítico y reportes o exportaciones avanzadas;
-- anexo imprimible de información y autorización;
 - Google Calendar, OneDrive y Gemini;
 - compatibilidad exhaustiva entre navegadores, pruebas de carga y restauración.
+
+La versión 1 incorpora como extensión posterior al denominador del MVP el anexo
+imprimible de información y autorización. Su generación, folio y estado se
+registran en la aplicación; la firma y el respaldo permanecen fuera de ella. La
+plantilla requiere aprobación de los socios antes de cualquier uso con datos
+reales y no convierte el consentimiento en la única base de licitud.
 
 ## Fuera de alcance
 
