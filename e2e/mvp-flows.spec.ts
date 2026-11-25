@@ -111,6 +111,14 @@ for (const account of [
     await expect(
       page.getByRole("button", { name: /Desactivar|Reactivar/ }),
     ).toHaveCount(0);
+    await page
+      .getByRole("row")
+      .filter({ hasText: "Cliente Ficticio 01" })
+      .getByRole("link", { name: /Editar/ })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Estado del cliente" }),
+    ).toHaveCount(0);
     await page.goto("/casos/CASO-FICTICIO-001");
     await expect(page.getByText("Ciclo del caso", { exact: true })).toHaveCount(
       0,
@@ -182,11 +190,18 @@ test("MVP-07 y MVP-08 buscan, validan, crean y editan con persistencia", async (
   const updatedRow = page
     .getByRole("row")
     .filter({ hasText: updatedClientName });
-  await updatedRow
-    .getByPlaceholder("Motivo del cambio")
+  await expect(updatedRow.getByRole("textbox")).toHaveCount(0);
+  await updatedRow.getByRole("link", { name: /Editar/ }).click();
+  await page
+    .getByLabel("Motivo del cambio")
     .fill("Cierre operativo ficticio");
-  await updatedRow.getByRole("button", { name: "Desactivar" }).click();
-  await expect(updatedRow.getByText("Inactivo", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Desactivar cliente" }).click();
+  const inactiveRow = page
+    .getByRole("row")
+    .filter({ hasText: updatedClientName });
+  await expect(
+    inactiveRow.getByText("Inactivo", { exact: true }),
+  ).toBeVisible();
 });
 
 test("P2 crea, edita y archiva un caso persistente", async ({ page }) => {

@@ -11,5 +11,5 @@ export default async function NewClientPage({ searchParams }: { searchParams: Pr
   const { cliente } = await searchParams;
   const actor = await getServerActor();
   const client = cliente ? await createPrismaClientRepository(actor.studyId).findById(cliente) : null;
-  return <AppShell active="clients"><ClientForm client={client ?? undefined} /></AppShell>;
+  return <AppShell active="clients"><ClientForm client={client ?? undefined} canManageLifecycle={actor.role === "Socio"} /></AppShell>;
 }
