@@ -131,8 +131,9 @@ almacenamiento documental.
 
 Las capacidades históricas `ALC-09` a `ALC-14` quedan fuera del MVP. La consulta
 de carga, los reportes básicos y las exportaciones autorizadas se evalúan para la
-versión 1 final; dashboard analítico, anexo imprimible, Calendar, OneDrive y
-Gemini permanecen como evoluciones futuras. La clasificación completa y
+versión 1 final. El anexo imprimible se incorpora a la versión 1 mediante el
+control de cambio #126; dashboard analítico, Calendar, OneDrive y Gemini
+permanecen como evoluciones futuras. La clasificación completa y
 vinculante se mantiene en
 [`MVP_SCOPE.md`](MVP_SCOPE.md); las historias y criterios Gherkin se mantienen
 en [`USER_STORIES.md`](USER_STORIES.md).
@@ -416,6 +417,13 @@ responsable y próxima fecha relevante registrada. La exportación se autoriza e
 servidor, se audita sin almacenar su contenido y excluye datos de identidad,
 contacto y antecedentes laborales. Su especificación detallada se conserva en
 `docs/V1_REPORTS.md`.
+
+El issue #126 incorpora, bajo la misma regla, la generación y el registro del
+anexo imprimible de información y autorización. La plantilla separa tratamientos
+necesarios de finalidades opcionales, conserva folio, versión, actor y estado,
+y deja la firma manuscrita y el respaldo fuera de la plataforma. Su texto debe
+ser aprobado por los socios antes de usar datos reales. La especificación se
+conserva en `docs/V1_DATA_AUTHORIZATION.md`.
 
 ### 3.3 Requisitos no funcionales
 

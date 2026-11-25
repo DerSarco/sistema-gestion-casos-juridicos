@@ -22,6 +22,13 @@ enum ClientType {
   ORGANIZATION
 }
 
+enum AuthorizationDocumentStatus {
+  PENDING_SIGNATURE
+  DELIVERED
+  SIGNED
+  REVOKED
+}
+
 enum CaseLifecycleStatus {
   DRAFT
   ACTIVE
@@ -54,6 +61,7 @@ model Study {
   laborCaseData      LaborCaseData[]
   relevantDates      RelevantDate[]
   auditEvents        AuditEvent[]
+  authorizationDocuments AuthorizationDocument[]
 
   @@map("studies")
 }
@@ -92,6 +100,8 @@ model User {
   changedClients         Client[]            @relation("ClientLifecycleActor")
   changedCases           LegalCase[]         @relation("CaseLifecycleActor")
   auditEvents            AuditEvent[]
+  generatedAuthorizations AuthorizationDocument[] @relation("AuthorizationGenerator")
+  updatedAuthorizations   AuthorizationDocument[] @relation("AuthorizationUpdater")
 
   @@unique([studyId, accessIdentifier])
   @@unique([id, studyId])
@@ -117,6 +127,7 @@ model Client {
   study             Study        @relation(fields: [studyId], references: [id], onDelete: Restrict)
   statusChangedBy   User?        @relation("ClientLifecycleActor", fields: [statusChangedById, studyId], references: [id, studyId], onDelete: Restrict)
   cases             LegalCase[]
+  authorizationDocuments AuthorizationDocument[]
 
   @@unique([id, studyId])
   @@index([studyId, displayName])
@@ -124,6 +135,34 @@ model Client {
   @@index([studyId, email])
   @@index([studyId, status])
   @@map("clients")
+}
+
+model AuthorizationDocument {
+  id               String                       @id @default(uuid()) @db.Uuid
+  studyId          String                       @map("study_id") @db.Uuid
+  clientId         String                       @map("client_id") @db.Uuid
+  generatedById    String                       @map("generated_by_id") @db.Uuid
+  updatedById      String?                      @map("updated_by_id") @db.Uuid
+  folio             String
+  templateVersion   String                       @map("template_version")
+  status            AuthorizationDocumentStatus @default(PENDING_SIGNATURE)
+  snapshot          Json
+  deliveredAt       DateTime?                    @map("delivered_at") @db.Timestamptz(3)
+  signedAt          DateTime?                    @map("signed_at") @db.Timestamptz(3)
+  revokedAt         DateTime?                    @map("revoked_at") @db.Timestamptz(3)
+  archiveReference  String?                      @map("archive_reference")
+  createdAt         DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  study             Study                        @relation(fields: [studyId], references: [id], onDelete: Restrict)
+  client            Client                       @relation(fields: [clientId, studyId], references: [id, studyId], onDelete: Restrict)
+  generatedBy       User                         @relation("AuthorizationGenerator", fields: [generatedById, studyId], references: [id, studyId], onDelete: Restrict)
+  updatedBy         User?                        @relation("AuthorizationUpdater", fields: [updatedById, studyId], references: [id, studyId], onDelete: Restrict)
+
+  @@unique([studyId, folio])
+  @@unique([id, studyId])
+  @@index([clientId, studyId, createdAt])
+  @@index([studyId, status])
+  @@map("authorization_documents")
 }
 
 model CatalogValue {

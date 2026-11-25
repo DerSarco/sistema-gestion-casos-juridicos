@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { saveClientAction, type ClientFormState } from "@/app/clientes/actions";
 import type { Client } from "@/modules/clients/domain/client";
+import type { AuthorizationDocumentItem } from "@/modules/authorizations/template";
+import { ClientAuthorizationSection } from "./client-authorization-section";
 import { ClientLifecycleForm } from "./client-lifecycle-form";
 import { PageHeading } from "./page-heading";
 
-export function ClientForm({ client, canManageLifecycle = false }: { client?: Client; canManageLifecycle?: boolean }) {
+export function ClientForm({ client, canManageLifecycle = false, authorizationDocuments = [] }: { client?: Client; canManageLifecycle?: boolean; authorizationDocuments?: AuthorizationDocumentItem[] }) {
   const [state, action, pending] = useActionState(saveClientAction, { status: "idle" } satisfies ClientFormState);
   const values = state.values;
   return <div className="form-page form-page-narrow">
@@ -25,8 +27,9 @@ export function ClientForm({ client, canManageLifecycle = false }: { client?: Cl
         <label className="field"><span>Correo electrónico <em>Opcional</em></span><input name="email" type="email" defaultValue={values?.email ?? client?.email ?? ""} aria-invalid={Boolean(state.errors?.email)} />{state.errors?.email && <small className="field-error">{state.errors.email}</small>}</label>
         <label className="field"><span>Origen o materia <b>*</b></span><input name="originMatter" defaultValue={values?.originMatter ?? client?.originMatter ?? ""} aria-invalid={Boolean(state.errors?.originMatter)} />{state.errors?.originMatter && <small className="field-error">{state.errors.originMatter}</small>}</label>
       </div>
-      <footer className="form-actions"><Link className="button button-secondary" href="/clientes">Cancelar</Link>{state.status === "potential-match" && <button className="button button-secondary" name="confirmPotentialMatch" value="true" disabled={pending}>Guardar de todas formas</button>}<button className="button button-primary" type="submit" disabled={pending}>{pending ? "Guardando…" : "Guardar cliente"}</button></footer>
+      <footer className="form-actions"><Link className="button button-secondary" href="/clientes">Cancelar</Link>{state.status === "potential-match" && <button className="button button-secondary" name="confirmPotentialMatch" value="true" disabled={pending}>Guardar de todas formas</button>}<button className="button button-primary" type="submit" disabled={pending}>{pending ? "Guardando…" : client ? "Guardar cliente" : "Guardar y generar documento"}</button></footer>
     </form>
+    {client && <ClientAuthorizationSection clientId={client.id} documents={authorizationDocuments} />}
     {client && canManageLifecycle && <ClientLifecycleForm client={client} />}
   </div>;
 }

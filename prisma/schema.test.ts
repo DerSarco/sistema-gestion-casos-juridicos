@@ -6,6 +6,10 @@ const migration = readFileSync(
   "prisma/migrations/20261111233000_data_model_v2/migration.sql",
   "utf8",
 );
+const authorizationMigration = readFileSync(
+  "prisma/migrations/20261125013000_client_authorization_documents/migration.sql",
+  "utf8",
+);
 
 const model = (name: string) => {
   const match = schema.match(new RegExp(`model ${name} \\{([\\s\\S]*?)\\n\\}`));
@@ -59,8 +63,17 @@ describe("modelo de datos v2", () => {
     expect(migration).toContain('EXISTS (SELECT 1 FROM "legal_cases")');
   });
 
-  it("no modela credenciales judiciales ni documentos", () => {
-    expect(schema.toLowerCase()).not.toMatch(/password|credential|secret|document/);
+  it("no modela credenciales judiciales ni archivos firmados", () => {
+    expect(schema.toLowerCase()).not.toMatch(/password|credential|secret|file|blob|signatureimage/);
     expect(schema.toLowerCase()).not.toContain("ojv");
+  });
+
+  it("registra el anexo sin almacenar firma ni archivo", () => {
+    const authorization = model("AuthorizationDocument");
+    expect(authorization).toContain("folio");
+    expect(authorization).toContain("templateVersion");
+    expect(authorization).toContain("archiveReference");
+    expect(authorization).not.toMatch(/file|blob|signatureImage|signatureData/i);
+    expect(authorizationMigration).toContain('FOREIGN KEY ("client_id", "study_id")');
   });
 });
